@@ -467,7 +467,9 @@ nav .fa-solid{
 
     .layer{
         bottom: auto; 
-        top: 20px;
+        background: #ff004f;
+        bottom: 0;
+        top: auto;
         left: 0; 
         right: 0; 
     }
@@ -490,38 +492,38 @@ nav .fa-solid{
 
     .layer.layer1{
         padding: 10px;
-        bottom: auto; 
-        top: 8px;
+        bottom: 0; 
+        top: auto;
     }
 
     .layer.layer2{
         padding: 10px;
-        bottom: auto; 
-        top: 22px;
+        bottom: 0; 
+        top: auto;
     }
 
     .layer.layer3{
         padding: 10px;
-        bottom: auto; 
-        top: 46px;
+        bottom: 0; 
+        top: auto;
     }
 
     .layer.layer4{
         padding: 10px;
-        bottom: auto; 
-        top: 33px;
+        bottom: 0; 
+        top: auto;
     }
 
     .layer.layer5{
         padding: 10px;
-        bottom: auto; 
-        top: 43px;
+        bottom: 0; 
+        top: auto;
     }
 
     .layer.layer6{
         padding: 10px;
-        bottom: auto; 
-        top: 33px;
+        bottom: 0; 
+        top: auto;
     }
 
     .work img{
