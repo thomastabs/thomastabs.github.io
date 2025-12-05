@@ -1,0 +1,48 @@
+/* ===== CSS Variables (Yeezy-inspired Minimal Dark) ===== */
+:root {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #111111;
+    --bg-card: #151515;
+    --text-primary: #e8e8e8;
+    --text-secondary: #a0a0a0;
+    --text-muted: #6b6b6b;
+    --accent: #ff004f;
+    --accent-hover: #e6003d;
+    --border: rgba(255, 255, 255, 0.08);
+    --shadow: rgba(0, 0, 0, 0.4);
+    --radius: 8px;
+    --transition: 280ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    --max-width: 1140px;
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 32px;
+    --spacing-lg: 64px;
+    --spacing-xl: 96px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 5%;
+    position: relative;
+    z-index: 1;
+}

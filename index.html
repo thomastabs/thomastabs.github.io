@@ -14,21 +14,24 @@
 
 <body>
 <!-------- Header -------->
+<nav role="navigation" aria-label="Main navigation">
+    <div class="container">
+        <img src="images/logo.png" class="logo" alt="Tomás Taborda logo">
+        <ul id="sidemenu">
+            <li> <a href="#header">Home</a></li>
+            <li> <a href="#about">About</a></li>
+            <li> <a href="#portfolio">Portfolio</a></li>
+            <li> <a href="#contact">Contact</a></li>
+            <i class="fa-solid fa-xmark" onclick="closemenu()" role="button" aria-label="Close menu" tabindex="0"></i>
+        </ul>
+        <i class="fa-solid fa-bars" onclick="openmenu()" role="button" aria-label="Open menu" tabindex="0"></i>
+    </div>
+</nav>
+
 <div id="header">
     <div class="container">
-        <nav>
-            <img src="images/logo.png" class="logo">
-            <ul id="sidemenu">
-                <li> <a href="#header">Home</a></li>
-                <li> <a href="#about">About</a></li>
-                <li> <a href="#portfolio">Portfolio</a></li>
-                <li> <a href="#contact">Contact</a></li>
-                <i class="fa-solid fa-xmark" onclick="closemenu()"></i>
-            </ul>
-            <i class="fa-solid fa-bars" onclick="openmenu()"></i>
-        </nav>
         <div class="header-text">
-            <p>Networks Engineering Student</p>
+            <p>Computer Science and Engineering Student</p>
             <h1>Hello, I'm <span>Tomás</span> <br>Taborda from Portugal</h1>
         </div>
     </div>
@@ -39,7 +42,7 @@
     <div class="container"> 
         <div class="row">
             <div class="about-col-1">
-                <img src="images/3.jpg">
+                <img src="images/3.jpg" alt="Portrait of Tomás Taborda" loading="lazy">
             </div>
             <div class="about-col-2">
                 <h1 class="sub-title">About Me</h1>
@@ -87,52 +90,52 @@
         <h1 class="sub-title">My Projects</h1>
         <div class="work-list">
             <div class="work">
-                <img src="images/pygame.jpeg">
-                <div class="layer layer1">
+                <img src="images/pygame.jpeg" alt="Pygame Pong Game screenshot" loading="lazy">
+                <div class="layer">
                     <h3>Game developed in Pygame</h3>
                     <p>This is a pong game that has its twists
                     such as levels and an economy system.</p>
-                    <a href="https://github.com/thomastabs/Pong-The-Game"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/Pong-The-Game" aria-label="View Pygame project on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/javaPo.png">
-                <div class="layer layer2">
+                <img src="images/javaPo.png" alt="Java Clients and Terminals project screenshot" loading="lazy">
+                <div class="layer">
                     <h3>Clients and Terminals Project</h3>
                     <p>This is a Java Project that emulates the behaviour of a Terminals and Clients system.</p>
-                    <a href="https://github.com/thomastabs/OS_Project"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/OS_Project" aria-label="View Java project on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/c.jpeg">
-                <div class="layer layer3">
+                <img src="images/c.jpeg" alt="Airport System in C project screenshot" loading="lazy">
+                <div class="layer">
                     <h3>Airport System in C</h3>
                     <p>This is a C Project that emulates the behaviour of an Airport system.</p>
-                    <a href="https://github.com/thomastabs/C_ProjectIAED"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/C_ProjectIAED" aria-label="View C project on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/webappsql.png">
-                <div class="layer layer4">
+                <img src="images/webappsql.png" alt="PostgreSQL Orders Web App screenshot" loading="lazy">
+                <div class="layer">
                     <h3>Orders Web App</h3>
                     <p>This is a PostgreSQL Web App that emulates an Orders type App.</p>
-                    <a href="https://github.com/thomastabs/SQL-Database"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/SQL-Database" aria-label="View SQL Web App on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/p5js.png">
-                <div class="layer layer5">
+                <img src="images/p5js.png" alt="P5js reaction time app screenshot" loading="lazy">
+                <div class="layer">
                     <h3>P5js App</h3>
                     <p>This is a JavaScript App made with p5js that tests the reaction time.</p>
-                    <a href="https://github.com/thomastabs/P5JSFrameworkBallsApp"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/P5JSFrameworkBallsApp" aria-label="View P5js project on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
             <div class="work">
-                <img src="images/figmaa.png">
-                <div class="layer layer6">
+                <img src="images/figmaa.png" alt="Figma TimeBank App concept design" loading="lazy">
+                <div class="layer">
                     <h3>Figma TimeBank App</h3>
                     <p>This is a concept of a Time Bank App created in Figma.</p>
-                    <a href="https://github.com/thomastabs/FigmaTimeBankConceptApp"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
+                    <a href="https://github.com/thomastabs/FigmaTimeBankConceptApp" aria-label="View Figma concept on GitHub" target="_blank" rel="noopener noreferrer"> <i class="fa-solid fa-arrow-up-right-from-square"></i> </a>
                 </div>
             </div>
         </div>
@@ -143,33 +146,41 @@
 <!-------- Contact -------->
 <div id="contact">
     <div class="container">
-        <div class="row">
-            <div class="contact-left">
-                <h1 class="sub-title">Contact Me</h1>
-                <p><i class="fa-solid fa-paper-plane"></i> tomassantostaborda@gmail.com</p>
-                <p><i class="fa-solid fa-paper-plane"></i> tomassantostaborda@tecnico.ulisboa.pt</p>
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/profile.php?id=100007571926646"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://twitter.com/TorradaDoMato"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.instagram.com/_tomas_esteve_aqui_/"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="https://github.com/thomastabs"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/tomas-taborda"><i class="fa-brands fa-linkedin"></i></a>
+        <div class="contact-card">
+            <h1 class="sub-title">Contact Me</h1>
+            <div class="contact-top">
+                <div class="contact-left">
+                    <img src="images/3.jpg" alt="Portrait of Tomás Taborda" class="contact-profile-img" loading="lazy">
                 </div>
-                <a href="images/TomasTaborda.pdf" download class="btn btn2">Download CV</a>
+                <div class="contact-left-info">
+                    <p><i class="fa-solid fa-paper-plane"></i> tomassantostaborda@gmail.com</p>
+                    <p><i class="fa-solid fa-paper-plane"></i> tomassantostaborda@tecnico.ulisboa.pt</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=100007571926646" aria-label="Visit Tomás on Facebook" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://twitter.com/TorradaDoMato" aria-label="Visit Tomás on Twitter" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.instagram.com/_tomas_esteve_aqui_/" aria-label="Visit Tomás on Instagram" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://github.com/thomastabs" aria-label="Visit Tomás on GitHub" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/tomas-taborda" aria-label="Visit Tomás on LinkedIn" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+                    </div>
+                    <a href="images/TomasTaborda.pdf" download class="btn btn2">Download CV</a>
+                </div>
             </div>
-            <div class="contact-right">
-                <form name="submit-to-google-sheet">
-                    <input type="text" name="Name" placeholder="Your Name" required>
-                    <input type="email" name="Email" placeholder="Your Email" required>
-                    <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
-                    <button type="submit" class="btn btn2">Submit</button>
-                </form>
-                <span id="msg"></span>
+            <div class="contact-content">
+                <div class="contact-right">
+                    <h3 class="contact-form-title">Send me a message</h3>
+                    <form name="submit-to-google-sheet">
+                        <input type="text" name="Name" placeholder="Your Name" required>
+                        <input type="email" name="Email" placeholder="Your Email" required>
+                        <textarea name="Message" rows="6" placeholder="Your Message"></textarea>
+                        <button type="submit" class="btn btn2">Submit</button>
+                    </form>
+                    <span id="msg"></span>
+                </div>
             </div>
         </div>
     </div>
     <div class="copyright">
-        <p>Copyright © Tomás Taborda 2023</p>
+        <p>Copyright © Tomás Taborda 2025</p>
     </div>
 </div>
 
