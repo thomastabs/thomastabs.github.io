@@ -5,6 +5,22 @@
         --spacing-xl: 72px;
     }
 
+    html,
+    body {
+        overflow-x: hidden;
+        max-width: 100vw;
+        position: relative;
+    }
+
+    * {
+        max-width: 100%;
+    }
+
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     /* Header */
     #header::before {
         background-image: url(../images/phone.jpg);
