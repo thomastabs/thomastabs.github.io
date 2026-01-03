@@ -21,72 +21,12 @@
 
     nav .container {
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
     }
 
-    nav .fa-solid {
-        display: block;
-        font-size: 24px;
-        color: var(--text-primary);
-        cursor: pointer;
-        nav .fa-solid {
-            display: none !important;
-        }
     nav ul {
-        background: var(--bg-card);
-        backdrop-filter: blur(20px);
-        position: fixed;
-        top: 0;
-        right: -240px;
-        width: 240px;
-        height: 100vh;
-        padding-top: 80px;
-        z-index: 200;
-        transition: right 0.3s ease;
-        border-left: 1px solid var(--border);
-        flex-direction: column;
-        gap: 0;
-    }
-        nav ul {
-            position: static;
-            width: auto;
-            height: auto;
-            padding-top: 0;
-            background: none;
-            backdrop-filter: none;
-            border-left: none;
-            flex-direction: column;
-            gap: 0;
-            display: flex;
-            align-items: center;
-            transition: none;
-        }
-
-    nav ul li {
-        display: block;
-        margin: 0;
-        border-bottom: 2px solid var(--border);
-    }
-
-    nav ul li a {
-        font-size: 16px;
-        font-weight: 500;
-        display: block;
-        padding: 20px 24px;
-        transition: background var(--transition);
-    }
-
-    nav ul li a:hover {
-        background: var(--bg-secondary);
-    }
-
-    nav ul .fa-solid {
-        position: absolute;
-        top: 24px;
-        right: 24px;
-        cursor: pointer;
-        font-size: 24px;
+        display: none;
     }
 
     .header-text {

@@ -12,8 +12,7 @@ function opentab(tabname){
     document.getElementById(tabname).classList.add("active-tab");
 }
 
-// Menu functionality removed as per the new design
-// ...existing code...
+
 
 // Contact Slider Functionality
 let currentSlide = 0;
