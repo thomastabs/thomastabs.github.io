@@ -95,14 +95,20 @@
         margin-bottom: var(--spacing-sm);
     }
 
-    .tab-links {
-        font-size: 10px;
-        padding: 8px 10px;
+    .tab-titles {
+        gap: 6px;
+        margin: var(--spacing-sm) 0;
+        flex-wrap: wrap;
+        width: 100%;
+        padding: 0 var(--spacing-xs);
     }
 
-    .tab-titles {
-        gap: 3px;
-        margin-bottom: var(--spacing-sm);
+    .tab-links {
+        font-size: 10px;
+        padding: 10px 8px;
+        min-width: 0;
+        flex: 1 1 auto;
+        white-space: nowrap;
     }
 
     .tab-contents ul li {
