@@ -12,31 +12,8 @@ function opentab(tabname){
     document.getElementById(tabname).classList.add("active-tab");
 }
 
-var sidemenu = document.getElementById("sidemenu");
-var menuIcon = document.querySelector(".fa-bars");
-
-function openmenu(){
-    sidemenu.style.right = "0";
-    if(menuIcon) menuIcon.style.display = "none";
-}
-
-function closemenu(){
-    sidemenu.style.right = "-240px";
-    if(menuIcon) menuIcon.style.display = "block";
-}
-
-// Close menu when clicking outside
-document.addEventListener('click', function(event) {
-    if(sidemenu && menuIcon) {
-        const isClickInsideMenu = sidemenu.contains(event.target);
-        const isClickOnMenuIcon = menuIcon.contains(event.target);
-        const menuOpen = sidemenu.style.right === "0px";
-        
-        if(!isClickInsideMenu && !isClickOnMenuIcon && menuOpen) {
-            closemenu();
-        }
-    }
-});
+// Menu functionality removed as per the new design
+// ...existing code...
 
 // Contact Slider Functionality
 let currentSlide = 0;
