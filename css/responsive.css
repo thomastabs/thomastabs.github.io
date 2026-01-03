@@ -28,11 +28,11 @@
     }
 
     .logo {
-        max-width: 200px;
+        max-width: 150px;
     }
 
     nav {
-        padding: var(--spacing-sm) 0;
+        padding: 10px 0;
     }
 
     nav .container {
