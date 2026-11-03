@@ -4,6 +4,6 @@
    While the key starts with "TODO", the form opens the visitor's mail app instead. */
 export const contactForm = {
   endpoint: 'https://api.web3forms.com/submit',
-  accessKey: 'TODO: Web3Forms access key',
+  accessKey: 'c9c1382c-a904-4b1c-8b9b-dd3f068148e7',
 };
 export const contactFormReady = !contactForm.accessKey.startsWith('TODO');
