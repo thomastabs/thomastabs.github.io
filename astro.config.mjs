@@ -49,7 +49,7 @@ export default defineConfig({
   markdown: {
     processor: satteri({ hastPlugins: [footnotesPtFor] }),
     shikiConfig: {
-      themes: { light: 'github-light', dark: 'github-dark-dimmed' },
+      themes: { light: 'github-light-high-contrast', dark: 'github-dark-dimmed' },
       defaultColor: false,
       wrap: false,
     },

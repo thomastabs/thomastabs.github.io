@@ -10,15 +10,16 @@ interface Props {
   notesHref?: string;
   notesLabel?: string;
   stack?: string[];
+  headingLevel?: 'h2' | 'h3';
 }
-const { id, period, title, org, tags = [], notesHref, notesLabel = 'Read the notes', stack = [] } = Astro.props;
+const { id, period, title, org, tags = [], notesHref, notesLabel = 'Read the notes', stack = [], headingLevel: H = 'h3' } = Astro.props;
 const kind = tags[0]?.kind ?? 'work';
 ---
 <li class="tl-entry" id={id} data-kind={kind} data-tags={tags.map((t) => t.kind).join(' ')} data-reveal>
   <span class="node" aria-hidden="true"></span>
   <p class="period meta">{period}</p>
   <div class="body">
-    <h3 class="tl-title">{title}</h3>
+    <H class="tl-title">{title}</H>
     {org && <p class="org">{org}</p>}
     <div class="desc"><slot /></div>
     {(stack.length > 0 || tags.length > 0) && (

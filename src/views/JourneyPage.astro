@@ -58,6 +58,7 @@ const counts = Object.fromEntries(kinds.map((k) => [k, items.filter((i) => i.kin
       {items.map((i) => (
         <TimelineEntry
           id={i.id}
+          headingLevel="h2"
           period={i.period}
           title={i.title}
           org={i.org}
