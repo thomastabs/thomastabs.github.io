@@ -17,6 +17,18 @@ export interface Experience {
 
 export const experience: Experience[] = [
   {
+    id: 'exp-opensoft',
+    kind: 'work',
+    start: '2026-11',
+    period: { en: 'From 16 Nov 2026', pt: 'Desde 16 nov. 2026' },
+    role: { en: 'Software Engineer', pt: 'Engenheiro de Software' },
+    org: { en: 'OpenSoft', pt: 'OpenSoft' },
+    summary: {
+      en: 'Joining a software company certified under ISO 9001 and ISO 27001 and appraised at CMMI-DEV v3.0 maturity level 3, where traceability from requirements and architecture to user stories and code is part of everyday delivery: close to what my thesis studied.',
+      pt: 'Entrada numa empresa de software certificada pelas normas ISO 9001 e ISO 27001 e avaliada em CMMI-DEV v3.0 (nível 3 de maturidade), onde a rastreabilidade entre requisitos, arquitetura, user stories e código faz parte do dia a dia: perto daquilo que a minha tese estudou.',
+    },
+  },
+  {
     id: 'exp-caixa-magica',
     kind: 'work',
     start: '2026-07',

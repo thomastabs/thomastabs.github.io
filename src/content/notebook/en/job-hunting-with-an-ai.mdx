@@ -1,6 +1,6 @@
 ---
 title: "From thesis to OpenSoft: job hunting with an AI in the loop"
-description: "How I used Claude to research companies, tailor cover letters and prepare for the OpenSoft interview, and where I kept the judgement for myself."
+description: "How I used Teamlyzer and Claude to research companies and prepare for OpenSoft's three-phase interview, and why the job fits my thesis."
 pubDate: 2026-11-04
 tags: [career, ai]
 draft: true
@@ -8,7 +8,9 @@ lang: en
 comments: true
 ---
 
-I finished my MSc in October 2026, and spent the weeks around it looking for my first full-time engineering role. My dissertation argued that AI is most useful when the process around it is explicit: who decides, what gets checked, and what counts as done. So I applied the same rule to my job search. Claude did the research and the drafting. I made the decisions.
+I finished my MSc in October 2026 and spent the weeks around it looking for my first full-time engineering role. My dissertation argued that AI is most useful when the process around it is explicit: who decides, what gets checked, and what counts as done. I applied the same rule to my job search. Claude did the research and the drafting. I made the decisions.
+
+It ended well. On 16 November 2026 I start as a Software Engineer at OpenSoft.
 
 ## The problem
 
@@ -16,26 +18,41 @@ Applying well takes time. A good application needs research on the company, a co
 
 ## What I tried
 
-**One cover letter per role, built from the ad.** For each application, I pasted the job description and Claude drafted a letter that mapped each requirement to something I have actually done: the Gescol HR module at Caixa Mágica, teaching in the AI Agents bootcamp, Apex. My rule was that every claim had to point to a real project. If it couldn't, the claim went. I edited the draft line by line and wrote the opening myself.
+**Teamlyzer first, for every company.** [Teamlyzer](https://pt.teamlyzer.com) collects reviews of Portuguese tech companies from people who work there and from people who interviewed there. I used it constantly: to decide where to apply at all, to read how a company treats its engineers, and to see what its interviews actually look like. Before preparing anything, I wanted to know what past candidates had been asked.
 
-**Interview research from what candidates report.** For OpenSoft, I asked for a study plan grounded in what past candidates said, not in a generic list of Java questions. Claude went through the 25 interview reviews on Teamlyzer and summarised the pattern: a friendly process in three phases (a first conversation about my path and projects, a technical interview on Java, OOP, SQL and LeetCode-style problems, and a final conversation), rated 2.1 out of 5 for difficulty.
+**One cover letter per role, built from the ad.** For each application, I pasted the job description and Claude drafted a letter that mapped each requirement to something I have actually done: the Gescol HR module at Caixa Mágica, teaching in the AI Agents bootcamp, Apex. My rule was that every claim had to point to a real project. If it couldn't, the claim went. I edited each draft line by line and wrote the opening myself.
+
+**A study plan built from what candidates report.** For OpenSoft, I asked Claude to turn the 25 interview reviews on Teamlyzer into a plan, not to give me a generic list of Java questions. The pattern was clear: a friendly process, rated 2.1 out of 5 for difficulty, with the technical part covering Java, OOP, SQL and LeetCode-style problems.
 
 <Callout type="decision" title="Cut what nobody asks">
   No review mentioned JVM internals, concurrency or JDBC, so those became quick skims, and the time went to live-coding drills and SQL instead.
 </Callout>
 
-The result was a fourteen-day plan, from 7 to 21 October, of about two to three hours a day. Each day mixed Java theory (a 105-question bank), live coding (25 drills, done think-aloud and timed) and SQL (joins, GROUP BY, normalisation, schema design on paper first). The last days were two mock interviews, both in Portuguese, since the interview would likely be in Portuguese and I wanted to practise speaking the answers, not just reading them.
+The result was a fourteen-day plan, from 7 to 21 October, of about two to three hours a day. Each day mixed Java theory (a 105-question bank), live coding (25 drills, done timed and thinking aloud) and SQL (joins, GROUP BY, normalisation, schema design on paper first). The last days were two mock interviews, both in Portuguese, because I wanted to practise saying the answers, not just reading them.
 
-## What happened
+## The interview, phase by phase
 
-I got the offer, and I accepted. I start at OpenSoft on 16 November 2026.
+The real process matched what Teamlyzer had described.
 
-{/* Optional, Tomás: one or two lines on how the interview itself went, what was asked, or what tipped the decision. */}
+1. **Background interview.** A conversation to get to know me: my academic path, the projects I had worked on, and what I was looking for.
+2. **Technical interview.** This had two parts:
+   - **Java:** one live-coding problem, plus theory questions on object-oriented programming and the language itself.
+   - **Databases:** I designed the schema for a camera system with three tables: the photo, its metadata and its location, and how they relate. Then came theory questions on databases.
+3. **Cultural interview.** This was the conversation I enjoyed most. We ended up talking mostly about my thesis, because OpenSoft had been working on the same problem.
+
+{/* Optional, Tomás: a line on how each phase felt, or which question surprised you. */}
+
+## Why OpenSoft fits
+
+My dissertation asks how to use AI across the software lifecycle without losing rigour, traceability and quality. OpenSoft deals with that every day. The company is certified under ISO 9001 (quality management) and ISO 27001 (information security), and is appraised at CMMI-DEV v3.0 maturity level 3. In practice, full traceability from requirements to architecture, user stories and code is part of how they deliver software, not an aspiration.
+
+That is exactly the chain Apex tries to keep intact when AI enters it. In our conversations after the interviews, they said the work could feed into their own innovation efforts. I am joining a team that already works the way my thesis argues software should be built, and that wants to find out how AI fits into it.
 
 ## What I would tell someone doing the same
 
-- **Ground it in evidence.** "Prepare me for a Java interview" gets you a textbook. "Prepare me for this company, based on what its candidates report" gets you a plan.
+- **Read what candidates say before you study.** Teamlyzer told me more about the interview than any job ad. "Prepare me for a Java interview" gets you a textbook. "Prepare me for this company, based on what its candidates report" gets you a plan.
 - **Keep your voice.** The drafts were useful because I rewrote them. A recruiter reads many letters a day and can tell which ones were written for them.
 - **Practise out loud.** Most of the gain came from the mocks, not from reading the answers.
+- **Bring your own work into the room.** The thesis was not a side topic in the final interview. It was the conversation.
 
-The AI made the search faster and better organised. The choices of which roles to apply for, what to say and how to say it stayed mine, which is the arrangement my thesis argues for.
+The AI made the search faster and better organised. Which roles to apply for, what to say and how to say it stayed my decisions, which is the arrangement my thesis argues for.
