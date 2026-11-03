@@ -1,0 +1,370 @@
+---
+/* Dev-only styleguide. getStaticPaths returns nothing in production builds,
+   so /styleguide never ships. */
+import { Image } from 'astro:assets';
+import { Code } from 'astro:components';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import DimensionLine from '@/components/DimensionLine.astro';
+import MarginNote from '@/components/MarginNote.astro';
+import SpecBlock from '@/components/SpecBlock.astro';
+import TagChip from '@/components/TagChip.astro';
+import TimelineEntry from '@/components/TimelineEntry.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import PostCard from '@/components/PostCard.astro';
+import Callout from '@/components/Callout.astro';
+import Figure from '@/components/Figure.astro';
+import CopyButton from '@/components/CopyButton.astro';
+import portrait from '@/assets/portrait/portrait.jpg';
+import { profile } from '@/data/links';
+
+export function getStaticPaths() {
+  return import.meta.env.PROD ? [] : [{ params: { slug: undefined } }];
+}
+
+/* ---------- Colour tokens + measured contrast ---------- */
+const themes = {
+  light: { bg: '#f6f4ef', surface: '#fbfaf7', 'surface-2': '#efece5', ink: '#16181d', 'ink-2': '#4a4f59', muted: '#62666f', pen: '#d6003f' },
+  dark: { bg: '#0a0a0a', surface: '#111111', 'surface-2': '#151515', ink: '#e8e8e8', 'ink-2': '#a0a0a0', muted: '#858585', pen: '#ff004f' },
+} as const;
+const alphaTokens = ['rule', 'rule-strong', 'grid', 'pen-soft'];
+const tagTokens = ['tag-work', 'tag-study', 'tag-teaching', 'tag-community', 'tag-milestone'];
+
+function lum(hex: string) {
+  const c = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255).map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+function ratio(a: string, b: string) {
+  const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m);
+  return (x + 0.05) / (y + 0.05);
+}
+const textTokens = ['ink', 'ink-2', 'muted', 'pen'] as const;
+
+const typeScale = [
+  ['--step-hero', 'Display · hero name', 'display'],
+  ['--step-4', 'Display · page title (h1)', 'display'],
+  ['--step-3', 'Display · section title (h2)', 'display'],
+  ['--step-2', 'Display · card title', 'display'],
+  ['--step-1', 'Body · lead paragraph', 'body'],
+  ['--step-0', 'Body · 17–18 px, line-height 1.65', 'body'],
+  ['--step--1', 'MONO · METADATA 13–14 PX', 'mono'],
+  ['--step--2', 'MONO · ANNOTATION / CAPTION', 'mono'],
+] as const;
+
+const sample = `// Every generated artefact must trace to a requirement.
+export function traceabilityRate(artefacts: Artefact[]): number {
+  const linked = artefacts.filter((a) => a.requirementId !== null);
+  return artefacts.length === 0 ? 1 : linked.length / artefacts.length;
+}`;
+---
+
+<BaseLayout lang="en" title="Styleguide" noindex altHref="/styleguide">
+  <div class="container sg-intro">
+    <p class="kicker"><span class="pen">§00</span> — Styleguide · dev only</p>
+    <h1>Engineering notebook</h1>
+    <p class="lead">
+      Tokens, type, motifs and components for tomastaborda.com. Paper and ink in light mode, a drafting table in dark mode, with{' '}
+      <span class="pen">#ff004f</span> as the red annotation pen. Use the header toggle to flip the whole page.
+    </p>
+    <nav class="sg-toc mono" aria-label="Styleguide sections">
+      <a href="#colour">Colour</a><a href="#type">Type</a><a href="#motifs">Motifs</a><a href="#hero">Hero</a><a href="#components">Components</a>
+    </nav>
+  </div>
+
+  <!-- ===================== Colour ===================== -->
+  <section class="container section" id="colour">
+    <SectionHeading n="A" label="Colour" title="Two themes, one pen" />
+    <div class="theme-panels">
+      {(['light', 'dark'] as const).map((name) => (
+        <div class="theme-panel" data-theme={name}>
+          <p class="kicker">{name === 'light' ? 'Light · paper' : 'Dark · drafting table'}</p>
+          <ul class="swatches" role="list">
+            {Object.entries(themes[name]).map(([k, v]) => (
+              <li>
+                <span class="sw" style={`background: var(--${k})`}></span>
+                <code>--{k}</code>
+                <span class="meta">{v}</span>
+              </li>
+            ))}
+            {alphaTokens.map((k) => (
+              <li>
+                <span class="sw sw--alpha" style={`background: var(--${k})`}></span>
+                <code>--{k}</code>
+                <span class="meta">rgba</span>
+              </li>
+            ))}
+          </ul>
+          <p class="kicker sub">Tag inks</p>
+          <ul class="swatches swatches--tags" role="list">
+            {tagTokens.map((k) => (
+              <li><span class="sw sw--round" style={`background: var(--${k})`}></span><code>--{k}</code></li>
+            ))}
+          </ul>
+          <table class="contrast">
+            <caption class="kicker">Text contrast (WCAG 2.2, AA ≥ 4.5)</caption>
+            <thead><tr><th scope="col">token</th><th scope="col">on bg</th><th scope="col">surface</th><th scope="col">surface-2</th></tr></thead>
+            <tbody>
+              {textTokens.map((tk) => (
+                <tr>
+                  <th scope="row" style={`color: var(--${tk})`}>--{tk}</th>
+                  {(['bg', 'surface', 'surface-2'] as const).map((b) => {
+                    const r = ratio(themes[name][tk], themes[name][b]);
+                    return <td class:list={{ fail: r < 4.5 }}>{r.toFixed(2)}</td>;
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ))}
+    </div>
+    <Callout type="decision" title="Muted text deepened">
+      <p>The brief's <code class="inline">--muted</code> values (#7d828c light, #6b6b6b dark) measure 3.5 and 3.7:1, below AA. They are now #62666f and #858585. Everything else is as specified.</p>
+    </Callout>
+  </section>
+
+  <!-- ===================== Type ===================== -->
+  <section class="container section" id="type">
+    <SectionHeading n="B" label="Type" title="Fraunces, Plex Sans, Plex Mono" />
+    <ul class="type-scale" role="list">
+      {typeScale.map(([v, text, fam]) => (
+        <li>
+          <span class="meta">{v}</span>
+          <span class:list={['ts', fam]} style={`font-size: var(${v})`}>{text}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="annotated type-sample">
+      <div class="prose">
+        <p>
+          Body copy is IBM Plex Sans at 17–18 px with a 68-character measure. It carries <strong>medium weight</strong> for emphasis,{' '}
+          <em>italics</em> for asides, <code>inline code</code>, and links with a <a href="#type">red-pen underline that draws in on hover</a>.
+        </p>
+        <blockquote><p>Value is conditional on process, not on model capability alone.</p></blockquote>
+      </div>
+      <MarginNote>Fraunces · opsz auto · wght 540–580 · −0.018em</MarginNote>
+    </div>
+  </section>
+
+  <!-- ===================== Motifs ===================== -->
+  <section class="container section" id="motifs">
+    <SectionHeading n="C" label="Motifs" title="Seven marks of the notebook" />
+
+    <ol class="motifs" role="list">
+      <li>
+        <p class="kicker">1 · Section numbering</p>
+        <div class="motif-box"><p class="kicker"><span class="pen">§02</span> — Experience</p></div>
+      </li>
+      <li>
+        <p class="kicker">2 · Margin note (≥ 1100 px; inline below)</p>
+        <div class="annotated motif-box">
+          <p>MSc in Computer Science and Engineering, Instituto Superior Técnico. Thesis: governed human–AI collaboration across the SDLC.</p>
+          <MarginNote>defended 23.10.2026 · 17/20</MarginNote>
+        </div>
+      </li>
+      <li>
+        <p class="kicker">3 · Spec block</p>
+        <SpecBlock
+          rows={[
+            { k: 'Role', v: 'Software Engineer Intern, Development team' },
+            { k: 'Period', v: 'Jul 2026 – Sep 2026', mono: true },
+            { k: 'Stack', v: 'Node.js · Express · PostgreSQL · Next.js 15', mono: true },
+            { k: 'Status', v: 'Shipped · internal project' },
+            { k: 'Links', v: 'github.com/thomastabs/apex', href: 'https://github.com/thomastabs/apex' },
+          ]}
+        />
+      </li>
+      <li>
+        <p class="kicker">4 · Graph-paper dot grid (hero + thesis header only)</p>
+        <div class="motif-box dot-grid grid-demo"><span class="meta">22 px pitch · var(--grid)</span></div>
+      </li>
+      <li>
+        <p class="kicker">5 · Red-pen marks</p>
+        <div class="motif-box">
+          <p>A <a class="pen-link" href="#motifs">link with hand-drawn underline</a>. The current nav item is circled; see the header on <a class="pen-link" href="/work">/work</a>.</p>
+          <p class="nav-demo mono">
+            <span class="circled">Journey<svg viewBox="0 0 120 48" preserveAspectRatio="none" aria-hidden="true"><path d="M62 5C31 3 6 11 5 25s27 20 58 19 52-9 52-21S90 5 52 7" /></svg></span>
+          </p>
+        </div>
+      </li>
+      <li>
+        <p class="kicker">6 · Figure caption</p>
+        <div class="fig-row">
+          <Figure n={1} caption="me" taped class="portrait">
+            <Image class="portrait-img" src={portrait} alt="Portrait of Tomás Taborda smiling, wearing glasses and a dark t-shirt, against a light wall." widths={[280, 420]} sizes="220px" />
+          </Figure>
+          <Figure n={3} caption="Apex architecture (TODO: export from repo)">
+            <div class="fig-placeholder mono">fig. placeholder</div>
+          </Figure>
+        </div>
+      </li>
+      <li>
+        <p class="kicker">7 · Revision stamp</p>
+        <div class="motif-box"><p class="meta upper"><span class="pen">rev.</span> 2026-11-03 · built with Astro · hosted on GitHub Pages</p></div>
+      </li>
+    </ol>
+
+    <p class="kicker sub">Dimension line between sections</p>
+  </section>
+  <DimensionLine from="02" to="03" label="2021 → 2026" />
+
+  <!-- ===================== Hero ===================== -->
+  <section class="section" id="hero">
+    <div class="container"><SectionHeading n="D" label="Hero" title="Hero with journey graph" /></div>
+    <Hero lang="en" headingLevel="p" />
+    <p class="container meta hint">Hover or tab through nodes for annotations. Under 720 px the graph becomes a horizontal strip.</p>
+  </section>
+
+  <!-- ===================== Components ===================== -->
+  <section class="container section" id="components">
+    <SectionHeading n="E" label="Components" title="Building blocks" />
+
+    <h3 class="cmp-title">Section heading</h3>
+    <div class="cmp">
+      <SectionHeading n={1} label="About" title="Backend, specs, and the humans in the loop" />
+    </div>
+
+    <h3 class="cmp-title">Timeline entry</h3>
+    <ol class="cmp timeline" role="list">
+      <TimelineEntry period="Jul 2026 – Sep 2026" title="Software Engineer Intern, Development team" org="Caixa Mágica Software · Lisbon" tags={[{ kind: 'work', label: 'work' }]} stack={['Node.js', 'Express', 'PostgreSQL', 'Next.js 15']} notesHref="#components">
+        <p>Built Gescol, an internal HR module for employee vacations and absences: Node.js / Express / PostgreSQL backend and a Next.js 15 frontend.</p>
+      </TimelineEntry>
+      <TimelineEntry period="May 2026 – Jun 2026" title="Teaching Assistant, AI Agents Bootcamp" org="Técnico+ Formação Avançada (IST) · Lisbon" tags={[{ kind: 'teaching', label: 'teaching' }]}>
+        <p>Supported the AI Agents bootcamp led by Prof. Cristina Fraga; set up its initial notebooks in Google Colab Enterprise on Google Cloud.</p>
+      </TimelineEntry>
+      <TimelineEntry period="23 Oct 2026" title="MSc thesis defended — 17/20" org="Instituto Superior Técnico" tags={[{ kind: 'milestone', label: 'milestone' }]}>
+        <p>Governed Human-AI Collaboration Across the Software Development Lifecycle.</p>
+      </TimelineEntry>
+    </ol>
+
+    <h3 class="cmp-title">Project cards</h3>
+    <div class="cmp cards">
+      <ProjectCard
+        featured
+        kicker="MSc thesis"
+        year="2026"
+        status="Defended · 17/20"
+        title="Apex — governed human–AI collaboration"
+        summary="A process framework for governed human–AI collaboration across the SDLC, instantiated as Apex, a working web application."
+        stack={['Python', 'FastAPI', 'LangChain', 'Next.js', 'Azure']}
+        href="#components"
+        links={[{ label: 'Live app', href: 'https://apex-bolt.com' }, { label: 'Source', href: 'https://github.com/thomastabs/apex' }]}
+      />
+      <div class="card-pair">
+        <ProjectCard
+          year="2026"
+          title="Localisation Change Detector"
+          summary="Python CLI that compares a baseline and a candidate .plist localisation file and flags risky changes as blocker / warning / info, with a ship recommendation."
+          stack={['Python', 'Click', 'Poetry', 'plistlib']}
+          links={[{ label: 'Repo', href: 'https://github.com/thomastabs/Tools-Developer-26---Test-Task' }]}
+        />
+        <ProjectCard
+          year="2026"
+          title="Gescol"
+          summary="Internal vacation and absence management platform built during my Caixa Mágica internship."
+          stack={['Next.js', 'Tailwind', 'Node.js', 'PostgreSQL']}
+          internalLabel="Internal — no public link"
+        />
+      </div>
+    </div>
+
+    <h3 class="cmp-title">Tag chips</h3>
+    <div class="cmp chips-row">
+      <TagChip kind="work" label="work" />
+      <TagChip kind="study" label="study" />
+      <TagChip kind="teaching" label="teaching" />
+      <TagChip kind="community" label="community" />
+      <TagChip kind="milestone" label="milestone" />
+      <TagChip label="FastAPI" />
+      <TagChip label="#apex" href="#components" count={3} />
+      <TagChip label="all" href="#components" count={7} active />
+    </div>
+
+    <h3 class="cmp-title">Post cards</h3>
+    <div class="cmp">
+      <PostCard pinned href="#components" title="Why I anchor AI work to specs" description="One-sentence summary for cards and SEO." date="10 Nov 2026" datetime="2026-11-10" readingTime="6 min read" tags={[{ label: 'ai', href: '#' }, { label: 'apex', href: '#' }]} />
+      <PostCard href="#components" title="A draft post shows its stamp" description="Drafts render in astro dev only, with a red stamp." date="3 Nov 2026" datetime="2026-11-03" readingTime="3 min read" draft tags={[{ label: 'meta', href: '#' }]} />
+    </div>
+
+    <h3 class="cmp-title">Callouts</h3>
+    <div class="cmp callouts">
+      <Callout type="note"><p>Responsibilities are hats (functions), not job titles.</p></Callout>
+      <Callout type="todo"><p>Tomás to write “What I learned”.</p></Callout>
+      <Callout type="decision" title="spec as anchor"><p>Everything anchors to a persistent, versioned specification.</p></Callout>
+    </div>
+
+    <h3 class="cmp-title">Code block (Shiki, dual theme, copy button)</h3>
+    <div class="cmp prose">
+      <Code code={sample} lang="ts" themes={{ light: 'github-light', dark: 'github-dark-dimmed' }} defaultColor={false} />
+    </div>
+
+    <h3 class="cmp-title">Link-button set</h3>
+    <div class="cmp btn-set">
+      <a class="btn btn--primary" href="#components">Read the dissertation (PDF)</a>
+      <a class="btn" href="https://apex-bolt.com">Open the live app ↗</a>
+      <CopyButton value={profile.email} label="Copy email" copiedLabel="Copied" />
+      <a class="btn btn--ghost pen-link pen-link--bare" href={profile.cv}>Download CV</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sg-intro { padding-top: var(--s-8); }
+  .sg-intro > * + * { margin-top: var(--s-4); }
+  .sg-toc { display: flex; flex-wrap: wrap; gap: var(--s-4); padding-top: var(--s-3); }
+  .sg-toc a { color: var(--ink-2); }
+  .sub { margin: var(--s-5) 0 var(--s-3); }
+
+  /* Colour */
+  .theme-panels { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--s-5); margin-bottom: var(--s-6); }
+  .theme-panel { padding: var(--s-5); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--bg); color: var(--ink); }
+  .swatches { display: grid; gap: var(--s-2); padding: 0; margin-top: var(--s-3); list-style: none; }
+  .swatches li { display: grid; grid-template-columns: 2.25rem 1fr auto; align-items: center; gap: var(--s-3); }
+  .swatches--tags { grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); }
+  .swatches--tags li { grid-template-columns: 1rem 1fr; }
+  .sw { height: 1.6rem; border-radius: var(--radius-sm); border: 1px solid var(--rule-strong); }
+  .sw--alpha { background-clip: padding-box; }
+  .sw--round { width: 0.9rem; height: 0.9rem; border-radius: 50%; border: 0; }
+  .swatches code { font-family: var(--font-mono); font-size: var(--step--1); }
+  .contrast { width: 100%; margin-top: var(--s-5); border-collapse: collapse; font-family: var(--font-mono); font-size: var(--step--1); }
+  .contrast caption { text-align: left; padding-bottom: var(--s-2); }
+  .contrast th, .contrast td { text-align: left; padding: 0.35rem 0.5rem 0.35rem 0; border-bottom: 1px solid var(--rule); font-weight: 400; }
+  .contrast thead th { color: var(--muted); }
+  .contrast td.fail { color: var(--pen); }
+
+  /* Type */
+  .type-scale { display: grid; gap: var(--s-4); padding: 0; list-style: none; }
+  .type-scale li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); align-items: baseline; gap: var(--s-4); padding-bottom: var(--s-3); border-bottom: 1px solid var(--rule); }
+  .ts.display { font-family: var(--font-display); font-weight: 560; letter-spacing: var(--tracking-display); line-height: 1.1; }
+  .ts.mono { font-family: var(--font-mono); letter-spacing: var(--tracking-mono); color: var(--ink-2); }
+  .type-sample { margin-top: var(--s-6); }
+  @media (max-width: 560px) { .type-scale li { grid-template-columns: 1fr; gap: var(--s-1); } }
+
+  /* Motifs */
+  .motifs { display: grid; gap: var(--s-6); padding: 0; list-style: none; }
+  .motifs > li > .kicker { margin-bottom: var(--s-3); color: var(--muted); }
+  .motif-box { padding: var(--s-5); border: 1px dashed var(--rule-strong); border-radius: var(--radius); }
+  .motif-box > * + * { margin-top: var(--s-3); }
+  .grid-demo { height: 9rem; display: flex; align-items: flex-end; }
+  .circled { position: relative; display: inline-block; padding: 0.3rem 0.1rem; text-transform: uppercase; font-size: var(--step--1); }
+  .circled svg { max-width: none; position: absolute; inset: -6px -12px; width: calc(100% + 24px); height: calc(100% + 12px); overflow: visible; }
+  .circled path { fill: none; stroke: var(--pen); stroke-width: 1.4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .fig-row { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: var(--s-7); align-items: start; padding-top: var(--s-3); }
+  .fig-placeholder { display: grid; place-items: center; aspect-ratio: 16 / 9; max-height: 18rem; width: 100%; color: var(--muted); }
+  @media (max-width: 640px) { .fig-row { grid-template-columns: 1fr; } :global(.portrait) { max-width: 220px; } }
+
+  :global(.portrait-img) { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; }
+
+  /* Hero demo */
+  #hero .hint { margin-top: var(--s-3); }
+
+  /* Components */
+  .cmp-title { margin: var(--s-7) 0 var(--s-4); font-family: var(--font-mono); font-size: var(--step--1); font-weight: 500; letter-spacing: var(--tracking-mono); text-transform: uppercase; color: var(--muted); }
+  .cmp-title:first-of-type { margin-top: 0; }
+  .timeline { padding: 0; }
+  .cards { display: grid; gap: var(--s-5); }
+  .card-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--s-5); }
+  .chips-row { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .callouts { display: grid; gap: var(--s-4); max-width: var(--measure); }
+</style>

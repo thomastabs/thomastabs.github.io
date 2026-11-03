@@ -1,0 +1,91 @@
+---
+import '@fontsource-variable/fraunces/opsz.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-ext-400.css';
+import '@fontsource/ibm-plex-sans/latin-400-italic.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-ext-500.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-ext-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '@/styles/tokens.css';
+import '@/styles/base.css';
+import '@/styles/prose.css';
+
+import plexSans400 from '@fontsource/ibm-plex-sans/files/ibm-plex-sans-latin-400-normal.woff2?url';
+import frauncesOpsz from '@fontsource-variable/fraunces/files/fraunces-latin-opsz-normal.woff2?url';
+
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import { htmlLang, useTranslations, type Locale } from '@/i18n';
+import { translatePath } from '@/i18n/routes';
+
+interface Props {
+  lang: Locale;
+  title?: string;
+  description?: string;
+  /** Explicit path of the equivalent page in the other locale. */
+  altHref?: string;
+  noindex?: boolean;
+}
+
+const { lang, title, description, altHref, noindex = false } = Astro.props;
+const t = useTranslations(lang);
+const fullTitle = title ? `${title} — ${t('site.name')}` : `${t('site.name')}`;
+const desc = description ?? t('site.description');
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const other: Locale = lang === 'en' ? 'pt' : 'en';
+const otherPath = altHref ?? translatePath(Astro.url.pathname, other);
+const enUrl = new URL(lang === 'en' ? Astro.url.pathname : otherPath, Astro.site);
+const ptUrl = new URL(lang === 'pt' ? Astro.url.pathname : otherPath, Astro.site);
+---
+
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        try {
+          var t = localStorage.getItem('theme');
+          if (t === 'light' || t === 'dark') d.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+    <title>{fullTitle}</title>
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="pt-PT" href={ptUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href={frauncesOpsz} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={plexSans400} as="font" type="font/woff2" crossorigin />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'pt' ? 'pt_PT' : 'en_GB'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="generator" content={Astro.generator} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t('a11y.skip')}</a>
+    <Header lang={lang} altHref={altHref} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      import '@/scripts/enhance';
+    </script>
+  </body>
+</html>

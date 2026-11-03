@@ -1,0 +1,9 @@
+---
+/* Copies `value` (or text of `target` selector) to the clipboard. Behaviour in scripts/enhance.ts. */
+interface Props { value?: string; target?: string; label: string; copiedLabel: string; variant?: 'primary' | 'default' }
+const { value, target, label, copiedLabel, variant = 'default' } = Astro.props;
+---
+<button type="button" class:list={['btn', { 'btn--primary': variant === 'primary' }]} data-copy={value ?? ''} data-copy-target={target} data-copied-label={copiedLabel}>
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="8.5" y="8.5" width="11" height="11" rx="1.5" /><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5" /></svg>
+  <span data-copy-label>{label}</span>
+</button>

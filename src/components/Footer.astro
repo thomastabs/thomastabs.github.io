@@ -1,0 +1,48 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+import { profile } from '@/data/links';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const rev = new Date().toISOString().slice(0, 10);
+---
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <ul class="footer-links" role="list">
+      <li><a class="pen-link pen-link--bare" href={`mailto:${profile.email}`}>{profile.email}</a></li>
+      <li><a class="pen-link pen-link--bare" href={profile.github} rel="me">GitHub</a></li>
+      <li><a class="pen-link pen-link--bare" href={profile.linkedin} rel="me">LinkedIn</a></li>
+      <li><a class="pen-link pen-link--bare" href={profile.cv}>CV</a></li>
+    </ul>
+    <p class="stamp meta">
+      <span class="pen">{t('footer.rev')}</span>
+      <time datetime={rev}>{rev}</time> · {t('footer.builtWith')} · {t('footer.hostedOn')}
+    </p>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    margin-top: var(--section-gap);
+    border-top: 1px solid var(--rule);
+    padding-block: var(--s-6) var(--s-7);
+  }
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4) var(--s-6);
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-5);
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+  }
+  .stamp {
+    text-transform: uppercase;
+  }
+</style>
