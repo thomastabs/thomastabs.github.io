@@ -4,8 +4,8 @@ import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
 import { profile } from '@/data/links';
 
-interface Props { lang: Locale; headingLevel?: 'h1' | 'p' }
-const { lang, headingLevel = 'h1' } = Astro.props;
+interface Props { lang: Locale; headingLevel?: 'h1' | 'p'; localAnchors?: string[] }
+const { lang, headingLevel = 'h1', localAnchors } = Astro.props;
 const t = useTranslations(lang);
 const Name = headingLevel;
 ---
@@ -28,7 +28,7 @@ const Name = headingLevel;
       </div>
     </div>
     <div class="hero-graph">
-      <JourneyGraph lang={lang} />
+      <JourneyGraph lang={lang} localAnchors={localAnchors} />
     </div>
   </div>
 </section>

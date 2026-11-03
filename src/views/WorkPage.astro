@@ -1,0 +1,116 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { getWork, cardProps } from '@/lib/work';
+import { loc } from '@/data/types';
+import { profile } from '@/data/links';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const { featured, archive } = await getWork();
+const [lead, ...rest] = featured;
+---
+
+<BaseLayout lang={lang} title={t('work.title')} description={t('work.description')}>
+  <div class="container page-head">
+    <SectionHeading n="04" label={t('nav.work')} title={t('work.pageTitle')} level="h1">
+      <p class="lead intro">{t('work.intro')}</p>
+    </SectionHeading>
+  </div>
+
+  <section class="container" aria-labelledby="featured-title">
+    <h2 id="featured-title" class="kicker sub"><span class="pen">a.</span> {t('work.featured')}</h2>
+    <div class="featured">
+      {lead && <ProjectCard featured {...cardProps(lead, lang)} />}
+      <div class="grid">
+        {rest.map((e) => <ProjectCard {...cardProps(e, lang)} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="container archive-wrap" aria-labelledby="archive-title">
+    <h2 id="archive-title" class="kicker sub"><span class="pen">b.</span> {t('work.archive')}</h2>
+    <p class="muted archive-intro">{t('work.archiveIntro')}</p>
+    <div class="table-scroll">
+      <table class="archive">
+        <thead>
+          <tr>
+            <th scope="col">{t('work.year')}</th>
+            <th scope="col">{t('work.project')}</th>
+            <th scope="col" class="hide-sm">{t('work.oneLine')}</th>
+            <th scope="col" class="hide-sm">{t('work.stack')}</th>
+            <th scope="col"><span class="sr-only">{t('work.link')}</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          {archive.map((e) => (
+            <tr>
+              <td class="mono year">{e.data.year ?? ''}</td>
+              <th scope="row" class="name">
+                {loc(e.data.title, lang)}
+                <span class="sm-line">{loc(e.data.summary, lang)}</span>
+                {e.data.cover && (
+                  <span class="thumb" aria-hidden="true">
+                    <Image src={e.data.cover} alt="" width={240} quality={70} loading="lazy" />
+                  </span>
+                )}
+              </th>
+              <td class="hide-sm line">{loc(e.data.summary, lang)}</td>
+              <td class="hide-sm mono stack">{e.data.stack.join(' · ')}</td>
+              <td class="link">
+                {e.data.links.repo && (
+                  <a class="pen-link mono" href={e.data.links.repo} aria-label={`${t('work.repo')}: ${loc(e.data.title, lang)}`}>{t('work.repo')} ↗</a>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <a class="pen-link mono more" href={profile.github}>{t('cta.moreOnGithub')} →</a>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head { padding-top: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .intro { margin-top: var(--s-4); }
+  .sub { margin-bottom: var(--s-4); }
+  .featured { display: grid; gap: var(--s-5); }
+  .grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+
+  .archive-wrap { padding-top: var(--s-8); }
+  .archive-intro { margin-bottom: var(--s-4); }
+  .table-scroll { overflow-x: auto; }
+  .archive { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .archive th, .archive td { padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; }
+  .archive thead th { font-family: var(--font-mono); font-size: var(--step--2); font-weight: 400; letter-spacing: var(--tracking-mono); text-transform: uppercase; color: var(--muted); border-bottom-color: var(--rule-strong); }
+  .archive tbody tr { transition: background-color var(--dur) var(--ease); }
+  .archive tbody tr:hover { background: var(--surface-2); }
+  .year { color: var(--muted); width: 4.5rem; font-size: var(--step--1); }
+  .name { position: relative; font-weight: 500; color: var(--ink); }
+  .line { color: var(--ink-2); }
+  .stack { color: var(--ink-2); font-size: var(--step--2); }
+  .link { text-align: right; white-space: nowrap; font-size: var(--step--1); }
+  .sm-line { display: none; }
+  .thumb { display: none; }
+  @media (hover: hover) and (min-width: 1000px) {
+    .thumb {
+      display: block; position: absolute; z-index: 5; left: 100%; top: 50%;
+      width: 200px; padding: 6px; background: var(--surface); border: 1px solid var(--rule-strong);
+      box-shadow: var(--shadow-tape); pointer-events: none;
+      opacity: 0; transform: translate(12px, -50%) rotate(-1.5deg);
+      transition: opacity var(--dur) var(--ease);
+    }
+    .thumb :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+    tr:hover .thumb { opacity: 1; }
+  }
+  @media (max-width: 720px) {
+    .hide-sm { display: none; }
+    .sm-line { display: block; margin-top: 0.15rem; font-weight: 400; color: var(--ink-2); font-size: 0.9rem; }
+  }
+  .more { display: inline-block; margin-top: var(--s-5); font-size: var(--step--1); }
+</style>

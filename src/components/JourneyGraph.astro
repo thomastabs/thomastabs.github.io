@@ -5,13 +5,14 @@
    <720px: collapses to a compact horizontal strip. */
 import { nodes, edges, traces, type Kind } from '@/data/journey-graph';
 import { useTranslations, type Locale } from '@/i18n';
+import { localePath } from '@/i18n/routes';
 
 interface Props {
   lang: Locale;
-  /** Base path for anchors, e.g. '' on Home, '/journey' elsewhere. */
-  base?: string;
+  /** Anchor ids present on the current page; others link to /journey (or Home for contact). */
+  localAnchors?: string[];
 }
-const { lang, base = '' } = Astro.props;
+const { lang, localAnchors = [] } = Astro.props;
 const t = useTranslations(lang);
 
 const W = 640;
@@ -53,7 +54,12 @@ const anno = (n: (typeof nodes)[number]) => {
 };
 
 const kinds: Kind[] = ['work', 'study', 'teaching', 'community', 'milestone'];
-const href = (anchor: string) => `${base}#${anchor}`;
+const href = (anchor: string) =>
+  localAnchors.includes(anchor)
+    ? `#${anchor}`
+    : anchor === 'contact'
+      ? `${localePath('home', lang)}#contact`
+      : `${localePath('journey', lang)}#${anchor}`;
 ---
 
 <div class="journey" data-journey>

@@ -47,6 +47,7 @@ const { href, title, description, date, datetime, readingTime, tags = [], pinned
   .post-link::after { content: ''; position: absolute; inset: 0; }
   .post:hover .post-title { text-decoration: underline; text-decoration-color: var(--pen); text-decoration-thickness: 1.5px; text-underline-offset: 0.18em; }
   .desc { color: var(--ink-2); max-width: 62ch; }
+  .tags > li { display: flex; }
   .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin-top: var(--s-2); list-style: none; position: relative; z-index: 1; }
   .draft {
     margin-left: var(--s-2);

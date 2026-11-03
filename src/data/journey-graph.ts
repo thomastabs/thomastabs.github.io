@@ -37,7 +37,7 @@ export const nodes: GraphNode[] = [
     id: 'community', kind: 'community', x: 92, y: 158, side: 'right', anchor: 'exp-neeti',
     label: { en: 'NEETI · Mentoring', pt: 'NEETI · Mentoria' },
     role: { en: 'Events coordinator · First-year mentor', pt: 'Coord. de eventos · Mentor do 1.º ano' },
-    years: { en: 'from 2022', pt: 'desde 2022' },
+    years: { en: '2022 – 2025', pt: '2022 – 2025' },
   },
   {
     id: 'ist-msc', kind: 'study', x: 300, y: 352, side: 'below', anchor: 'edu-msc',
