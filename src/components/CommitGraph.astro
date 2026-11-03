@@ -1,0 +1,106 @@
+---
+/* fig. 04: git-graph view of Apex's history. Main line with weekly commit dots,
+   the five merged feature branches, the docs/thesis track, and numbered milestones. */
+import { branches, milestones, dailyCommits, dailyThesisCommits, span } from '@/data/apex-history';
+import { formatDate, type Locale } from '@/i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+
+const W = 1000, X0 = 60, X1 = 980;
+const Y_BR = [58, 30], Y_MAIN = 110, Y_TH = 170, H = 222;
+const t0 = Date.parse(span.first), t1 = Date.parse(span.last);
+const x = (d: string) => X0 + ((Date.parse(d) - t0) / (t1 - t0)) * (X1 - X0);
+
+// Weekly buckets (weeks start on the first commit day).
+const week = (d: string) => Math.floor((Date.parse(d) - t0) / (7 * 864e5));
+const bucket = (m: Record<string, number>) => {
+  const b = new Map<number, number>();
+  for (const [d, n] of Object.entries(m)) b.set(week(d), (b.get(week(d)) ?? 0) + n);
+  return b;
+};
+const all = bucket(dailyCommits), th = bucket(dailyThesisCommits);
+const wx = (w: number) => X0 + ((w * 7 + 3.5) * 864e5 / (t1 - t0)) * (X1 - X0);
+const r = (n: number) => Math.max(2.2, Math.sqrt(n) * 1.15);
+const appDots = [...all].map(([w, n]) => ({ w, n: n - (th.get(w) ?? 0) })).filter((d) => d.n > 0);
+const thDots = [...th].map(([w, n]) => ({ w, n }));
+
+const thStart = x('2026-08-04'), thEnd = x('2026-10-26');
+const months = ['2026-05-01', '2026-06-01', '2026-07-01', '2026-08-01', '2026-09-01', '2026-10-01'];
+const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
+---
+<div class="cg">
+  <div class="cg-scroll">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="cg-t cg-d">
+      <title id="cg-t">{L('Apex commit history as a git graph', 'Histórico de commits do Apex em forma de grafo git')}</title>
+      <desc id="cg-d">{L(
+        'From 24 April to 27 October 2026: the main line with weekly commit volume, five feature branches merged back into it, and the dissertation track from 4 August. Numbered markers match the list below.',
+        'De 24 de abril a 27 de outubro de 2026: a linha principal com o volume semanal de commits, cinco ramos de funcionalidade integrados e a linha da dissertação a partir de 4 de agosto. Os marcadores numerados correspondem à lista abaixo.')}</desc>
+
+      {months.map((m) => (
+        <g class="axis">
+          <line x1={x(m)} y1="14" x2={x(m)} y2={H - 26} />
+          <text x={x(m) + 4} y={H - 10}>{formatDate(new Date(m), lang, { month: 'short', day: undefined, year: undefined })}</text>
+        </g>
+      ))}
+
+      <text class="lane-l" x="0" y={Y_MAIN + 4}>main</text>
+      <text class="lane-l" x="0" y={Y_TH + 4}>thesis</text>
+      <line class="main" x1={X0} y1={Y_MAIN} x2={X1} y2={Y_MAIN} />
+
+      {branches.map((b, i) => {
+        const y = Y_BR[i % 2];
+        const a = x(b.start) - 6, z = Math.max(x(b.merge) + 6, a + 26);
+        return (
+          <g class="branch">
+            <path d={`M${a - 14} ${Y_MAIN} C ${a - 4} ${Y_MAIN}, ${a} ${y}, ${a + 8} ${y} H ${z - 8} C ${z} ${y}, ${z + 4} ${Y_MAIN}, ${z + 14} ${Y_MAIN}`} />
+            <circle cx={a + 8} cy={y} r="3" /><circle cx={z - 8} cy={y} r="3" />
+            <circle class="merge" cx={z + 14} cy={Y_MAIN} r="4.5" />
+            {(() => { const anchor = b.id === 'reflex' ? 'end' : b.id === 'jira' ? 'start' : 'middle'; const tx = anchor === 'end' ? z + 4 : anchor === 'start' ? a - 4 : (a + z) / 2; return <text x={tx} y={y - 8} text-anchor={anchor}>{b.name} · {b.commits}</text>; })()}
+          </g>
+        );
+      })}
+
+      <path class="th-line" d={`M${thStart - 18} ${Y_MAIN} C ${thStart - 6} ${Y_MAIN}, ${thStart - 6} ${Y_TH}, ${thStart + 6} ${Y_TH} H ${thEnd}`} />
+
+      {appDots.map((d) => <circle class="dot" cx={wx(d.w)} cy={Y_MAIN} r={r(d.n)}><title>{`${d.n} commits`}</title></circle>)}
+      {thDots.map((d) => <circle class="dot dot-th" cx={wx(d.w)} cy={Y_TH} r={r(d.n)}><title>{`${d.n} commits`}</title></circle>)}
+
+      {milestones.map((m, i) => {
+        const cx = x(m.d), cy = m.lane === 'app' ? Y_MAIN : Y_TH;
+        const ly = m.lane === 'app' ? Y_MAIN + 26 : Y_TH + 26;
+        return (
+          <g class:list={['ms', { major: m.major }]}>
+            <line x1={cx} y1={cy} x2={cx} y2={ly - 10} />
+            <text x={cx} y={ly} text-anchor="middle">{i + 1}</text>
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+  <ol class="ms-list">
+    {milestones.map((m) => (
+      <li><time class="mono" datetime={m.d}>{formatDate(new Date(m.d), lang)}</time> {m.label[lang]}</li>
+    ))}
+  </ol>
+</div>
+<style>
+  .cg-scroll { overflow-x: auto; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
+  svg { width: 100%; min-width: 760px; height: auto; overflow: visible; font-family: var(--font-mono); }
+  .axis line { stroke: var(--rule); stroke-dasharray: 2 4; }
+  .axis text, .lane-l { font-size: 11px; fill: var(--muted); }
+  .main { stroke: var(--ink); stroke-width: 2; }
+  .branch path { fill: none; stroke: var(--tag-work); stroke-width: 1.6; }
+  .branch circle { fill: var(--bg); stroke: var(--tag-work); stroke-width: 1.6; }
+  .branch .merge { fill: var(--tag-work); }
+  .branch text { font-size: 10.5px; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
+  .th-line { fill: none; stroke: var(--pen); stroke-width: 2; }
+  .dot { fill: color-mix(in srgb, var(--ink) 55%, transparent); stroke: var(--bg); stroke-width: 1; }
+  .dot-th { fill: color-mix(in srgb, var(--pen) 70%, transparent); }
+  .ms line { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 1 2; }
+  .ms text { font-size: 11px; fill: var(--ink); font-weight: 500; }
+  .ms.major text { fill: var(--pen); }
+  .ms-list { margin: var(--s-4) 0 0; padding-left: 1.8em; columns: 2 18rem; column-gap: var(--s-6); font-size: var(--step--1); color: var(--ink-2); }
+  .ms-list li { break-inside: avoid; padding: 0.15rem 0; }
+  .ms-list li::marker { font-family: var(--font-mono); color: var(--pen); }
+  .ms-list time { color: var(--muted); margin-right: 0.4em; }
+</style>

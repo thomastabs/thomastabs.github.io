@@ -21,6 +21,20 @@ import appHome from '@/assets/apex/app-home.png';
 import appDesign from '@/assets/apex/app-design.png';
 import appImpl from '@/assets/apex/app-implementation.png';
 import appTesting from '@/assets/apex/app-testing.png';
+import walk1 from '@/assets/apex/walk-1-requirements.png';
+import walk2 from '@/assets/apex/walk-2-review-draft.png';
+import walk3 from '@/assets/apex/walk-3-task-dag.jpg';
+import walk4 from '@/assets/apex/walk-4-testing-fail.png';
+import walk5 from '@/assets/apex/walk-5-maintenance.png';
+import walk6 from '@/assets/apex/walk-6-fix-bolt.png';
+import archJun from '@/assets/apex/history-architecture-2026-06.png';
+import flowJun from '@/assets/apex/history-user-flow-2026-06.png';
+import flowAug from '@/assets/apex/history-user-flow-2026-08.png';
+import bigPicture from '@/assets/apex/history-big-picture-2026-07.png';
+import CommitGraph from '@/components/CommitGraph.astro';
+import CommitHeatmap from '@/components/CommitHeatmap.astro';
+import * as hist from '@/data/apex-history';
+import { formatDate } from '@/i18n';
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
@@ -40,6 +54,17 @@ const gallery = [
   { src: appImpl, n: '02c', cap: L('Phase 3 · Implementation: developer packs per task', 'Fase 3 · Implementação: pacotes de programação por tarefa'), alt: L('Phase 3 screen showing a task list and a generated developer pack with implementation steps.', 'Ecrã da fase 3 com a lista de tarefas e um pacote de programação gerado com os passos de implementação.') },
   { src: appTesting, n: '02d', cap: L('Phase 4 · Testing: QA test plan bounded to the Gherkin', 'Fase 4 · Testes: plano de QA limitado ao Gherkin'), alt: L('Phase 4 screen with a QA test plan editor and its rendered preview.', 'Ecrã da fase 4 com o editor do plano de testes de QA e a pré-visualização.') },
 ];
+
+const walkthrough = [
+  { src: walk1, n: '02f', cap: L('Phase 1 · Requirements: stories compiled from a natural-language epic', 'Fase 1 · Requisitos: histórias compiladas a partir de um épico em linguagem natural'), alt: L('Phase 1 requirements screen in dark mode with a stepper, an epic and its generated stories.', 'Ecrã de requisitos da fase 1, em modo escuro, com um assistente por passos, um épico e as histórias geradas.') },
+  { src: walk2, n: '02g', cap: L('Phase 1 · Review Draft: the human edits before anything is locked', 'Fase 1 · Rever rascunho: a pessoa edita antes de algo ficar bloqueado'), alt: L('Review Draft step listing draft stories with Gherkin scenarios and a context panel.', 'Passo de revisão do rascunho com histórias em Gherkin e um painel de contexto.') },
+  { src: walk3, n: '02h', cap: L('Phase 3 · the task dependency graph for one story', 'Fase 3 · o grafo de dependências das tarefas de uma história'), alt: L('Phase 3 screen with a list of implementation tasks and a small task dependency graph.', 'Ecrã da fase 3 com a lista de tarefas de implementação e um pequeno grafo de dependências.') },
+  { src: walk4, n: '02i', cap: L('Phase 4 · Testing: a failed scenario blocks the gate', 'Fase 4 · Testes: um cenário falhado bloqueia o portão'), alt: L('Execute Tests screen with scenario results, including a failed one marked in red.', 'Ecrã de execução de testes com resultados por cenário, incluindo um falhado a vermelho.') },
+  { src: walk5, n: '02j', cap: L('Phase 6 · Maintenance: a signal routed to its loop-back', 'Fase 6 · Manutenção: um sinal encaminhado para o seu retorno'), alt: L('Maintenance screen with feedback routing that classifies a signal and sends it back to an earlier phase.', 'Ecrã de manutenção com o encaminhamento de feedback, que classifica um sinal e o devolve a uma fase anterior.') },
+  { src: walk6, n: '02k', cap: L('Fix Bolt dashboard: bug reports and the fix log', 'Painel de Fix Bolts: relatórios de bugs e registo de correções'), alt: L('Fix Bolt dashboard listing bug reports with statuses and a fix log below.', 'Painel de Fix Bolts com a lista de relatórios de bugs e respetivos estados, e o registo de correções.') },
+];
+const tagLabel = { app: L('app', 'aplicação'), thesis: L('thesis', 'tese'), bug: L('found by writing', 'encontrado ao escrever') } as const;
+const tagCount = (k: 'app' | 'thesis' | 'bug') => hist.timeline.filter((e) => e.tag === k).length;
 
 const scholarlyLd = {
   '@context': 'https://schema.org',
@@ -84,16 +109,16 @@ const scholarlyLd = {
         <div class="lgroup">
           <p class="kicker lg-label">{g.label}</p>
           <ul role="list">
-            {apex.publishedLinks.filter((l) => l.group === g.id).map((l) => (
-              <li>
-                <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href}>
-                  {l.label[lang]} {l.href.startsWith('http') ? '↗' : ''}
-                </a>
-                {l.extra?.map((e) => (
-                  <a class="btn btn--ghost pen-link pen-link--bare" href={e.href}>{e.label[lang]}</a>
-                ))}
-              </li>
-            ))}
+            {apex.publishedLinks
+              .filter((l) => l.group === g.id)
+              .flatMap((l) => [{ label: l.label, href: l.href, primary: !!l.primary }, ...(l.extra ?? []).map((e) => ({ ...e, primary: false }))])
+              .map((l) => (
+                <li>
+                  <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href}>
+                    {l.label[lang]}{l.href.startsWith('http') ? ' ↗' : l.href.endsWith('.pptx') ? ' ↓' : l.href.startsWith('/docs/') ? '' : ' →'}
+                  </a>
+                </li>
+              ))}
           </ul>
         </div>
       ))}
@@ -223,6 +248,20 @@ const scholarlyLd = {
       <Figure n="02e" caption={L('Deployment Gate in Apex: delta verdict, deploy pack, traceability matrix and the two human sign-offs', 'Portão de Implantação no Apex: veredicto do delta, pacote de implantação, matriz de rastreabilidade e as duas aprovações humanas')}>
         <Image src={gate} alt={L('Deployment Gate screen with an infra delta verdict, a deploy pack, a traceability matrix with three passing scenarios, and two unchecked human gatekeeper sign-offs.', 'Ecrã do Portão de Implantação com o veredicto do delta de infraestrutura, um pacote de implantação, uma matriz de rastreabilidade com três cenários aprovados e duas aprovações humanas por assinalar.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" />
       </Figure>
+
+      <h3 class="sub-h walk-h">{L('The demonstration, phase by phase', 'A demonstração, fase a fase')}</h3>
+      <p class="prose-p">{L('Screens from the dissertation’s demonstration chapter, captured while Apex governed the Outfolio build.', 'Ecrãs do capítulo de demonstração da dissertação, capturados enquanto o Apex governava a construção do Outfolio.')}</p>
+      <ul class="gallery gallery--3" role="list">
+        {walkthrough.map((g) => (
+          <li>
+            <Figure n={g.n} caption={g.cap}>
+              <a href={g.src.src} class="zoom" aria-label={`${L('Open full size', 'Abrir em tamanho real')}: ${g.cap}`}>
+                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 1100px) 360px, (min-width: 700px) 50vw, 100vw" />
+              </a>
+            </Figure>
+          </li>
+        ))}
+      </ul>
     </section>
 
     <!-- ===== Production standards ===== -->
@@ -278,12 +317,89 @@ const scholarlyLd = {
       </div>
     </section>
 
-    <!-- ===== Ledger ===== -->
-    <section class="block" aria-labelledby="ledger">
-      <p class="kicker"><span class="pen">§08</span> — {L('Thesis ledger', 'Diário da tese')}</p>
+    <!-- ===== History ===== -->
+    <section class="block" aria-labelledby="history">
+      <p class="kicker"><span class="pen">§08</span> — {L('History', 'Histórico')}</p>
+      <h2 id="history">{L('How it was built', 'Como foi construído')}</h2>
+      <p class="prose-p">{L(
+        'Six months, one repository. The app and the dissertation share a git history, so the way the work was built can be read back out of it: when the stack changed, when the thesis started pulling commits away from the app, and which bugs were only found by writing about the tool.',
+        'Seis meses, um repositório. A aplicação e a dissertação partilham o mesmo histórico git, por isso a forma como o trabalho foi feito pode ser lida a partir dele: quando a stack mudou, quando a tese começou a tirar commits à aplicação e que bugs só apareceram ao escrever sobre a ferramenta.')}</p>
+      <ul class="stats" role="list">
+        {hist.historyStats.map((s) => <li><span class="stat-v">{s.v}</span><span class="stat-l">{s.l[lang]}</span></li>)}
+      </ul>
+
+      <Figure n={4} caption={L('Commit graph: main, the five merged feature branches and the dissertation track. Dot size is commits per week.', 'Grafo de commits: main, os cinco ramos de funcionalidade integrados e a linha da dissertação. O tamanho de cada ponto é o número de commits por semana.')}>
+        <div class="fig-svg"><CommitGraph lang={lang} /></div>
+      </Figure>
+
+      <div class="two-col hist-cols">
+        <div>
+          <h3 class="sub-h">{L('Commits per day', 'Commits por dia')}</h3>
+          <CommitHeatmap lang={lang} />
+        </div>
+        <div>
+          <h3 class="sub-h">{L('By commit type', 'Por tipo de commit')}</h3>
+          <dl class="tax">
+            {hist.taxonomy.map((b) => (
+              <div><dt class="mono">{b.k}</dt><dd><span class="tax-bar" style={`--w:${(b.v / hist.taxonomy[0].v) * 100}%`}></span><span class="mono tax-v">{b.v}</span></dd></div>
+            ))}
+          </dl>
+        </div>
+      </div>
+
+      <h3 class="sub-h">{L('Design history', 'Histórico de design')}</h3>
+      <ol class="design-hist" role="list">
+        {hist.designHistory.map((e) => (
+          <li><time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time><div><h4>{e.title[lang]}</h4><p>{e.text[lang]}</p></div></li>
+        ))}
+      </ol>
+      <ul class="gallery compare" role="list">
+        <li>
+          <Figure n="04a" caption={L('Architecture, 17 Jun 2026: one diagram for everything', 'Arquitetura, 17 jun. 2026: um só diagrama para tudo')}>
+            <a href={archJun.src} class="zoom" aria-label={L('Open full size: architecture, June', 'Abrir em tamanho real: arquitetura, junho')}><Image src={archJun} alt={L('June architecture diagram with frontend, backend, external services and the spec store in a single component view.', 'Diagrama de arquitetura de junho com frontend, backend, serviços externos e o repositório de especificações numa só vista.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04b" caption={L('Architecture, 13 Sep 2026: split into request path and guarded egress (fig. 02)', 'Arquitetura, 13 set. 2026: dividida em caminho dos pedidos e saída protegida (fig. 02)')}>
+            <a href={architecture.src} class="zoom" aria-label={L('Open full size: architecture, September', 'Abrir em tamanho real: arquitetura, setembro')}><Image src={architecture} alt={L('September architecture diagram, part 1 of 2, showing the internal request path and the spec store.', 'Diagrama de arquitetura de setembro, parte 1 de 2, com o caminho interno dos pedidos e o repositório de especificações.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04c" caption={L('User flow, 17 Jun 2026', 'Fluxo do utilizador, 17 jun. 2026')}>
+            <a href={flowJun.src} class="zoom" aria-label={L('Open full size: user flow, June', 'Abrir em tamanho real: fluxo do utilizador, junho')}><Image src={flowJun} alt={L('June user-flow diagram: a long vertical sequence through the six phases.', 'Diagrama de fluxo do utilizador de junho: uma longa sequência vertical pelas seis fases.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04d" caption={L('User flow, 21 Aug 2026: redrawn for the dissertation', 'Fluxo do utilizador, 21 ago. 2026: redesenhado para a dissertação')}>
+            <a href={flowAug.src} class="zoom" aria-label={L('Open full size: user flow, August', 'Abrir em tamanho real: fluxo do utilizador, agosto')}><Image src={flowAug} alt={L('August user-flow diagram, redrawn with swimlanes for the dissertation.', 'Diagrama de fluxo do utilizador de agosto, redesenhado com raias para a dissertação.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
+          </Figure>
+        </li>
+      </ul>
+      <Figure n="04e" caption={L('The framework’s big picture, 20 Jul 2026: phases, inputs, outputs and literature grounding', 'A visão geral da framework, 20 jul. 2026: fases, entradas, saídas e fundamentação na literatura')}>
+        <a href={bigPicture.src} class="zoom" aria-label={L('Open full size: framework big picture', 'Abrir em tamanho real: visão geral da framework')}><Image src={bigPicture} alt={L('Framework big-picture diagram: Strategic Alignment followed by the six phases, each with its inputs, outputs and supporting literature.', 'Diagrama geral da framework: Alinhamento Estratégico seguido das seis fases, cada uma com entradas, saídas e literatura de suporte.')} widths={[720, 1200, 1780]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" /></a>
+      </Figure>
+
+      <h3 class="sub-h">{L('Timeline', 'Linha do tempo')}</h3>
+      <div class="tl-filters" data-tl-filters hidden role="group" aria-label={L('Filter the timeline', 'Filtrar a linha do tempo')}>
+        <button type="button" class="tab" data-f="all" aria-pressed="true">{L('all', 'tudo')} <span class="count">{hist.timeline.length}</span></button>
+        {(['app', 'thesis', 'bug'] as const).map((k) => (
+          <button type="button" class="tab" data-f={k} aria-pressed="false">{tagLabel[k]} <span class="count">{tagCount(k)}</span></button>
+        ))}
+      </div>
+      <ol class="hist-tl" role="list" data-tl>
+        {hist.timeline.map((e) => (
+          <li data-tag={e.tag}>
+            <time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time>
+            <span class:list={['tl-tag mono', e.tag]}>{tagLabel[e.tag]}</span>
+            <div><p class="tl-t">{e.t[lang]}</p><p class="tl-x">{e.x[lang]}</p></div>
+          </li>
+        ))}
+      </ol>
+
       <a class="ledger-card" href="/work/apex/ledger/">
-        <h2 id="ledger">{L('Apex & Thesis Ledger', 'Apex & Thesis Ledger')}</h2>
-        <p>{L('A dashboard built from the repository’s own git history: contribution heatmap, a filterable timeline of the app and the thesis, chapter write dates, and the real bugs found while writing about the tool that had them.', 'Um painel construído a partir do histórico git do repositório: mapa de contribuições, uma linha do tempo filtrável da aplicação e da tese, datas de escrita de cada capítulo e os bugs reais encontrados enquanto escrevia sobre a ferramenta que os tinha.')}</p>
+        <p class="kicker">{L('Full record', 'Registo completo')}</p>
+        <h3>Apex &amp; Thesis Ledger</h3>
+        <p>{L('The original dashboard this section draws on: every timeline entry, chapter write dates, page budgets and the backlog close-out.', 'O painel original em que esta secção se baseia: todas as entradas da linha do tempo, datas de escrita dos capítulos, limites de páginas e o fecho do backlog.')}</p>
         <span class="meta upper">{L('Open the ledger', 'Abrir o diário')} →</span>
       </a>
     </section>
@@ -401,10 +517,60 @@ const scholarlyLd = {
 
   .ledger-card { display: block; max-width: 46rem; padding: var(--s-6); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: border-color var(--dur) var(--ease); }
   .ledger-card:hover { border-color: var(--ink); }
-  .ledger-card h2 { font-size: var(--step-3); }
+  .ledger-card { margin-top: var(--s-7); }
+  .ledger-card h3 { font-size: var(--step-2); margin-top: var(--s-2); }
+  .gallery--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
+  .walk-h { padding-top: var(--s-7); }
+  .compare :global(.fig-tall) { max-height: 34rem; object-fit: contain; }
+  .hist-cols { margin-top: var(--s-6); }
+  .tax { margin: 0; display: grid; gap: var(--s-2); }
+  .tax div { display: grid; grid-template-columns: 5.5rem 1fr; align-items: center; gap: var(--s-3); }
+  .tax dt { font-size: var(--step--1); color: var(--ink-2); }
+  .tax dd { margin: 0; display: flex; align-items: center; gap: var(--s-2); }
+  .tax-bar { display: block; height: 10px; width: var(--w); background: var(--pen); border-radius: 2px; opacity: 0.85; }
+  .tax-v { font-size: var(--step--1); color: var(--ink); }
+  .design-hist { padding: 0; margin: 0 0 var(--s-6); list-style: none; border-left: 1px solid var(--rule-strong); }
+  .design-hist li { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--s-4); padding: var(--s-3) 0 var(--s-3) var(--s-4); position: relative; }
+  .design-hist li::before { content: ''; position: absolute; left: -4px; top: 1.05rem; width: 7px; height: 7px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--pen); }
+  .design-hist time { font-size: var(--step--1); color: var(--muted); padding-top: 0.15rem; }
+  .design-hist h4 { font-family: var(--font-display); font-size: var(--step-1); font-weight: 560; }
+  .design-hist p { color: var(--ink-2); max-width: 62ch; }
+  @media (max-width: 640px) { .design-hist li { grid-template-columns: 1fr; gap: var(--s-1); } }
+  .tl-filters { display: flex; flex-wrap: wrap; margin-bottom: var(--s-4); border-bottom: 1px solid var(--rule-strong); }
+  :global(.js) .tl-filters[hidden] { display: flex; }
+  .tab { display: inline-flex; align-items: center; gap: 0.45em; margin-bottom: -1px; padding: 0.55rem 0.9rem; min-height: 44px; border: 1px solid transparent; border-bottom-color: var(--rule-strong); border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: transparent; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: var(--tracking-mono); cursor: pointer; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-pressed='true'] { color: var(--ink); background: var(--surface); border-color: var(--rule-strong); border-bottom-color: var(--surface); }
+  .tab .count { color: var(--muted); font-size: 0.85em; }
+  .hist-tl { padding: 0; margin: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .hist-tl li { display: grid; grid-template-columns: 7.5rem 9.5rem 1fr; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .hist-tl li[hidden] { display: none; }
+  .hist-tl time { font-size: var(--step--1); color: var(--muted); padding-top: 0.15rem; }
+  .tl-tag { justify-self: start; font-size: var(--step--2); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.15em 0.5em; border-radius: 3px; border: 1px solid var(--rule-strong); color: var(--ink-2); }
+  .tl-tag.thesis { border-color: var(--pen); color: var(--pen); }
+  .tl-tag.bug { background: var(--pen-soft); border-color: var(--pen); color: var(--ink); }
+  .tl-t { font-weight: 500; color: var(--ink); }
+  .tl-x { color: var(--ink-2); font-size: 0.95rem; }
+  @media (max-width: 720px) { .hist-tl li { grid-template-columns: 1fr; gap: var(--s-1); } }
   .ledger-card p { margin: var(--s-3) 0 var(--s-4); color: var(--ink-2); }
   .ledger-card .meta { color: var(--pen); }
 
   .bib { max-width: none; }
   .bib :global(pre) { white-space: pre-wrap; word-break: break-word; }
 </style>
+
+<script>
+  /* Timeline filter. Without JS the tabs stay hidden and every entry shows. */
+  const bar = document.querySelector<HTMLElement>('[data-tl-filters]');
+  const list = document.querySelector<HTMLElement>('[data-tl]');
+  if (bar && list) {
+    bar.hidden = false;
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-f]');
+      if (!btn) return;
+      const f = btn.dataset.f;
+      bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      list.querySelectorAll<HTMLElement>('li').forEach((li) => { li.hidden = f !== 'all' && li.dataset.tag !== f; });
+    });
+  }
+</script>

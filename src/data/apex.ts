@@ -62,7 +62,7 @@ export const register: RegisterLink[] = [
     group: 'read',
     label: { en: 'Defence slides (PDF)', pt: 'Diapositivos da defesa (PDF)' },
     href: '/docs/apex-defence-slides.pdf',
-    extra: [{ label: { en: '.pptx', pt: '.pptx' }, href: '/docs/apex-defence-slides.pptx' }],
+    extra: [{ label: { en: 'Defence slides (PPTX)', pt: 'Diapositivos da defesa (PPTX)' }, href: '/docs/apex-defence-slides.pptx' }],
   },
   { group: 'read', label: { en: 'Framework spec (v2)', pt: 'Especificação da framework (v2)' }, href: `${gh}/docs/framework/Apex-Framework-v2.docx` },
   { group: 'read', label: { en: 'Literature grounding', pt: 'Fundamentação na literatura' }, href: `${gh}/docs/framework/Apex-Framework-Grounding.docx` },

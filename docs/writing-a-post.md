@@ -38,7 +38,7 @@ The build fails with a clear message if a field is wrong: a description over 160
 
 `draft: true` posts show up in `npm run dev` with a red **DRAFT** stamp. They are left out of `npm run build`, so they never reach production, the feeds, the sitemap or any listing. Flip the flag to `false` to publish.
 
-The two sample posts (`en/sample-entry.mdx`, `pt/entrada-de-exemplo.mdx`) are drafts that show every feature. Copy one as a starting point, or delete them once real posts exist.
+The two sample posts (`en/sample-entry.mdx`, `pt/entrada-de-exemplo.mdx`) are drafts that show every feature. Copy one as a starting point, or start from `docs/post-template.mdx`, which has a suggested structure (situation → problem → what I tried → what happened → what I would do differently). Delete the samples once real posts exist.
 
 ## 4. What you can use in the body
 
