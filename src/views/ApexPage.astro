@@ -63,8 +63,8 @@ const walkthrough = [
   { src: walk5, n: '02j', cap: L('Phase 6 · Maintenance: a signal routed to its loop-back', 'Fase 6 · Manutenção: um sinal encaminhado para o seu retorno'), alt: L('Maintenance screen with feedback routing that classifies a signal and sends it back to an earlier phase.', 'Ecrã de manutenção com o encaminhamento de feedback, que classifica um sinal e o devolve a uma fase anterior.') },
   { src: walk6, n: '02k', cap: L('Fix Bolt dashboard: bug reports and the fix log', 'Painel de Fix Bolts: relatórios de bugs e registo de correções'), alt: L('Fix Bolt dashboard listing bug reports with statuses and a fix log below.', 'Painel de Fix Bolts com a lista de relatórios de bugs e respetivos estados, e o registo de correções.') },
 ];
-const tagLabel = { app: L('app', 'aplicação'), thesis: L('thesis', 'tese'), bug: L('found by writing', 'encontrado ao escrever') } as const;
-const tagCount = (k: 'app' | 'thesis' | 'bug') => hist.timeline.filter((e) => e.tag === k).length;
+const tagLabel = { app: L('app', 'aplicação'), design: L('design', 'design'), thesis: L('thesis', 'tese'), bug: L('found by writing', 'encontrado ao escrever') } as const;
+const tagCount = (k: 'app' | 'design' | 'thesis' | 'bug') => hist.timeline.filter((e) => e.tag === k).length;
 
 const scholarlyLd = {
   '@context': 'https://schema.org',
@@ -347,12 +347,24 @@ const scholarlyLd = {
         </div>
       </div>
 
-      <h3 class="sub-h">{L('Design history', 'Histórico de design')}</h3>
-      <ol class="design-hist" role="list">
-        {hist.designHistory.map((e) => (
-          <li><time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time><div><h4>{e.title[lang]}</h4><p>{e.text[lang]}</p></div></li>
+      <h3 class="sub-h">{L('Timeline: product, design and thesis', 'Linha do tempo: produto, design e tese')}</h3>
+      <div class="tl-filters" data-tl-filters hidden role="group" aria-label={L('Filter the timeline', 'Filtrar a linha do tempo')}>
+        <button type="button" class="tab" data-f="all" aria-pressed="true">{L('all', 'tudo')} <span class="count">{hist.timeline.length}</span></button>
+        {(['app', 'design', 'thesis', 'bug'] as const).map((k) => (
+          <button type="button" class="tab" data-f={k} aria-pressed="false">{tagLabel[k]} <span class="count">{tagCount(k)}</span></button>
+        ))}
+      </div>
+      <ol class="hist-tl" role="list" data-tl>
+        {hist.timeline.map((e) => (
+          <li data-tag={e.tag}>
+            <time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time>
+            <span class:list={['tl-tag mono', e.tag]}>{tagLabel[e.tag]}</span>
+            <div><p class="tl-t">{e.t[lang]}</p><p class="tl-x">{e.x[lang]}</p></div>
+          </li>
         ))}
       </ol>
+
+      <h3 class="sub-h">{L('Diagrams, then and now', 'Diagramas, antes e depois')}</h3>
       <ul class="gallery compare" role="list">
         <li>
           <Figure n="04a" caption={L('Architecture, 17 Jun 2026: one diagram for everything', 'Arquitetura, 17 jun. 2026: um só diagrama para tudo')}>
@@ -378,23 +390,6 @@ const scholarlyLd = {
       <Figure n="04e" caption={L('The framework’s big picture, 20 Jul 2026: phases, inputs, outputs and literature grounding', 'A visão geral da framework, 20 jul. 2026: fases, entradas, saídas e fundamentação na literatura')}>
         <a href={bigPicture.src} class="zoom" aria-label={L('Open full size: framework big picture', 'Abrir em tamanho real: visão geral da framework')}><Image src={bigPicture} alt={L('Framework big-picture diagram: Strategic Alignment followed by the six phases, each with its inputs, outputs and supporting literature.', 'Diagrama geral da framework: Alinhamento Estratégico seguido das seis fases, cada uma com entradas, saídas e literatura de suporte.')} widths={[720, 1200, 1780]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" /></a>
       </Figure>
-
-      <h3 class="sub-h">{L('Timeline', 'Linha do tempo')}</h3>
-      <div class="tl-filters" data-tl-filters hidden role="group" aria-label={L('Filter the timeline', 'Filtrar a linha do tempo')}>
-        <button type="button" class="tab" data-f="all" aria-pressed="true">{L('all', 'tudo')} <span class="count">{hist.timeline.length}</span></button>
-        {(['app', 'thesis', 'bug'] as const).map((k) => (
-          <button type="button" class="tab" data-f={k} aria-pressed="false">{tagLabel[k]} <span class="count">{tagCount(k)}</span></button>
-        ))}
-      </div>
-      <ol class="hist-tl" role="list" data-tl>
-        {hist.timeline.map((e) => (
-          <li data-tag={e.tag}>
-            <time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time>
-            <span class:list={['tl-tag mono', e.tag]}>{tagLabel[e.tag]}</span>
-            <div><p class="tl-t">{e.t[lang]}</p><p class="tl-x">{e.x[lang]}</p></div>
-          </li>
-        ))}
-      </ol>
 
       <a class="ledger-card" href="/work/apex/ledger/">
         <p class="kicker">{L('Full record', 'Registo completo')}</p>
@@ -521,6 +516,7 @@ const scholarlyLd = {
   .ledger-card h3 { font-size: var(--step-2); margin-top: var(--s-2); }
   .gallery--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
   .walk-h { padding-top: var(--s-7); }
+  .compare { margin-bottom: var(--s-6); }
   .compare :global(.fig-tall) { max-height: 34rem; object-fit: contain; }
   .hist-cols { margin-top: var(--s-6); }
   .tax { margin: 0; display: grid; gap: var(--s-2); }
@@ -529,13 +525,6 @@ const scholarlyLd = {
   .tax dd { margin: 0; display: flex; align-items: center; gap: var(--s-2); }
   .tax-bar { display: block; height: 10px; width: var(--w); background: var(--pen); border-radius: 2px; opacity: 0.85; }
   .tax-v { font-size: var(--step--1); color: var(--ink); }
-  .design-hist { padding: 0; margin: 0 0 var(--s-6); list-style: none; border-left: 1px solid var(--rule-strong); }
-  .design-hist li { display: grid; grid-template-columns: 7.5rem 1fr; gap: var(--s-4); padding: var(--s-3) 0 var(--s-3) var(--s-4); position: relative; }
-  .design-hist li::before { content: ''; position: absolute; left: -4px; top: 1.05rem; width: 7px; height: 7px; border-radius: 50%; background: var(--bg); border: 1.5px solid var(--pen); }
-  .design-hist time { font-size: var(--step--1); color: var(--muted); padding-top: 0.15rem; }
-  .design-hist h4 { font-family: var(--font-display); font-size: var(--step-1); font-weight: 560; }
-  .design-hist p { color: var(--ink-2); max-width: 62ch; }
-  @media (max-width: 640px) { .design-hist li { grid-template-columns: 1fr; gap: var(--s-1); } }
   .tl-filters { display: flex; flex-wrap: wrap; margin-bottom: var(--s-4); border-bottom: 1px solid var(--rule-strong); }
   :global(.js) .tl-filters[hidden] { display: flex; }
   .tab { display: inline-flex; align-items: center; gap: 0.45em; margin-bottom: -1px; padding: 0.55rem 0.9rem; min-height: 44px; border: 1px solid transparent; border-bottom-color: var(--rule-strong); border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: transparent; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: var(--tracking-mono); cursor: pointer; }
@@ -548,6 +537,8 @@ const scholarlyLd = {
   .hist-tl time { font-size: var(--step--1); color: var(--muted); padding-top: 0.15rem; }
   .tl-tag { justify-self: start; font-size: var(--step--2); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.15em 0.5em; border-radius: 3px; border: 1px solid var(--rule-strong); color: var(--ink-2); }
   .tl-tag.thesis { border-color: var(--pen); color: var(--pen); }
+  .tl-tag.design { border-color: var(--tag-work); color: var(--tag-work); }
+  .hist-tl li[data-tag='design'] .tl-t { font-family: var(--font-display); font-size: var(--step-1); font-weight: 560; }
   .tl-tag.bug { background: var(--pen-soft); border-color: var(--pen); color: var(--ink); }
   .tl-t { font-weight: 500; color: var(--ink); }
   .tl-x { color: var(--ink-2); font-size: 0.95rem; }
