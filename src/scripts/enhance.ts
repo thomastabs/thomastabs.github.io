@@ -48,7 +48,7 @@ document.addEventListener('click', (e) => {
 const lang = document.documentElement.lang.startsWith('pt') ? 'pt' : 'en';
 const labels = { en: ['Copy', 'Copied'], pt: ['Copiar', 'Copiado'] }[lang];
 document.querySelectorAll<HTMLPreElement>('pre.astro-code').forEach((pre, i) => {
-  if (pre.parentElement?.classList.contains('code-block')) return;
+  if (pre.parentElement?.classList.contains('code-block') || pre.closest('[data-no-auto-copy]')) return;
   const wrap = document.createElement('div');
   wrap.className = 'code-block';
   const l = pre.dataset.language;

@@ -23,8 +23,8 @@ const items: Item[] = [
     summary: e.summary[lang], stack: e.stack, notesHref: e.notesSlug ? localePath('notebook', lang, e.notesSlug) : undefined,
   })),
   ...education.map((e) => ({
-    id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.institution,
-    summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined].filter(Boolean).join(' ') || undefined,
+    id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.location ? `${e.institution} · ${e.location[lang]}` : e.institution,
+    summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined, e.coursework ? `${t('education.coursework')}: ${e.coursework.map((c) => c[lang]).join(', ')}.` : undefined].filter(Boolean).join(' ') || undefined,
     extraHref: e.thesis ? { href: localePath('work', lang, 'apex'), label: t('education.caseStudy') } : undefined,
   })),
   ...milestones.map((m) => ({

@@ -9,7 +9,6 @@ const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
   <figcaption><span class="pen">fig. {num}</span> — {caption}</figcaption>
 </figure>
 <style>
-  .fig { margin: 0; }
   .fig-media { position: relative; border: 1px solid var(--rule); border-radius: var(--radius-sm); overflow: hidden; background: var(--surface-2); }
   .fig-media :global(img) { width: 100%; }
   figcaption {

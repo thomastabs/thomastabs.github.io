@@ -7,7 +7,9 @@ export interface Education {
   degree: L10n;
   short: L10n;
   institution: string;
+  location?: L10n;
   details?: L10n;
+  coursework?: L10n[];
   thesis?: { title: string; advisor: string; defended: L10n; grade: string };
 }
 
@@ -19,7 +21,11 @@ export const education: Education[] = [
     degree: { en: 'MSc in Computer Science and Engineering (MEIC)', pt: 'Mestrado em Engenharia Informática e de Computadores (MEIC)' },
     short: { en: 'MSc', pt: 'Mestrado' },
     institution: 'Instituto Superior Técnico',
-    details: { en: 'Specialisations: Software Engineering, Cybersecurity.', pt: 'Especializações: Engenharia de Software, Cibersegurança.' },
+    location: { en: 'Lisbon · Oeiras', pt: 'Lisboa · Oeiras' },
+    details: {
+      en: 'Specialisations: Software Engineering, Cybersecurity. Coursework completed with a grade of 16/20.',
+      pt: 'Especializações: Engenharia de Software, Cibersegurança. Componente curricular concluída com 16/20.',
+    },
     thesis: {
       title: 'Governed Human-AI Collaboration Across the Software Development Lifecycle: A Process Framework and Its Reference Implementation',
       advisor: 'Prof. Miguel Mira da Silva',
@@ -34,6 +40,19 @@ export const education: Education[] = [
     degree: { en: 'BSc in Telecommunications and Informatics Engineering (LETI)', pt: 'Licenciatura em Engenharia de Telecomunicações e Informática (LETI)' },
     short: { en: 'BSc', pt: 'Licenciatura' },
     institution: 'Instituto Superior Técnico',
+    location: { en: 'Lisbon · Oeiras', pt: 'Lisboa · Oeiras' },
+    coursework: [
+      { en: 'Data Structures and Algorithms', pt: 'Algoritmos e Estruturas de Dados' },
+      { en: 'Foundations of Programming', pt: 'Fundamentos da Programação' },
+      { en: 'Object-Oriented Programming', pt: 'Programação com Objetos' },
+      { en: 'Databases', pt: 'Bases de Dados' },
+      { en: 'Operating Systems', pt: 'Sistemas Operativos' },
+      { en: 'Network and Computer Security', pt: 'Segurança Informática em Redes e Sistemas' },
+      { en: 'Distributed Systems', pt: 'Sistemas Distribuídos' },
+      { en: 'Introduction to Computer Networks', pt: 'Introdução às Redes de Computadores' },
+      { en: 'Network Architecture', pt: 'Arquitetura de Redes' },
+      { en: 'Software Engineering', pt: 'Engenharia de Software' },
+    ],
   },
   {
     id: 'edu-secondary',

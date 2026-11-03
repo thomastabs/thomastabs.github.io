@@ -99,5 +99,6 @@
   "404.title": "This page was torn out",
   "404.lead": "The link may be old, or the page never made it into the notebook.",
   "404.tryThese": "Try one of these instead",
-  "404.home": "Home"
+  "404.home": "Home",
+  "education.coursework": "Relevant coursework"
 }

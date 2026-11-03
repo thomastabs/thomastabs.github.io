@@ -102,8 +102,16 @@ const personLd = {
             <p class="meta upper edu-period">{e.period[lang]}</p>
             <div>
               <h3 class="edu-degree">{e.degree[lang]}</h3>
-              <p class="edu-inst">{e.institution}</p>
+              <p class="edu-inst">{e.institution}{e.location && ` · ${e.location[lang]}`}</p>
               {e.details && <p class="edu-details">{e.details[lang]}</p>}
+              {e.coursework && (
+                <details class="coursework">
+                  <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
+                  <ul class="cw-list" role="list">
+                    {e.coursework.map((c) => <li>{c[lang]}</li>)}
+                  </ul>
+                </details>
+              )}
               {e.thesis && (
                 <p class="edu-details">
                   {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}.{' '}
@@ -174,6 +182,14 @@ const personLd = {
   .edu-degree { font-size: var(--step-1); }
   .edu-inst { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); margin-top: 0.15rem; }
   .edu-details { margin-top: var(--s-2); color: var(--ink-2); max-width: 62ch; }
+  .coursework { margin-top: var(--s-3); }
+  .coursework summary { cursor: pointer; width: fit-content; list-style: none; display: inline-flex; gap: 0.5em; align-items: center; min-height: 32px; color: var(--ink-2); }
+  .coursework summary::-webkit-details-marker { display: none; }
+  .coursework summary::before { content: '+'; color: var(--pen); font-weight: 500; width: 1ch; }
+  .coursework[open] summary::before { content: '−'; }
+  .coursework .count { color: var(--muted); }
+  .cw-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-2) 0 0; list-style: none; }
+  .cw-list li { padding: 0.15rem 0.55rem; border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); }
 
   .work-grid { display: grid; gap: var(--s-5); margin-bottom: var(--s-5); }
   .work-row { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
