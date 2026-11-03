@@ -71,8 +71,8 @@ export const nodes: GraphNode[] = [
   },
   {
     id: 'next', kind: 'milestone', x: 596, y: 72, side: 'left', anchor: 'contact', future: true,
-    label: { en: 'next', pt: 'a seguir' },
-    role: { en: 'Open to opportunities', pt: 'Disponível para oportunidades' },
+    label: { en: 'OpenSoft', pt: 'OpenSoft' },
+    role: { en: 'Starting 16 Nov 2026', pt: 'A partir de 16 nov. 2026' },
     years: { en: '2026 →', pt: '2026 →' },
   },
 ];

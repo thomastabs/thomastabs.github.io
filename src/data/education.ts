@@ -74,10 +74,10 @@ export interface Milestone {
 
 export const milestones: Milestone[] = [
   {
-    id: 'ms-open',
-    date: '2026-10-31',
-    period: { en: '2026', pt: '2026' },
-    title: { en: 'MSc completed — open to opportunities', pt: 'Mestrado concluído — disponível para novas oportunidades' },
+    id: 'ms-opensoft',
+    date: '2026-11-16',
+    period: { en: '16 Nov 2026', pt: '16 nov. 2026' },
+    title: { en: 'Joining OpenSoft', pt: 'Entrada na OpenSoft' },
   },
   {
     id: 'ms-defence',
