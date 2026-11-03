@@ -1,0 +1,158 @@
+---
+/* Notebook post: header, series box, body with margin TOC, translation link, prev/next, comments. */
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import TagChip from '@/components/TagChip.astro';
+import Callout from '@/components/Callout.astro';
+import Figure from '@/components/Figure.astro';
+import Toc from '@/components/Toc.astro';
+import SeriesBox from '@/components/SeriesBox.astro';
+import PostNav from '@/components/PostNav.astro';
+import Giscus from '@/components/Giscus.astro';
+import { useTranslations, formatDate } from '@/i18n';
+import {
+  getPosts, readingMinutes, seriesParts, translationOf, postHref, tagHref, indexHref, seriesHref, seriesLabel, type Post,
+} from '@/lib/notebook';
+import { profile } from '@/data/links';
+
+interface Props { post: Post }
+const { post } = Astro.props;
+const { data } = post;
+const lang = data.lang;
+const t = useTranslations(lang);
+const other = lang === 'en' ? 'pt' : 'en';
+
+const { Content, headings } = await render(post);
+const minutes = readingMinutes(post.body);
+const translation = await translationOf(post);
+const parts = data.series ? await seriesParts(data.series, lang) : [];
+
+const siblings = await getPosts(lang); // newest first
+const i = siblings.findIndex((p) => p.id === post.id);
+const newer = siblings[i - 1];
+const older = siblings[i + 1];
+
+const altHref = translation ? postHref(translation) : indexHref(other);
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const url = new URL(postHref(post), Astro.site).href;
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description: data.description,
+  datePublished: iso(data.pubDate),
+  ...(data.updatedDate && { dateModified: iso(data.updatedDate) }),
+  inLanguage: lang === 'pt' ? 'pt-PT' : 'en',
+  keywords: data.tags.join(', '),
+  url,
+  mainEntityOfPage: url,
+  author: { '@type': 'Person', name: 'Tomás Taborda', url: new URL('/', Astro.site).href, sameAs: [profile.github, profile.linkedin] },
+};
+---
+
+<BaseLayout lang={lang} title={data.title} description={data.description} altHref={altHref} noindex={data.draft}>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={iso(data.pubDate)} />
+    {data.updatedDate && <meta property="article:modified_time" content={iso(data.updatedDate)} />}
+    {data.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </Fragment>
+
+  <article class="container post">
+    <header class="post-head">
+      <p class="mono crumbs"><a class="pen-link" href={indexHref(lang)}>{t('notebook.title')}</a> {data.series && <> / <a class="pen-link" href={seriesHref(data.series, lang)}>{seriesLabel(data.series)}</a></>}</p>
+      {data.draft && (
+        <p class="draft-stamp" title={t('post.draftNote')}>{t('post.draft')}</p>
+      )}
+      <h1 class="post-title">{data.title}</h1>
+      <p class="lead post-desc">{data.description}</p>
+      <p class="meta post-meta">
+        <time datetime={iso(data.pubDate)}>{formatDate(data.pubDate, lang)}</time>
+        {data.updatedDate && <span> · {t('post.updated')} <time datetime={iso(data.updatedDate)}>{formatDate(data.updatedDate, lang)}</time></span>}
+        {' '}· <span class="upper">{minutes} {t('post.minRead')}</span>
+      </p>
+      {data.tags.length > 0 && (
+        <ul class="post-tags" role="list">
+          {data.tags.map((tag) => <li><TagChip label={`#${tag}`} href={tagHref(tag, lang)} /></li>)}
+        </ul>
+      )}
+      {translation && (
+        <p class="translation mono">
+          <a class="pen-link" href={postHref(translation)} hreflang={other === 'pt' ? 'pt-PT' : 'en'} lang={other === 'pt' ? 'pt-PT' : 'en'}>{t('post.readIn')} →</a>
+        </p>
+      )}
+      {data.draft && <p class="draft-note mono">{t('post.draftNote')}</p>}
+    </header>
+
+    {data.series && parts.length > 0 && (
+      <div class="series-wrap"><SeriesBox parts={parts} current={post} series={data.series} lang={lang} /></div>
+    )}
+
+    {data.cover && (
+      <div class="cover">
+        <Figure n="00" caption={data.coverAlt ?? ''}>
+          <Image src={data.cover} alt={data.coverAlt ?? ''} widths={[720, 1200]} sizes="(min-width: 900px) 68ch, 100vw" loading="eager" />
+        </Figure>
+      </div>
+    )}
+
+    <div class="post-grid">
+      <div class="post-main">
+        <div class="toc-inline"><Toc headings={headings} label={t('post.contents')} variant="inline" /></div>
+        <div class="prose post-body">
+          <Content components={{ Callout, Figure }} />
+        </div>
+      </div>
+      <aside class="post-margin">
+        <Toc headings={headings} label={t('post.contents')} variant="margin" />
+      </aside>
+    </div>
+
+    <footer class="post-foot">
+      <PostNav prev={older} next={newer} lang={lang} />
+      {data.comments && <Giscus lang={lang} />}
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .post { padding-top: clamp(2.5rem, 2rem + 3vw, 4.5rem); }
+  .post-head { position: relative; max-width: 68ch; display: grid; gap: var(--s-3); }
+  .crumbs { font-size: var(--step--1); color: var(--muted); }
+  .post-title { font-size: var(--step-4); line-height: 1.08; letter-spacing: -0.015em; }
+  .post-desc { margin: 0; }
+  .post-meta { margin: 0; }
+  .post-tags { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin: 0; list-style: none; }
+  .post-tags > li { display: flex; }
+  .translation { font-size: var(--step--1); }
+  .draft-note { font-size: var(--step--2); color: var(--pen); }
+  .draft-stamp {
+    position: absolute; top: 0; right: 0;
+    padding: 0.15em 0.6em;
+    border: 2px solid var(--pen); border-radius: 3px;
+    color: var(--pen);
+    font-family: var(--font-mono); font-weight: 500; font-size: var(--step-0);
+    letter-spacing: 0.14em; text-transform: uppercase;
+    transform: rotate(-8deg);
+    opacity: 0.9;
+  }
+  @media (min-width: 1100px) { .draft-stamp { right: calc(-1 * var(--s-8)); } }
+
+  .series-wrap, .cover { margin-top: var(--s-6); }
+  .cover { max-width: 68ch; }
+
+  .post-grid { margin-top: var(--s-7); display: grid; gap: var(--s-6); }
+  .post-main { min-width: 0; }
+  .post-body { max-width: 68ch; }
+  .post-margin { display: none; }
+  @media (min-width: 1100px) {
+    .post-grid { grid-template-columns: minmax(0, 68ch) var(--margin-col); justify-content: space-between; gap: var(--s-8); }
+    .post-margin { display: block; }
+    .toc-inline { display: none; }
+  }
+
+  .post-foot { margin-top: var(--s-8); padding-top: var(--s-6); border-top: 1px solid var(--rule-strong); display: grid; gap: var(--s-7); max-width: 68ch; }
+  @media (min-width: 1100px) { .post-foot { max-width: none; } }
+</style>

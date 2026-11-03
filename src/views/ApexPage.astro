@@ -8,6 +8,8 @@ import Figure from '@/components/Figure.astro';
 import Callout from '@/components/Callout.astro';
 import CopyButton from '@/components/CopyButton.astro';
 import PhaseStrip from '@/components/PhaseStrip.astro';
+import PostCard from '@/components/PostCard.astro';
+import { getPosts, cardProps as postCardProps, tagHref } from '@/lib/notebook';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
 import { loc } from '@/data/types';
@@ -23,6 +25,7 @@ import appTesting from '@/assets/apex/app-testing.png';
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
+const related = (await getPosts(lang)).filter((p) => p.data.tags.includes('apex'));
 const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
 
 const groups = [
@@ -302,7 +305,14 @@ const scholarlyLd = {
       <CopyButton target="#bibtex code" label={L('Copy BibTeX', 'Copiar BibTeX')} copiedLabel={t('cta.copied')} />
     </section>
 
-    <slot name="related" />
+    {related.length > 0 && (
+      <section class="block" aria-labelledby="related">
+        <p class="kicker"><span class="pen">§11</span> — {t('notebook.related')}</p>
+        <h2 id="related">{t('notebook.relatedTitle')}</h2>
+        <div>{related.map((p) => <PostCard {...postCardProps(p, t)} />)}</div>
+        <a class="pen-link mono" href={tagHref('apex', lang)}>#apex →</a>
+      </section>
+    )}
   </div>
 </BaseLayout>
 

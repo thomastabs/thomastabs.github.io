@@ -1,0 +1,11 @@
+---
+import SeriesPage from '@/views/SeriesPage.astro';
+import { getPosts } from '@/lib/notebook';
+
+export async function getStaticPaths() {
+  const names = new Set((await getPosts('pt')).flatMap((p) => (p.data.series ? [p.data.series] : [])));
+  return [...names].map((series) => ({ params: { series } }));
+}
+const { series } = Astro.params as { series: string };
+---
+<SeriesPage lang="pt" series={series} />

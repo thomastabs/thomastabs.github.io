@@ -1,0 +1,10 @@
+---
+import NotebookIndex from '@/views/NotebookIndex.astro';
+import { getPosts, tagCounts } from '@/lib/notebook';
+
+export async function getStaticPaths() {
+  return tagCounts(await getPosts('en')).map(({ tag }) => ({ params: { tag } }));
+}
+const { tag } = Astro.params as { tag: string };
+---
+<NotebookIndex lang="en" tag={tag} />

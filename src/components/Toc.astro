@@ -1,0 +1,60 @@
+---
+/* Table of contents. `variant="margin"`: sticky in the right margin (wide screens).
+   `variant="inline"`: collapsible <details> above the body (narrow screens). */
+import type { MarkdownHeading } from 'astro';
+interface Props { headings: MarkdownHeading[]; label: string; variant: 'margin' | 'inline' }
+const { headings, label, variant } = Astro.props;
+const items = headings.filter((h) => (h.depth === 2 || h.depth === 3) && h.slug !== 'footnote-label');
+---
+{items.length > 1 && (
+  variant === 'margin' ? (
+    <nav class="toc toc--margin" aria-label={label}>
+      <p class="kicker">{label}</p>
+      <ol role="list">
+        {items.map((h) => <li data-depth={h.depth}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ol>
+    </nav>
+  ) : (
+    <details class="toc toc--inline">
+      <summary class="kicker">{label}</summary>
+      <nav aria-label={label}>
+        <ol role="list">
+          {items.map((h) => <li data-depth={h.depth}><a href={`#${h.slug}`}>{h.text}</a></li>)}
+        </ol>
+      </nav>
+    </details>
+  )
+)}
+<style>
+  .toc ol { padding: 0; margin: 0; list-style: none; display: grid; gap: 0.15rem; }
+  .toc li[data-depth='3'] { padding-left: 0.9rem; }
+  .toc a { display: block; padding: 0.3rem 0 0.3rem 0.75rem; border-left: 1px solid var(--rule); color: var(--ink-2); text-decoration: none; font-size: var(--step--1); line-height: 1.4; }
+  .toc a:hover { color: var(--ink); border-left-color: var(--ink-2); }
+  .toc a[aria-current='true'] { color: var(--ink); border-left: 2px solid var(--pen); padding-left: calc(0.75rem - 1px); }
+  .toc--margin { position: sticky; top: calc(var(--header-h) + var(--s-5)); max-height: calc(100vh - var(--header-h) - var(--s-7)); overflow: auto; }
+  .toc--margin .kicker { margin-bottom: var(--s-3); }
+  .toc--inline { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); margin-bottom: var(--s-6); }
+  .toc--inline summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 0.5em; list-style: none; }
+  .toc--inline summary::-webkit-details-marker { display: none; }
+  .toc--inline summary::before { content: '+'; color: var(--pen); width: 1ch; }
+  .toc--inline[open] summary::before { content: '−'; }
+  .toc--inline nav { padding-bottom: var(--s-4); }
+</style>
+<script>
+  /* Mark the section in view. Progressive: the list works as plain links without it. */
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('.toc--margin a')];
+  if (links.length && 'IntersectionObserver' in window) {
+    const byId = new Map(links.map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          byId.get(e.target.id)?.setAttribute('aria-current', 'true');
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+    byId.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+  }
+</script>

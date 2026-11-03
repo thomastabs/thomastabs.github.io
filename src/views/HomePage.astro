@@ -10,6 +10,7 @@ import ProjectCard from '@/components/ProjectCard.astro';
 import Figure from '@/components/Figure.astro';
 import MarginNote from '@/components/MarginNote.astro';
 import CopyButton from '@/components/CopyButton.astro';
+import PostCard from '@/components/PostCard.astro';
 import portrait from '@/assets/portrait/portrait.jpg';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
@@ -19,6 +20,7 @@ import { experience } from '@/data/experience';
 import { education } from '@/data/education';
 import { profile } from '@/data/links';
 import { getWork, cardProps } from '@/lib/work';
+import { getPosts, cardProps as postCardProps, indexHref } from '@/lib/notebook';
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
@@ -28,6 +30,7 @@ const roles = experience.slice(0, 3);
 const { featured } = await getWork();
 const [apex, ...rest] = featured;
 const others = rest.slice(0, 3);
+const latest = (await getPosts(lang)).slice(0, 3);
 
 const localAnchors = [...roles.map((r) => r.id), ...education.map((e) => e.id), 'contact'];
 
@@ -140,9 +143,22 @@ const personLd = {
     <a class="pen-link mono more" href={localePath('work', lang)}>{t('cta.allWork')} →</a>
   </section>
 
-  <!-- §05 From the notebook: hidden until posts exist (step 5) -->
-
-  <DimensionLine from="04" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+  {latest.length > 0 ? (
+    <>
+      <DimensionLine from="04" to="05" label={lang === 'pt' ? `${latest.length} ${latest.length === 1 ? 'nota' : 'notas'}` : `${latest.length} ${latest.length === 1 ? 'note' : 'notes'}`} />
+      <!-- §05 From the notebook (hidden when there are no posts) -->
+      <section class="container section-tight" id="notebook" aria-labelledby="notebook-title">
+        <SectionHeading n={5} label={t('section.fromNotebook')} title={t('notebook.homeTitle')} id="notebook-title" />
+        <div class="notes">
+          {latest.map((p) => <PostCard {...postCardProps(p, t)} />)}
+        </div>
+        <a class="pen-link mono more" href={indexHref(lang)}>{t('notebook.allNotes')} →</a>
+      </section>
+      <DimensionLine from="05" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+    </>
+  ) : (
+    <DimensionLine from="04" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+  )}
 
   <!-- §06 Contact -->
   <section class="container section-tight" id="contact" aria-labelledby="contact-title">

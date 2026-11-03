@@ -25,7 +25,13 @@ export function getLangFromUrl(url: URL): Locale {
 }
 
 export function formatDate(date: Date, lang: Locale, opts: Intl.DateTimeFormatOptions = {}) {
-  return new Intl.DateTimeFormat(htmlLang[lang], {
+  const locale = lang === 'en' ? 'en-GB' : 'pt-PT';
+  // pt-PT renders `month: 'short'` with a year as 3/11/2026; build "3 nov. 2026" by hand.
+  if (lang === 'pt' && Object.keys(opts).length === 0) {
+    const part = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(locale, { timeZone: 'UTC', ...o }).format(date);
+    return `${part({ day: 'numeric' })} ${part({ month: 'short' })} ${part({ year: 'numeric' })}`;
+  }
+  return new Intl.DateTimeFormat(locale, {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
