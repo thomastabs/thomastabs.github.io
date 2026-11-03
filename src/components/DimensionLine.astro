@@ -1,0 +1,29 @@
+---
+/* Engineering dimension line between sections: §02 ├──── 2021 → 2026 ────┤ §03 */
+interface Props { from: string; to: string; label: string }
+const { from, to, label } = Astro.props;
+---
+<div class="dim container" role="presentation" aria-hidden="true">
+  <span class="end">§{from}</span>
+  <span class="line"><span class="tick"></span><span class="rule"></span><span class="label">{label}</span><span class="rule"></span><span class="tick"></span></span>
+  <span class="end">§{to}</span>
+</div>
+<style>
+  .dim {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-top: var(--s-8);
+    font-family: var(--font-mono);
+    font-size: var(--step--2);
+    letter-spacing: var(--tracking-mono);
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .end { color: var(--pen); }
+  .line { flex: 1; display: flex; align-items: center; gap: var(--s-3); }
+  .rule { flex: 1; height: 1px; background: var(--rule-strong); }
+  .tick { width: 1px; height: 10px; background: var(--rule-strong); }
+  .label { white-space: nowrap; }
+  @media (max-width: 480px) { .label { white-space: normal; text-align: center; } }
+</style>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PostCard from '@/components/PostCard.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { seriesParts, seriesLabel, cardProps, seriesHref, indexHref } from '@/lib/notebook';
+
+interface Props { lang: Locale; series: string }
+const { lang, series } = Astro.props;
+const t = useTranslations(lang);
+const other: Locale = lang === 'en' ? 'pt' : 'en';
+const parts = await seriesParts(series, lang);
+const otherHas = (await seriesParts(series, other)).length > 0;
+const label = seriesLabel(series);
+---
+
+<BaseLayout lang={lang} title={`${label} · ${t('notebook.series')}`} description={`${t('notebook.series')}: ${label}.`} altHref={otherHas ? seriesHref(series, other) : indexHref(other)}>
+  <div class="container page-head">
+    <SectionHeading n="05" label={`${t('notebook.title')} · ${t('notebook.series')}`} title={label} level="h1">
+      <p class="mono back"><a class="pen-link" href={indexHref(lang)}>← {t('notebook.backToIndex')}</a></p>
+    </SectionHeading>
+  </div>
+  <div class="container">
+    <ol class="parts" role="list">
+      {parts.map((p, i) => (
+        <li>
+          <p class="kicker part"><span class="pen">{t('notebook.seriesPart').replace('{n}', String(i + 1)).replace('{total}', String(parts.length))}</span></p>
+          <PostCard {...cardProps(p, t)} />
+        </li>
+      ))}
+    </ol>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head { padding-top: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .back { font-size: var(--step--1); }
+  .parts { padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); max-width: 72ch; }
+  .part { padding-top: var(--s-5); margin-bottom: calc(var(--s-3) * -1); }
+</style>

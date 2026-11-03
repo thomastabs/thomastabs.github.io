@@ -1,0 +1,229 @@
+/* ==========================================================================
+   Prose — long-form post / case-study body, code blocks (Shiki dual theme)
+   ========================================================================== */
+
+.prose {
+  max-width: var(--measure);
+  color: var(--ink);
+}
+
+.prose > * + * {
+  margin-top: 1.15em;
+}
+
+.prose h2 {
+  font-size: var(--step-2);
+  margin-top: 2.2em;
+}
+
+.prose h3 {
+  font-size: var(--step-1);
+  margin-top: 1.8em;
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: 0.6em;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.3em;
+}
+
+.prose li + li {
+  margin-top: 0.35em;
+}
+
+.prose li::marker {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+.prose blockquote {
+  padding-left: var(--s-4);
+  border-left: 2px solid var(--pen);
+  color: var(--ink-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-1);
+  line-height: 1.5;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px dashed var(--rule-strong);
+  margin-block: 2.5em;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.94em;
+}
+
+.prose th,
+.prose td {
+  text-align: left;
+  padding: 0.55em 0.75em 0.55em 0;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.prose th {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  color: var(--muted);
+  border-bottom-color: var(--rule-strong);
+}
+
+/* Inline code */
+.prose :not(pre) > code,
+code.inline {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.12em 0.38em;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+}
+
+/* ---------- Code blocks ---------- */
+
+.code-block {
+  position: relative;
+  margin-inline: 0;
+}
+
+pre.astro-code {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: 0.84rem;
+  line-height: 1.65;
+  padding: var(--s-4) var(--s-5);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background-color: var(--surface) !important;
+  overflow-x: auto;
+  tab-size: 2;
+}
+
+pre.astro-code code {
+  font-family: inherit;
+}
+
+/* Shiki dual theme — light by default, dark tokens under dark theme */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+:root[data-theme='dark'] .astro-code,
+:root[data-theme='dark'] .astro-code span,
+[data-theme='dark'] .astro-code,
+[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .astro-code,
+  :root:not([data-theme='light']) .astro-code span {
+    color: var(--shiki-dark);
+  }
+}
+
+[data-theme='light'] .astro-code,
+[data-theme='light'] .astro-code span {
+  color: var(--shiki-light);
+}
+
+/* Language label + copy button (added by script) */
+.code-block[data-lang]::before {
+  content: attr(data-lang);
+  position: absolute;
+  top: 0;
+  left: var(--s-5);
+  transform: translateY(-50%);
+  z-index: 1;
+  padding: 0 0.5em;
+  background: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.copy-btn {
+  position: absolute;
+  top: var(--s-2);
+  right: var(--s-2);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 32px;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  opacity: 0.85;
+  transition:
+    opacity var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease);
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  opacity: 1;
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.copy-btn[data-copied] {
+  color: var(--pen);
+  border-color: var(--pen);
+}
+
+/* ---------- Footnotes (remark-gfm) ---------- */
+
+.prose [data-footnote-ref] {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  color: var(--pen);
+  text-decoration: none;
+  padding-inline: 0.1em;
+}
+
+.prose .footnotes {
+  margin-top: 3em;
+  padding-top: var(--s-4);
+  border-top: 1px dashed var(--rule-strong);
+  font-size: 0.9em;
+  color: var(--ink-2);
+}
+
+.prose .footnotes h2 {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-mono);
+  color: var(--muted);
+  margin-top: 0;
+}
+
+.prose .footnote-backref {
+  color: var(--pen);
+  text-decoration: none;
+}

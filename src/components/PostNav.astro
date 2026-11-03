@@ -1,0 +1,31 @@
+---
+/* Previous (older) / next (newer) entry in the same language. */
+import { useTranslations, type Locale } from '@/i18n';
+import { postHref, type Post } from '@/lib/notebook';
+interface Props { prev?: Post; next?: Post; lang: Locale }
+const { prev, next, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+{(prev || next) && (
+  <nav class="post-nav" aria-label={`${t('post.prev')} / ${t('post.next')}`}>
+    {prev ? (
+      <a href={postHref(prev)} rel="prev" class="pn pn--prev">
+        <span class="kicker">← {t('post.prev')}</span>
+        <span class="pn-title">{prev.data.title}</span>
+      </a>
+    ) : <span />}
+    {next && (
+      <a href={postHref(next)} rel="next" class="pn pn--next">
+        <span class="kicker">{t('post.next')} →</span>
+        <span class="pn-title">{next.data.title}</span>
+      </a>
+    )}
+  </nav>
+)}
+<style>
+  .post-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--s-4); }
+  .pn { display: grid; gap: var(--s-1); padding: var(--s-4) var(--s-5); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: border-color var(--dur) var(--ease); }
+  .pn:hover { border-color: var(--ink); }
+  .pn--next { text-align: right; }
+  .pn-title { font-family: var(--font-display); font-size: var(--step-1); color: var(--ink); line-height: 1.25; }
+</style>

@@ -1,0 +1,567 @@
+---
+import { Image } from 'astro:assets';
+import { Code } from 'astro:components';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SpecBlock from '@/components/SpecBlock.astro';
+import MarginNote from '@/components/MarginNote.astro';
+import Figure from '@/components/Figure.astro';
+import Callout from '@/components/Callout.astro';
+import CopyButton from '@/components/CopyButton.astro';
+import PhaseStrip from '@/components/PhaseStrip.astro';
+import PostCard from '@/components/PostCard.astro';
+import { getPosts, cardProps as postCardProps, tagHref } from '@/lib/notebook';
+import { useTranslations, type Locale } from '@/i18n';
+import { localePath } from '@/i18n/routes';
+import { loc } from '@/data/types';
+import * as apex from '@/data/apex';
+import architecture from '@/assets/apex/architecture.png';
+import outfolioDash from '@/assets/apex/outfolio-dashboard.png';
+import gate from '@/assets/apex/deployment-gate.png';
+import appHome from '@/assets/apex/app-home.png';
+import appDesign from '@/assets/apex/app-design.png';
+import appImpl from '@/assets/apex/app-implementation.png';
+import appTesting from '@/assets/apex/app-testing.png';
+import walk1 from '@/assets/apex/walk-1-requirements.png';
+import walk2 from '@/assets/apex/walk-2-review-draft.png';
+import walk3 from '@/assets/apex/walk-3-task-dag.jpg';
+import walk4 from '@/assets/apex/walk-4-testing-fail.png';
+import walk5 from '@/assets/apex/walk-5-maintenance.png';
+import walk6 from '@/assets/apex/walk-6-fix-bolt.png';
+import archJun from '@/assets/apex/history-architecture-2026-06.png';
+import flowJun from '@/assets/apex/history-user-flow-2026-06.png';
+import flowAug from '@/assets/apex/history-user-flow-2026-08.png';
+import bigPicture from '@/assets/apex/history-big-picture-2026-07.png';
+import CommitGraph from '@/components/CommitGraph.astro';
+import CommitHeatmap from '@/components/CommitHeatmap.astro';
+import * as hist from '@/data/apex-history';
+import { formatDate } from '@/i18n';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const related = (await getPosts(lang)).filter((p) => p.data.tags.includes('apex'));
+const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
+
+const groups = [
+  { id: 'read', label: L('Read', 'Ler') },
+  { id: 'use', label: L('Use', 'Usar') },
+  { id: 'explore', label: L('Explore', 'Explorar') },
+] as const;
+
+const gallery = [
+  { src: appHome, n: '02a', cap: L('Apex home: the six SDLC phases and their status', 'Início do Apex: as seis fases e o seu estado'), alt: L('Apex dashboard listing the six SDLC phase cards with status badges and a sidebar of project context.', 'Painel do Apex com os cartões das seis fases e respetivos estados, e uma barra lateral com o contexto do projeto.') },
+  { src: appDesign, n: '02b', cap: L('Phase 2 · Design: UX brief and generated screen flow', 'Fase 2 · Design: brief de UX e fluxo de ecrãs gerado'), alt: L('Phase 2 design screen with a generated UX brief and a screen-flow diagram.', 'Ecrã da fase 2 com um brief de UX gerado e um diagrama de fluxo de ecrãs.') },
+  { src: appImpl, n: '02c', cap: L('Phase 3 · Implementation: developer packs per task', 'Fase 3 · Implementação: pacotes de programação por tarefa'), alt: L('Phase 3 screen showing a task list and a generated developer pack with implementation steps.', 'Ecrã da fase 3 com a lista de tarefas e um pacote de programação gerado com os passos de implementação.') },
+  { src: appTesting, n: '02d', cap: L('Phase 4 · Testing: QA test plan bounded to the Gherkin', 'Fase 4 · Testes: plano de QA limitado ao Gherkin'), alt: L('Phase 4 screen with a QA test plan editor and its rendered preview.', 'Ecrã da fase 4 com o editor do plano de testes de QA e a pré-visualização.') },
+];
+
+const walkthrough = [
+  { src: walk1, n: '02f', cap: L('Phase 1 · Requirements: stories compiled from a natural-language epic', 'Fase 1 · Requisitos: histórias compiladas a partir de um épico em linguagem natural'), alt: L('Phase 1 requirements screen in dark mode with a stepper, an epic and its generated stories.', 'Ecrã de requisitos da fase 1, em modo escuro, com um assistente por passos, um épico e as histórias geradas.') },
+  { src: walk2, n: '02g', cap: L('Phase 1 · Review Draft: the human edits before anything is locked', 'Fase 1 · Rever rascunho: a pessoa edita antes de algo ficar bloqueado'), alt: L('Review Draft step listing draft stories with Gherkin scenarios and a context panel.', 'Passo de revisão do rascunho com histórias em Gherkin e um painel de contexto.') },
+  { src: walk3, n: '02h', cap: L('Phase 3 · the task dependency graph for one story', 'Fase 3 · o grafo de dependências das tarefas de uma história'), alt: L('Phase 3 screen with a list of implementation tasks and a small task dependency graph.', 'Ecrã da fase 3 com a lista de tarefas de implementação e um pequeno grafo de dependências.') },
+  { src: walk4, n: '02i', cap: L('Phase 4 · Testing: a failed scenario blocks the gate', 'Fase 4 · Testes: um cenário falhado bloqueia o portão'), alt: L('Execute Tests screen with scenario results, including a failed one marked in red.', 'Ecrã de execução de testes com resultados por cenário, incluindo um falhado a vermelho.') },
+  { src: walk5, n: '02j', cap: L('Phase 6 · Maintenance: a signal routed to its loop-back', 'Fase 6 · Manutenção: um sinal encaminhado para o seu retorno'), alt: L('Maintenance screen with feedback routing that classifies a signal and sends it back to an earlier phase.', 'Ecrã de manutenção com o encaminhamento de feedback, que classifica um sinal e o devolve a uma fase anterior.') },
+  { src: walk6, n: '02k', cap: L('Fix Bolt dashboard: bug reports and the fix log', 'Painel de Fix Bolts: relatórios de bugs e registo de correções'), alt: L('Fix Bolt dashboard listing bug reports with statuses and a fix log below.', 'Painel de Fix Bolts com a lista de relatórios de bugs e respetivos estados, e o registo de correções.') },
+];
+const tagLabel = { app: L('app', 'aplicação'), design: L('design', 'design'), thesis: L('thesis', 'tese'), bug: L('found by writing', 'encontrado ao escrever') } as const;
+const tagCount = (k: 'app' | 'design' | 'thesis' | 'bug') => hist.timeline.filter((e) => e.tag === k).length;
+
+const scholarlyLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: apex.apexTitle,
+  name: 'Apex',
+  author: { '@type': 'Person', name: 'Tomás dos Santos Taborda', url: 'https://tomastaborda.com/' },
+  contributor: { '@type': 'Person', name: 'Miguel Mira da Silva' },
+  datePublished: '2026-10-07',
+  inLanguage: 'en',
+  abstract: apex.abstract.en,
+  publisher: { '@type': 'CollegeOrUniversity', name: 'Instituto Superior Técnico, Universidade de Lisboa' },
+  url: 'https://tomastaborda.com/work/apex',
+  sameAs: ['https://github.com/thomastabs/apex', 'https://apex-bolt.com'],
+  encoding: { '@type': 'MediaObject', contentUrl: 'https://tomastaborda.com/docs/apex-dissertation.pdf', encodingFormat: 'application/pdf' },
+};
+---
+
+<BaseLayout lang={lang} title={L('Apex — MSc thesis', 'Apex — tese de mestrado')} description={apex.oneLiner[lang]}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(scholarlyLd)} />
+
+  <!-- ===== Header ===== -->
+  <header class="apex-head dot-grid">
+    <div class="container">
+      <nav class="crumbs meta" aria-label={L('Breadcrumb', 'Navegação estrutural')}>
+        <a class="pen-link pen-link--bare" href={localePath('work', lang)}>{t('nav.work')}</a> / <span aria-current="page">Apex</span>
+      </nav>
+      <p class="kicker"><span class="pen">§04.1</span> — {L('MSc thesis · case study', 'Tese de mestrado · caso de estudo')}</p>
+      <h1 class="apex-title">Apex<span class="pen">.</span></h1>
+      <p class="lead oneliner">{apex.oneLiner[lang]}</p>
+      <div class="annotated head-spec">
+        <SpecBlock rows={apex.header.map((r) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono }))} />
+        <MarginNote>{t('education.defended')} 23.10.2026 · 17/20</MarginNote>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Links bar ===== -->
+  <nav class="links-bar" aria-label={L('Thesis artefacts', 'Artefactos da tese')}>
+    <div class="container links-inner">
+      {groups.map((g) => (
+        <div class="lgroup">
+          <p class="kicker lg-label">{g.label}</p>
+          <ul role="list">
+            {apex.publishedLinks
+              .filter((l) => l.group === g.id)
+              .flatMap((l) => [{ label: l.label, href: l.href, primary: !!l.primary }, ...(l.extra ?? []).map((e) => ({ ...e, primary: false }))])
+              .map((l) => (
+                <li>
+                  <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href}>
+                    {l.label[lang]}{l.href.startsWith('http') ? ' ↗' : l.href.endsWith('.pptx') ? ' ↓' : l.href.startsWith('/docs/') ? '' : ' →'}
+                  </a>
+                </li>
+              ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </nav>
+
+  <div class="container apex-body">
+    <!-- ===== Abstract ===== -->
+    <section class="block" aria-labelledby="abstract">
+      <p class="kicker"><span class="pen">§01</span> — {L('Abstract', 'Resumo')}</p>
+      <h2 id="abstract">{L('In two sentences', 'Em duas frases')}</h2>
+      <p class="lead">{apex.abstractLead[lang]}</p>
+      <details class="full-abstract">
+        <summary class="meta upper">{L('Full abstract', 'Resumo completo')}</summary>
+        <p lang={lang === 'pt' ? 'pt-PT' : 'en'}>{apex.abstract[lang]}</p>
+      </details>
+    </section>
+
+    <!-- ===== Problem ===== -->
+    <section class="block" aria-labelledby="problem">
+      <p class="kicker"><span class="pen">§02</span> — {L('The problem', 'O problema')}</p>
+      <h2 id="problem">{L('Adoption has outpaced method', 'A adoção ultrapassou o método')}</h2>
+      <blockquote class="thesis-quote"><p>{apex.problemThesis[lang]}</p></blockquote>
+      <ul class="facts" role="list">
+        {apex.problemFacts.map((f) => (
+          <li class="annotated fact" data-reveal>
+            <p><span class="fact-stat">{f.stat[lang]}</span> {f.text[lang]}</p>
+            <MarginNote>{f.ref}</MarginNote>
+          </li>
+        ))}
+      </ul>
+      <p class="prose-p">
+        {L(
+          'Waterfall, Scrum, Kanban and the Agile Manifesto were designed for teams in which every contributor is human. They have no explicit structure for governing AI participation, bounding the context a model may act upon, or allocating responsibility over generated artefacts.',
+          'Waterfall, Scrum, Kanban e o Manifesto Ágil foram pensados para equipas em que todos os contribuidores são humanos. Não têm estrutura explícita para governar a participação da IA, delimitar o contexto sobre o qual um modelo pode agir, ou atribuir responsabilidade sobre os artefactos gerados.',
+        )}
+      </p>
+    </section>
+
+    <!-- ===== Framework ===== -->
+    <section class="block" aria-labelledby="framework">
+      <p class="kicker"><span class="pen">§03</span> — {L('The framework', 'A framework')}</p>
+      <h2 id="framework">{L('Six phases, five gates, one specification', 'Seis fases, cinco portões, uma especificação')}</h2>
+      <p class="prose-p">
+        {L(
+          'The framework is a method: phases, hats, artefacts and decision rules that prescribe how a team organises AI participation across the lifecycle, stated at the level of process rather than tooling. A Strategic Alignment stage decides whether a Unit of Work should exist at all. Six phases follow, each consuming the output of the one before and closed by a gate with a named owning hat. Failure never discards work: it returns it to a named earlier phase with the evidence attached.',
+          'A framework é um método: fases, chapéus, artefactos e regras de decisão que prescrevem como uma equipa organiza a participação da IA ao longo do ciclo de vida, ao nível do processo e não das ferramentas. Uma etapa de Alinhamento Estratégico decide se uma Unidade de Trabalho deve sequer existir. Seguem-se seis fases, cada uma a consumir o resultado da anterior e fechada por um portão com um chapéu responsável. Uma falha nunca deita trabalho fora: devolve-o a uma fase anterior identificada, com a evidência anexada.',
+        )}
+      </p>
+
+      <Figure n={1} caption={L('The six lifecycle phases, their gates and the three governed loop-backs out of Maintenance', 'As seis fases, os seus portões e os três retornos governados a partir da Manutenção')}>
+        <div class="fig-svg"><PhaseStrip lang={lang} /></div>
+      </Figure>
+
+      <div class="table-scroll">
+        <table class="phase-table">
+          <thead><tr><th scope="col">{L('Phase', 'Fase')}</th><th scope="col">{L('Role of AI', 'Papel da IA')}</th><th scope="col">{L('Exit control', 'Controlo de saída')}</th></tr></thead>
+          <tbody>
+            {apex.phases.map((p, i) => (
+              <tr><th scope="row"><span class="pen mono">P{i + 1}</span> {p.name[lang]}</th><td>{p.ai[lang]}</td><td class="mono-sm">{p.gate[lang]}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <h3>{L('Hats, not job titles', 'Chapéus, não cargos')}</h3>
+          <p>
+            {L(
+              'Every role is a hat: a function the framework requires to be performed, not a person who must be hired. One individual may wear several; on a small team an unfilled hat falls to whoever does the adjacent work. Logistics authority (Bolt Master) is kept separate from technical authority (Tech Lead), and every gate is attached to a named function.',
+              'Cada papel é um chapéu: uma função que a framework exige que seja desempenhada, e não uma pessoa a contratar. A mesma pessoa pode usar vários; numa equipa pequena, um chapéu por atribuir cabe a quem faz o trabalho adjacente. A autoridade logística (Bolt Master) fica separada da técnica (Tech Lead), e cada portão está ligado a uma função identificada.',
+            )}
+          </p>
+        </div>
+        <div>
+          <h3>{L('Spec-Anchored Continuity', 'Continuidade ancorada na especificação')}</h3>
+          <p>
+            {L(
+              'Every AI-generated artefact carries forward the context of previously validated phases through a persistent, versioned specification: a global layer (architecture, stack decisions, security policy) and a local layer (a story’s locked Gherkin and technical specification). Narrowing a model’s working context is treated as a control, not a convenience.',
+              'Cada artefacto gerado por IA transporta o contexto das fases já validadas através de uma especificação persistente e versionada: uma camada global (arquitetura, decisões de stack, política de segurança) e uma camada local (o Gherkin bloqueado e a especificação técnica de cada história). Estreitar o contexto de trabalho de um modelo é tratado como um controlo, não como uma conveniência.',
+            )}
+          </p>
+        </div>
+      </div>
+
+      <h3 class="sub-h">{L('Three governance metrics', 'Três métricas de governação')}</h3>
+      <dl class="metrics">
+        {apex.metrics.map((m) => (
+          <div><dt>{m.name}</dt><dd>{m.desc[lang]}</dd></div>
+        ))}
+      </dl>
+    </section>
+
+    <!-- ===== Reference implementation ===== -->
+    <section class="block" aria-labelledby="app">
+      <p class="kicker"><span class="pen">§04</span> — {L('Reference implementation', 'Implementação de referência')}</p>
+      <h2 id="app">{L('The Apex app', 'A aplicação Apex')}</h2>
+      <p class="prose-p">
+        {L(
+          'Apex is not positioned against a coding agent. A coding agent accelerates the writing of code; Apex governs whether the code that results still answers the requirement that prompted it. It is a split full-stack app, a Next.js/TypeScript frontend and a Python/FastAPI backend over a typed REST API, that runs every phase, gate and artefact against a real project-management backend (Taiga or Plane) and keeps context in human-readable, versioned spec files.',
+          'O Apex não compete com um agente de programação. Um agente acelera a escrita de código; o Apex governa se o código resultante ainda responde ao requisito que o originou. É uma aplicação full-stack dividida, frontend em Next.js/TypeScript e backend em Python/FastAPI sobre uma API REST tipada, que executa cada fase, portão e artefacto sobre uma ferramenta real de gestão de projetos (Taiga ou Plane) e guarda o contexto em ficheiros de especificação legíveis e versionados.',
+        )}
+      </p>
+      <ul class="caps" role="list">
+        {apex.capabilities.map((c, i) => (
+          <li data-reveal><p class="cap-n mono">{String(i + 1).padStart(2, '0')}</p><h3>{c.title[lang]}</h3><p>{c.text[lang]}</p></li>
+        ))}
+      </ul>
+
+      <Figure n={2} caption={L('Apex architecture: internal request path and the specification store', 'Arquitetura do Apex: caminho interno dos pedidos e o repositório de especificações')}>
+        <Image src={architecture} alt={L('Component diagram: Next.js frontend with React Query, Zustand and a PM adapter calls a FastAPI backend whose phase routers reach a ContextService and a guarded egress layer; specs are stored as Markdown plus a story index on local disk or Azure File Share.', 'Diagrama de componentes: o frontend Next.js, com React Query, Zustand e um adaptador de gestão de projetos, chama um backend FastAPI cujos routers de fase acedem a um ContextService e a uma camada de saída protegida; as especificações ficam em Markdown e num índice de histórias, em disco local ou Azure File Share.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" />
+      </Figure>
+
+      <ul class="gallery" role="list">
+        {gallery.map((g) => (
+          <li>
+            <Figure n={g.n} caption={g.cap}>
+              <a href={g.src.src} class="zoom" aria-label={`${L('Open full size', 'Abrir em tamanho real')}: ${g.cap}`}>
+                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" />
+              </a>
+            </Figure>
+          </li>
+        ))}
+      </ul>
+
+      <Figure n="02e" caption={L('Deployment Gate in Apex: delta verdict, deploy pack, traceability matrix and the two human sign-offs', 'Portão de Implantação no Apex: veredicto do delta, pacote de implantação, matriz de rastreabilidade e as duas aprovações humanas')}>
+        <Image src={gate} alt={L('Deployment Gate screen with an infra delta verdict, a deploy pack, a traceability matrix with three passing scenarios, and two unchecked human gatekeeper sign-offs.', 'Ecrã do Portão de Implantação com o veredicto do delta de infraestrutura, um pacote de implantação, uma matriz de rastreabilidade com três cenários aprovados e duas aprovações humanas por assinalar.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" />
+      </Figure>
+
+      <h3 class="sub-h walk-h">{L('The demonstration, phase by phase', 'A demonstração, fase a fase')}</h3>
+      <p class="prose-p">{L('Screens from the dissertation’s demonstration chapter, captured while Apex governed the Outfolio build.', 'Ecrãs do capítulo de demonstração da dissertação, capturados enquanto o Apex governava a construção do Outfolio.')}</p>
+      <ul class="gallery gallery--3" role="list">
+        {walkthrough.map((g) => (
+          <li>
+            <Figure n={g.n} caption={g.cap}>
+              <a href={g.src.src} class="zoom" aria-label={`${L('Open full size', 'Abrir em tamanho real')}: ${g.cap}`}>
+                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 1100px) 360px, (min-width: 700px) 50vw, 100vw" />
+              </a>
+            </Figure>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ===== Production standards ===== -->
+    <section class="block" aria-labelledby="standards">
+      <p class="kicker"><span class="pen">§05</span> — {L('Engineering', 'Engenharia')}</p>
+      <h2 id="standards">{L('Built to production standards', 'Construída com padrões de produção')}</h2>
+      <ul class="stats" role="list">
+        {apex.stats.map((s) => <li><span class="stat-v">{s.v}</span><span class="stat-l">{s.l[lang]}</span></li>)}
+      </ul>
+      <SpecBlock title="Stack" rows={apex.stack.map((s) => ({ k: s.k[lang], v: s.v, mono: true }))} />
+    </section>
+
+    <!-- ===== Demonstration ===== -->
+    <section class="block" aria-labelledby="outfolio">
+      <p class="kicker"><span class="pen">§06</span> — {L('Demonstration', 'Demonstração')}</p>
+      <h2 id="outfolio">Outfolio</h2>
+      <div class="annotated">
+        <p class="prose-p">
+          {L(
+            'The framework was carried from Strategic Alignment to a deployed product over nine calendar days, growing from six pre-committed epics to nine epics and 54 stories, none abandoned, with all three loop-back routes exercised more than once.',
+            'A framework foi levada do Alinhamento Estratégico a um produto implantado em nove dias de calendário, crescendo de seis épicos assumidos à partida para nove épicos e 54 histórias, nenhuma abandonada, com os três retornos governados usados mais de uma vez.',
+          )}
+        </p>
+        <MarginNote>9 {L('days', 'dias')} · 6 → 9 {L('epics', 'épicos')} · 54 {L('stories', 'histórias')}</MarginNote>
+      </div>
+      <dl class="exports">
+        {apex.outfolio.exports.map((e) => <div><dt>{loc(e.k, lang)}</dt><dd>{e.v}</dd></div>)}
+      </dl>
+      <div class="btn-set">
+        <a class="btn" href="https://outfolio-v1.vercel.app/">{L('Live product', 'Produto online')} ↗</a>
+        <a class="btn btn--ghost pen-link pen-link--bare" href="https://github.com/thomastabs/OutfolioV1">{L('Source', 'Código')} ↗</a>
+      </div>
+      <Figure n={3} caption={L('Outfolio dashboard: the product built for the lifecycle demonstration', 'Painel do Outfolio: o produto construído para a demonstração do ciclo de vida')}>
+        <Image src={outfolioDash} alt={L('Outfolio home page with the product title, account actions and a row of published project highlights.', 'Página inicial do Outfolio com o título do produto, ações da conta e uma fila de projetos publicados em destaque.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" />
+      </Figure>
+    </section>
+
+    <!-- ===== Evaluation ===== -->
+    <section class="block" aria-labelledby="evaluation">
+      <p class="kicker"><span class="pen">§07</span> — {L('Evaluation and results', 'Avaliação e resultados')}</p>
+      <h2 id="evaluation">{L('What the evidence says', 'O que diz a evidência')}</h2>
+      <div class="table-scroll">
+        <table class="results">
+          <thead><tr><th scope="col">{L('Measure', 'Medida')}</th><th scope="col">{L('Result', 'Resultado')}</th></tr></thead>
+          <tbody>{apex.results.map((r) => <tr><th scope="row">{r.k[lang]}</th><td class="mono-sm">{r.v[lang]}</td></tr>)}</tbody>
+        </table>
+      </div>
+      <p class="prose-p muted-note">{L('The limitations below are part of the result, not a footnote to it.', 'As limitações abaixo fazem parte do resultado, não são uma nota de rodapé.')}</p>
+      <div class="findings">
+        {apex.findings.map((f) => (
+          <article data-reveal><h3>{f.title[lang]}</h3><p>{f.text[lang]}</p></article>
+        ))}
+      </div>
+    </section>
+
+    <!-- ===== History ===== -->
+    <section class="block" aria-labelledby="history">
+      <p class="kicker"><span class="pen">§08</span> — {L('History', 'Histórico')}</p>
+      <h2 id="history">{L('How it was built', 'Como foi construído')}</h2>
+      <p class="prose-p">{L(
+        'Six months, one repository. The app and the dissertation share a git history, so the way the work was built can be read back out of it: when the stack changed, when the thesis started pulling commits away from the app, and which bugs were only found by writing about the tool.',
+        'Seis meses, um repositório. A aplicação e a dissertação partilham o mesmo histórico git, por isso a forma como o trabalho foi feito pode ser lida a partir dele: quando a stack mudou, quando a tese começou a tirar commits à aplicação e que bugs só apareceram ao escrever sobre a ferramenta.')}</p>
+      <ul class="stats" role="list">
+        {hist.historyStats.map((s) => <li><span class="stat-v">{s.v}</span><span class="stat-l">{s.l[lang]}</span></li>)}
+      </ul>
+
+      <Figure n={4} caption={L('Commit graph: main, the five merged feature branches and the dissertation track. Dot size is commits per week.', 'Grafo de commits: main, os cinco ramos de funcionalidade integrados e a linha da dissertação. O tamanho de cada ponto é o número de commits por semana.')}>
+        <div class="fig-svg"><CommitGraph lang={lang} /></div>
+      </Figure>
+
+      <div class="two-col hist-cols">
+        <div>
+          <h3 class="sub-h">{L('Commits per day', 'Commits por dia')}</h3>
+          <CommitHeatmap lang={lang} />
+        </div>
+        <div>
+          <h3 class="sub-h">{L('By commit type', 'Por tipo de commit')}</h3>
+          <dl class="tax">
+            {hist.taxonomy.map((b) => (
+              <div><dt class="mono">{b.k}</dt><dd><span class="tax-bar" style={`--w:${(b.v / hist.taxonomy[0].v) * 100}%`}></span><span class="mono tax-v">{b.v}</span></dd></div>
+            ))}
+          </dl>
+        </div>
+      </div>
+
+      <h3 class="sub-h">{L('Timeline: product, design and thesis', 'Linha do tempo: produto, design e tese')}</h3>
+      <div class="tl-filters" data-tl-filters hidden role="group" aria-label={L('Filter the timeline', 'Filtrar a linha do tempo')}>
+        <button type="button" class="tab" data-f="all" aria-pressed="true">{L('all', 'tudo')} <span class="count">{hist.timeline.length}</span></button>
+        {(['app', 'design', 'thesis', 'bug'] as const).map((k) => (
+          <button type="button" class="tab" data-f={k} aria-pressed="false">{tagLabel[k]} <span class="count">{tagCount(k)}</span></button>
+        ))}
+      </div>
+      <ol class="hist-tl" role="list" data-tl>
+        {hist.timeline.map((e) => (
+          <li data-tag={e.tag}>
+            <time class="mono" datetime={e.d}>{formatDate(new Date(e.d), lang)}</time>
+            <span class:list={['tl-tag mono', e.tag]}>{tagLabel[e.tag]}</span>
+            <div><p class="tl-t">{e.t[lang]}</p><p class="tl-x">{e.x[lang]}</p></div>
+          </li>
+        ))}
+      </ol>
+
+      <h3 class="sub-h">{L('Diagrams, then and now', 'Diagramas, antes e depois')}</h3>
+      <ul class="gallery compare" role="list">
+        <li>
+          <Figure n="04a" caption={L('Architecture, 17 Jun 2026: one diagram for everything', 'Arquitetura, 17 jun. 2026: um só diagrama para tudo')}>
+            <a href={archJun.src} class="zoom" aria-label={L('Open full size: architecture, June', 'Abrir em tamanho real: arquitetura, junho')}><Image src={archJun} alt={L('June architecture diagram with frontend, backend, external services and the spec store in a single component view.', 'Diagrama de arquitetura de junho com frontend, backend, serviços externos e o repositório de especificações numa só vista.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04b" caption={L('Architecture, 13 Sep 2026: split into request path and guarded egress (fig. 02)', 'Arquitetura, 13 set. 2026: dividida em caminho dos pedidos e saída protegida (fig. 02)')}>
+            <a href={architecture.src} class="zoom" aria-label={L('Open full size: architecture, September', 'Abrir em tamanho real: arquitetura, setembro')}><Image src={architecture} alt={L('September architecture diagram, part 1 of 2, showing the internal request path and the spec store.', 'Diagrama de arquitetura de setembro, parte 1 de 2, com o caminho interno dos pedidos e o repositório de especificações.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04c" caption={L('User flow, 17 Jun 2026', 'Fluxo do utilizador, 17 jun. 2026')}>
+            <a href={flowJun.src} class="zoom" aria-label={L('Open full size: user flow, June', 'Abrir em tamanho real: fluxo do utilizador, junho')}><Image src={flowJun} alt={L('June user-flow diagram: a long vertical sequence through the six phases.', 'Diagrama de fluxo do utilizador de junho: uma longa sequência vertical pelas seis fases.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
+          </Figure>
+        </li>
+        <li>
+          <Figure n="04d" caption={L('User flow, 21 Aug 2026: redrawn for the dissertation', 'Fluxo do utilizador, 21 ago. 2026: redesenhado para a dissertação')}>
+            <a href={flowAug.src} class="zoom" aria-label={L('Open full size: user flow, August', 'Abrir em tamanho real: fluxo do utilizador, agosto')}><Image src={flowAug} alt={L('August user-flow diagram, redrawn with swimlanes for the dissertation.', 'Diagrama de fluxo do utilizador de agosto, redesenhado com raias para a dissertação.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
+          </Figure>
+        </li>
+      </ul>
+      <Figure n="04e" caption={L('The framework’s big picture, 20 Jul 2026: phases, inputs, outputs and literature grounding', 'A visão geral da framework, 20 jul. 2026: fases, entradas, saídas e fundamentação na literatura')}>
+        <a href={bigPicture.src} class="zoom" aria-label={L('Open full size: framework big picture', 'Abrir em tamanho real: visão geral da framework')}><Image src={bigPicture} alt={L('Framework big-picture diagram: Strategic Alignment followed by the six phases, each with its inputs, outputs and supporting literature.', 'Diagrama geral da framework: Alinhamento Estratégico seguido das seis fases, cada uma com entradas, saídas e literatura de suporte.')} widths={[720, 1200, 1780]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" /></a>
+      </Figure>
+
+      <a class="ledger-card" href="/work/apex/ledger/">
+        <p class="kicker">{L('Full record', 'Registo completo')}</p>
+        <h3>Apex &amp; Thesis Ledger</h3>
+        <p>{L('The original dashboard this section draws on: every timeline entry, chapter write dates, page budgets and the backlog close-out.', 'O painel original em que esta secção se baseia: todas as entradas da linha do tempo, datas de escrita dos capítulos, limites de páginas e o fecho do backlog.')}</p>
+        <span class="meta upper">{L('Open the ledger', 'Abrir o diário')} →</span>
+      </a>
+    </section>
+
+    <!-- ===== What I learned ===== -->
+    <section class="block" aria-labelledby="learned">
+      <p class="kicker"><span class="pen">§09</span> — {L('What I learned', 'O que aprendi')}</p>
+      <h2 id="learned" class="sr-only">{L('What I learned', 'O que aprendi')}</h2>
+      <Callout type="todo"><p>TODO: Tomás to write 3–4 short first-person points.</p></Callout>
+    </section>
+
+    <!-- ===== Cite ===== -->
+    <section class="block" aria-labelledby="cite">
+      <p class="kicker"><span class="pen">§10</span> — {L('Cite this work', 'Citar este trabalho')}</p>
+      <h2 id="cite" class="sr-only">{L('Cite this work', 'Citar este trabalho')}</h2>
+      <div class="bib prose" id="bibtex" data-no-auto-copy>
+        <Code code={apex.bibtex} lang="bibtex" themes={{ light: 'github-light-high-contrast', dark: 'github-dark-dimmed' }} defaultColor={false} />
+      </div>
+      <CopyButton target="#bibtex code" label={L('Copy BibTeX', 'Copiar BibTeX')} copiedLabel={t('cta.copied')} />
+    </section>
+
+    {related.length > 0 && (
+      <section class="block" aria-labelledby="related">
+        <p class="kicker"><span class="pen">§11</span> — {t('notebook.related')}</p>
+        <h2 id="related">{t('notebook.relatedTitle')}</h2>
+        <div>{related.map((p) => <PostCard {...postCardProps(p, t)} />)}</div>
+        <a class="pen-link mono" href={tagHref('apex', lang)}>#apex →</a>
+      </section>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .apex-head { padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) var(--s-7); border-bottom: 1px solid var(--rule); }
+  .apex-head .container > * + * { margin-top: var(--s-4); }
+  .crumbs { color: var(--muted); }
+  .apex-title { font-size: var(--step-hero); font-variation-settings: 'opsz' 144; letter-spacing: -0.028em; line-height: 1; }
+  .oneliner { max-width: 52ch; }
+  .head-spec { margin-top: var(--s-6) !important; }
+
+  .links-bar { border-bottom: 1px solid var(--rule); background: var(--surface); }
+  .links-inner { display: grid; gap: var(--s-5) var(--s-7); padding-block: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .lg-label { color: var(--muted); margin-bottom: var(--s-2); }
+  .lgroup ul { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); padding: 0; list-style: none; }
+  .lgroup li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); }
+  .lgroup .btn { white-space: normal; text-align: left; }
+
+  .apex-body { padding-top: var(--s-6); }
+  .block { padding-top: var(--s-8); }
+  .block > * + * { margin-top: var(--s-4); }
+  .block > h2 { margin-top: var(--s-3); max-width: 24ch; }
+  .prose-p { max-width: var(--measure); color: var(--ink-2); }
+
+  .full-abstract { max-width: var(--measure); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .full-abstract summary { cursor: pointer; padding: var(--s-3) 0; min-height: 44px; display: flex; align-items: center; gap: 0.5em; list-style: none; }
+  .full-abstract summary::-webkit-details-marker { display: none; }
+  .full-abstract summary::before { content: '+'; color: var(--pen); width: 1ch; }
+  .full-abstract[open] summary::before { content: '−'; }
+  .full-abstract p { padding-bottom: var(--s-4); color: var(--ink-2); }
+
+  .thesis-quote { max-width: 46ch; padding-left: var(--s-4); border-left: 2px solid var(--pen); font-family: var(--font-display); font-style: italic; font-size: var(--step-2); line-height: 1.3; }
+  .facts { padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .fact { padding: var(--s-4) 0; border-bottom: 1px solid var(--rule); }
+  .fact > p { max-width: 60ch; color: var(--ink-2); }
+  .fact-stat { display: block; font-family: var(--font-mono); font-size: var(--step-2); color: var(--ink); letter-spacing: -0.01em; margin-bottom: var(--s-1); }
+
+  .fig-svg { padding: var(--s-5) var(--s-4); background: var(--bg); }
+  .table-scroll { overflow-x: auto; }
+  .phase-table, .results { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  .phase-table th, .phase-table td, .results th, .results td { text-align: left; vertical-align: top; padding: 0.7rem 1rem 0.7rem 0; border-bottom: 1px solid var(--rule); }
+  .phase-table thead th, .results thead th { font-family: var(--font-mono); font-size: var(--step--2); font-weight: 400; text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--muted); border-bottom-color: var(--rule-strong); }
+  .phase-table tbody th, .results tbody th { font-weight: 500; }
+  .phase-table td { color: var(--ink-2); }
+  .mono-sm { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); }
+
+  .two-col { display: grid; gap: var(--s-6); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); padding-top: var(--s-4); }
+  .two-col h3, .sub-h { font-size: var(--step-1); margin-bottom: var(--s-2); }
+  .two-col p { color: var(--ink-2); }
+  .sub-h { padding-top: var(--s-4); }
+  .metrics { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--rule-strong); }
+  .metrics div { display: grid; grid-template-columns: minmax(10rem, 16rem) 1fr; gap: var(--s-2) var(--s-6); padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); }
+  .metrics dt { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink); }
+  .metrics dd { margin: 0; color: var(--ink-2); }
+  @media (max-width: 640px) { .metrics div { grid-template-columns: 1fr; } }
+
+  .caps { display: grid; gap: var(--s-4); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); padding: 0; list-style: none; }
+  .caps li { padding: var(--s-4) var(--s-5); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); }
+  .caps h3 { font-size: var(--step-1); margin: var(--s-1) 0 var(--s-2); }
+  .caps p:last-child { color: var(--ink-2); font-size: 0.96rem; }
+  .cap-n { font-size: var(--step--2); color: var(--pen); }
+  :global(.fig-light) { background: #fff; }
+
+  .gallery { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); padding: 0; list-style: none; }
+  .zoom { display: block; }
+  section > :global(.fig), section > .gallery, section > .caps { margin-top: var(--s-7); }
+  .stats + :global(*) { margin-top: var(--s-6); }
+  .bib + :global(*) { margin-top: var(--s-4); }
+
+  .stats { display: flex; flex-wrap: wrap; gap: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); border-bottom: 1px solid var(--rule-strong); }
+  .stats li { flex: 1 1 9rem; padding: var(--s-4) var(--s-4) var(--s-4) 0; display: grid; gap: var(--s-1); }
+  .stats li + li { padding-left: var(--s-4); border-left: 1px solid var(--rule); }
+  .stat-v { font-family: var(--font-mono); font-size: var(--step-2); color: var(--ink); }
+  .stat-l { font-family: var(--font-mono); font-size: var(--step--2); text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--muted); }
+
+  .exports { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: var(--s-4); margin: 0; }
+  .exports div { padding: var(--s-4); border: 1px dashed var(--rule-strong); border-radius: var(--radius); }
+  .exports dt { font-family: var(--font-mono); font-size: var(--step--2); text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--muted); }
+  .exports dd { margin: var(--s-1) 0 0; font-family: var(--font-mono); font-size: var(--step-2); color: var(--ink); }
+
+  .muted-note { font-style: italic; }
+  .findings { display: grid; gap: var(--s-4); }
+  .findings article { padding: var(--s-4) 0 var(--s-4) var(--s-5); border-left: 2px solid var(--rule-strong); max-width: var(--measure); }
+  .findings h3 { font-size: var(--step-1); margin-bottom: var(--s-2); }
+  .findings p { color: var(--ink-2); }
+
+  .ledger-card { display: block; max-width: 46rem; padding: var(--s-6); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: border-color var(--dur) var(--ease); }
+  .ledger-card:hover { border-color: var(--ink); }
+  .ledger-card { margin-top: var(--s-7); }
+  .ledger-card h3 { font-size: var(--step-2); margin-top: var(--s-2); }
+  .gallery--3 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); }
+  .walk-h { padding-top: var(--s-7); }
+  .compare { margin-bottom: var(--s-6); }
+  .compare :global(.fig-tall) { max-height: 34rem; object-fit: contain; }
+  .hist-cols { margin-top: var(--s-6); }
+  .tax { margin: 0; display: grid; gap: var(--s-2); }
+  .tax div { display: grid; grid-template-columns: 5.5rem 1fr; align-items: center; gap: var(--s-3); }
+  .tax dt { font-size: var(--step--1); color: var(--ink-2); }
+  .tax dd { margin: 0; display: flex; align-items: center; gap: var(--s-2); }
+  .tax-bar { display: block; height: 10px; width: var(--w); background: var(--pen); border-radius: 2px; opacity: 0.85; }
+  .tax-v { font-size: var(--step--1); color: var(--ink); }
+  .tl-filters { display: flex; flex-wrap: wrap; margin-bottom: var(--s-4); border-bottom: 1px solid var(--rule-strong); }
+  :global(.js) .tl-filters[hidden] { display: flex; }
+  .tab { display: inline-flex; align-items: center; gap: 0.45em; margin-bottom: -1px; padding: 0.55rem 0.9rem; min-height: 44px; border: 1px solid transparent; border-bottom-color: var(--rule-strong); border-radius: var(--radius-sm) var(--radius-sm) 0 0; background: transparent; color: var(--ink-2); font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: var(--tracking-mono); cursor: pointer; }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-pressed='true'] { color: var(--ink); background: var(--surface); border-color: var(--rule-strong); border-bottom-color: var(--surface); }
+  .tab .count { color: var(--muted); font-size: 0.85em; }
+  .hist-tl { padding: 0; margin: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .hist-tl li { display: grid; grid-template-columns: 7.5rem 9.5rem 1fr; gap: var(--s-4); padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .hist-tl li[hidden] { display: none; }
+  .hist-tl time { font-size: var(--step--1); color: var(--muted); padding-top: 0.15rem; }
+  .tl-tag { justify-self: start; font-size: var(--step--2); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.15em 0.5em; border-radius: 3px; border: 1px solid var(--rule-strong); color: var(--ink-2); }
+  .tl-tag.thesis { border-color: var(--pen); color: var(--pen); }
+  .tl-tag.design { border-color: var(--tag-work); color: var(--tag-work); }
+  .hist-tl li[data-tag='design'] .tl-t { font-family: var(--font-display); font-size: var(--step-1); font-weight: 560; }
+  .tl-tag.bug { background: var(--pen-soft); border-color: var(--pen); color: var(--ink); }
+  .tl-t { font-weight: 500; color: var(--ink); }
+  .tl-x { color: var(--ink-2); font-size: 0.95rem; }
+  @media (max-width: 720px) { .hist-tl li { grid-template-columns: 1fr; gap: var(--s-1); } }
+  .ledger-card p { margin: var(--s-3) 0 var(--s-4); color: var(--ink-2); }
+  .ledger-card .meta { color: var(--pen); }
+
+  .bib { max-width: none; }
+  .bib :global(pre) { white-space: pre-wrap; word-break: break-word; }
+</style>
+
+<script>
+  /* Timeline filter. Without JS the tabs stay hidden and every entry shows. */
+  const bar = document.querySelector<HTMLElement>('[data-tl-filters]');
+  const list = document.querySelector<HTMLElement>('[data-tl]');
+  if (bar && list) {
+    bar.hidden = false;
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-f]');
+      if (!btn) return;
+      const f = btn.dataset.f;
+      bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      list.querySelectorAll<HTMLElement>('li').forEach((li) => { li.hidden = f !== 'all' && li.dataset.tag !== f; });
+    });
+  }
+</script>

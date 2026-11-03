@@ -1,0 +1,52 @@
+---
+/* Commits per day, GitHub-style, drawn at build time. */
+import { dailyCommits, span } from '@/data/apex-history';
+import { formatDate, type Locale } from '@/i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const C = 13, G = 3, P = C + G, LEFT = 30, TOP = 18;
+const start = new Date(span.first + 'T00:00:00Z');
+start.setUTCDate(start.getUTCDate() - start.getUTCDay());
+const end = new Date(span.last + 'T00:00:00Z');
+const cells: { x: number; y: number; d: string; n: number }[] = [];
+const monthLabels: { x: number; label: string }[] = [];
+let lastMonth = -1;
+for (let d = new Date(start), i = 0; d <= end; d.setUTCDate(d.getUTCDate() + 1), i++) {
+  const w = Math.floor(i / 7), dow = d.getUTCDay(), iso = d.toISOString().slice(0, 10);
+  if (dow === 0 && d.getUTCMonth() !== lastMonth) {
+    lastMonth = d.getUTCMonth();
+    monthLabels.push({ x: LEFT + w * P, label: formatDate(d, lang, { month: 'short', day: undefined, year: undefined }) });
+  }
+  cells.push({ x: LEFT + w * P, y: TOP + dow * P, d: iso, n: dailyCommits[iso] ?? 0 });
+}
+const weeks = Math.ceil(cells.length / 7);
+const W = LEFT + weeks * P, H = TOP + 7 * P;
+const level = (n: number) => (n === 0 ? 0 : n <= 3 ? 1 : n <= 7 ? 2 : n <= 13 ? 3 : 4);
+const days = lang === 'pt' ? ['', 'seg', '', 'qua', '', 'sex', ''] : ['', 'Mon', '', 'Wed', '', 'Fri', ''];
+---
+<div class="hm-scroll">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={lang === 'pt' ? 'Commits por dia, de abril a outubro de 2026' : 'Commits per day, April to October 2026'}>
+    {monthLabels.map((m) => <text class="lbl" x={m.x} y="11">{m.label}</text>)}
+    {days.map((d, i) => d && <text class="lbl" x="0" y={TOP + i * P + 10}>{d}</text>)}
+    {cells.map((c) => (
+      <rect x={c.x} y={c.y} width={C} height={C} rx="2" data-l={level(c.n)}><title>{`${c.d}: ${c.n}`}</title></rect>
+    ))}
+  </svg>
+  <p class="legend mono" aria-hidden="true">
+    {lang === 'pt' ? 'menos' : 'less'}
+    {[0, 1, 2, 3, 4].map((l) => <svg width="13" height="13"><rect width="13" height="13" rx="2" data-l={l} /></svg>)}
+    {lang === 'pt' ? 'mais' : 'more'}
+  </p>
+</div>
+<style>
+  .hm-scroll { overflow-x: auto; }
+  svg { display: block; }
+  .hm-scroll > svg { width: 100%; min-width: 520px; max-width: 760px; height: auto; }
+  .lbl { font-family: var(--font-mono); font-size: 9.5px; fill: var(--muted); }
+  rect { fill: var(--surface-2); stroke: var(--rule); stroke-width: 0.5; }
+  rect[data-l='1'] { fill: color-mix(in srgb, var(--pen) 22%, var(--surface-2)); stroke: none; }
+  rect[data-l='2'] { fill: color-mix(in srgb, var(--pen) 45%, var(--surface-2)); stroke: none; }
+  rect[data-l='3'] { fill: color-mix(in srgb, var(--pen) 70%, var(--surface-2)); stroke: none; }
+  rect[data-l='4'] { fill: var(--pen); stroke: none; }
+  .legend { display: flex; align-items: center; gap: 4px; margin-top: var(--s-2); font-size: var(--step--2); color: var(--muted); }
+</style>

@@ -1,0 +1,69 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+interface Props { lang: Locale }
+const t = useTranslations(Astro.props.lang);
+---
+<button class="theme-toggle" type="button" aria-pressed="false" data-theme-toggle>
+  <span class="sr-only">{t('a11y.theme')}</span>
+  <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+    <circle cx="12" cy="12" r="4.2" />
+    <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
+  </svg>
+  <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M19.5 14.6A8 8 0 0 1 9.4 4.5a8 8 0 1 0 10.1 10.1Z" />
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--ink-2);
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .theme-toggle:hover { color: var(--ink); border-color: var(--rule-strong); }
+  .theme-toggle svg { width: 20px; height: 20px; grid-area: 1 / 1; }
+  .icon-moon { display: none; }
+  .theme-toggle[aria-pressed='true'] .icon-sun { display: none; }
+  .theme-toggle[aria-pressed='true'] .icon-moon { display: block; }
+</style>
+
+<script>
+  const KEY = 'theme';
+  const root = document.documentElement;
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  const effective = () =>
+    root.dataset.theme === 'dark' || (root.dataset.theme !== 'light' && media.matches) ? 'dark' : 'light';
+
+  function sync() {
+    const dark = effective() === 'dark';
+    document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(dark)),
+    );
+    document.dispatchEvent(new CustomEvent('themechange', { detail: { theme: effective() } }));
+  }
+
+  function apply(next: 'light' | 'dark') {
+    const run = () => {
+      root.dataset.theme = next;
+      try { localStorage.setItem(KEY, next); } catch {}
+      sync();
+    };
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+    if (doc.startViewTransition && !reduce.matches) doc.startViewTransition(run);
+    else run();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((b) =>
+    b.addEventListener('click', () => apply(effective() === 'dark' ? 'light' : 'dark')),
+  );
+  media.addEventListener('change', sync);
+  sync();
+</script>

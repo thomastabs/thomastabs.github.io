@@ -1,0 +1,77 @@
+---
+import TagChip from './TagChip.astro';
+type Kind = 'work' | 'study' | 'teaching' | 'community' | 'milestone';
+interface Props {
+  id?: string;
+  period: string;
+  title: string;
+  org?: string;
+  tags?: { kind: Kind; label: string }[];
+  notesHref?: string;
+  notesLabel?: string;
+  stack?: string[];
+  headingLevel?: 'h2' | 'h3';
+}
+const { id, period, title, org, tags = [], notesHref, notesLabel = 'Read the notes', stack = [], headingLevel: H = 'h3' } = Astro.props;
+const kind = tags[0]?.kind ?? 'work';
+---
+<li class="tl-entry" id={id} data-kind={kind} data-tags={tags.map((t) => t.kind).join(' ')} data-reveal>
+  <span class="node" aria-hidden="true"></span>
+  <p class="period meta">{period}</p>
+  <div class="body">
+    <H class="tl-title">{title}</H>
+    {org && <p class="org">{org}</p>}
+    <div class="desc"><slot /></div>
+    {(stack.length > 0 || tags.length > 0) && (
+      <div class="chips">
+        {tags.map((t) => <TagChip kind={t.kind} label={t.label} />)}
+        {stack.map((s) => <TagChip label={s} />)}
+      </div>
+    )}
+    {notesHref && <a class="pen-link notes" href={notesHref}>{notesLabel} →</a>}
+  </div>
+</li>
+<style>
+  .tl-entry {
+    position: relative;
+    display: grid;
+    grid-template-columns: 10.5rem minmax(0, 1fr);
+    gap: var(--s-2) var(--s-6);
+    padding: 0 0 var(--s-7) var(--s-6);
+    list-style: none;
+  }
+  /* axis */
+  .tl-entry::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0.75rem;
+    bottom: -0.5rem;
+    width: 1px;
+    background: var(--rule-strong);
+  }
+  .tl-entry:last-child::before { background: linear-gradient(var(--rule-strong), transparent); }
+  .node {
+    position: absolute;
+    left: 0;
+    top: 0.42rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--tag-work);
+  }
+  [data-kind='study'] .node { border-color: var(--tag-study); }
+  [data-kind='teaching'] .node { border-color: var(--tag-teaching); }
+  [data-kind='community'] .node { border-color: var(--tag-community); }
+  [data-kind='milestone'] .node { border-color: var(--pen); background: var(--pen); }
+  .period { padding-top: 0.2rem; text-transform: uppercase; }
+  .tl-title { font-size: var(--step-1); }
+  .org { margin-top: 0.15rem; font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); }
+  .desc { margin-top: var(--s-3); color: var(--ink-2); max-width: 62ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+  .notes { display: inline-block; margin-top: var(--s-4); font-family: var(--font-mono); font-size: var(--step--1); }
+  @media (max-width: 720px) {
+    .tl-entry { grid-template-columns: 1fr; padding-left: var(--s-5); }
+  }
+</style>

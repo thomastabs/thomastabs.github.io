@@ -1,0 +1,259 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import DimensionLine from '@/components/DimensionLine.astro';
+import SpecBlock from '@/components/SpecBlock.astro';
+import TimelineEntry from '@/components/TimelineEntry.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import Figure from '@/components/Figure.astro';
+import MarginNote from '@/components/MarginNote.astro';
+import CopyButton from '@/components/CopyButton.astro';
+import PostCard from '@/components/PostCard.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import { getImage } from 'astro:assets';
+import sceneWide from '@/assets/portrait/scene-wide.jpg';
+import sceneTall from '@/assets/portrait/scene-tall.jpg';
+import portrait from '@/assets/portrait/portrait.jpg';
+import { useTranslations, type Locale } from '@/i18n';
+import { localePath } from '@/i18n/routes';
+import { about } from '@/data/about';
+import { skills } from '@/data/skills';
+import { experience } from '@/data/experience';
+import { education } from '@/data/education';
+import { profile } from '@/data/links';
+import { getWork, cardProps } from '@/lib/work';
+import { getPosts, cardProps as postCardProps, indexHref } from '@/lib/notebook';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const roles = experience.slice(0, 3);
+const { featured } = await getWork();
+const [apex, ...rest] = featured;
+const others = rest.slice(0, 3);
+const latest = (await getPosts(lang)).slice(0, 3);
+const wide = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: sceneWide, width: w, format: 'webp', quality: 78 })));
+const tall = await Promise.all([480, 800, 1080].map((w) => getImage({ src: sceneTall, width: w, format: 'webp', quality: 78 })));
+const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.map((i) => `${i.src} ${i.options.width}w`).join(', ');
+
+const localAnchors = [...roles.map((r) => r.id), ...education.map((e) => e.id), 'contact'];
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Tomás Taborda',
+  jobTitle: lang === 'pt' ? 'Engenheiro de Software' : 'Software Engineer',
+  url: 'https://tomastaborda.com/',
+  email: `mailto:${profile.email}`,
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'Instituto Superior Técnico', url: 'https://tecnico.ulisboa.pt/' },
+  sameAs: [profile.github, profile.linkedin],
+};
+---
+
+<BaseLayout lang={lang} title={t('home.title')}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(personLd)} />
+
+  <Hero lang={lang} localAnchors={localAnchors} />
+
+  <!-- §01 About -->
+  <section class="container section" id="about" aria-labelledby="about-title">
+    <SectionHeading n={1} label={t('section.about')} title={t('about.title')} id="about-title" />
+    <div class="about-grid">
+      <div class="about-text" data-reveal>
+        {about.map((p) => <p>{p[lang]}</p>)}
+        <SpecBlock
+          title={t('about.skills')}
+          compact
+          rows={skills.map((g) => ({ k: g.group[lang], v: g.items.join(' · '), mono: true }))}
+        />
+      </div>
+      <Figure n={1} caption={t('about.figCaption')} taped class="about-portrait">
+        <Image class="portrait-img" src={portrait} alt={t('about.portrait')} widths={[300, 460, 600]} sizes="(min-width: 960px) 280px, 60vw" />
+      </Figure>
+    </div>
+  </section>
+
+  <DimensionLine from="01" to="02" label={lang === 'pt' ? `${roles.length} funções · 2024 → 2026` : `${roles.length} roles · 2024 → 2026`} />
+
+  <!-- §02 Experience -->
+  <section class="container section-tight" id="experience" aria-labelledby="exp-title">
+    <SectionHeading n={2} label={t('section.experience')} title={t('experience.title')} id="exp-title" />
+    <ol class="timeline" role="list">
+      {roles.map((r) => (
+        <TimelineEntry
+          id={r.id}
+          period={r.period[lang]}
+          title={r.role[lang]}
+          org={r.org[lang]}
+          tags={[{ kind: r.kind, label: t(`tag.${r.kind}` as const) }]}
+          stack={r.stack}
+          notesHref={r.notesSlug ? localePath('notebook', lang, r.notesSlug) : undefined}
+          notesLabel={t('cta.readNotes')}
+        >
+          <p>{r.summary[lang]}</p>
+        </TimelineEntry>
+      ))}
+    </ol>
+    <a class="pen-link mono more" href={localePath('journey', lang)}>{t('cta.fullJourney')} →</a>
+  </section>
+
+  <DimensionLine from="02" to="03" label="2018 → 2026" />
+
+  <!-- §03 Education -->
+  <section class="container section-tight" id="education" aria-labelledby="edu-title">
+    <SectionHeading n={3} label={t('section.education')} title={t('education.title')} id="edu-title" />
+    <ul class="edu" role="list">
+      {education.map((e) => (
+        <li id={e.id} class="annotated" data-reveal>
+          <div class="edu-row">
+            <p class="meta upper edu-period">{e.period[lang]}</p>
+            <div>
+              <h3 class="edu-degree">{e.degree[lang]}</h3>
+              <p class="edu-inst">{e.institution}{e.location && ` · ${e.location[lang]}`}</p>
+              {e.details && <p class="edu-details">{e.details[lang]}</p>}
+              {e.coursework && (
+                <details class="coursework">
+                  <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
+                  <ul class="cw-list" role="list">
+                    {e.coursework.map((c) => <li>{c[lang]}</li>)}
+                  </ul>
+                </details>
+              )}
+              {e.thesis && (
+                <p class="edu-details">
+                  {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}.{' '}
+                  <a class="pen-link" href={localePath('work', lang, 'apex')}>{t('education.caseStudy')} →</a>
+                </p>
+              )}
+            </div>
+          </div>
+          {e.thesis && <MarginNote>{t('education.defended')} 23.10.2026 · {e.thesis.grade}</MarginNote>}
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <DimensionLine from="03" to="04" label={lang === 'pt' ? `${featured.length} em destaque` : `${featured.length} featured`} />
+
+  <!-- §04 Selected work -->
+  <section class="container section-tight" id="work" aria-labelledby="work-title">
+    <SectionHeading n={4} label={t('section.selectedWork')} title={t('work.homeTitle')} id="work-title" />
+    <div class="work-grid">
+      {apex && <ProjectCard featured {...cardProps(apex, lang)} />}
+      <div class="work-row">
+        {others.map((e) => <ProjectCard {...cardProps(e, lang)} />)}
+      </div>
+    </div>
+    <a class="pen-link mono more" href={localePath('work', lang)}>{t('cta.allWork')} →</a>
+  </section>
+
+  {latest.length > 0 ? (
+    <>
+      <DimensionLine from="04" to="05" label={lang === 'pt' ? `${latest.length} ${latest.length === 1 ? 'nota' : 'notas'}` : `${latest.length} ${latest.length === 1 ? 'note' : 'notes'}`} />
+      <!-- §05 From the notebook (hidden when there are no posts) -->
+      <section class="container section-tight" id="notebook" aria-labelledby="notebook-title">
+        <SectionHeading n={5} label={t('section.fromNotebook')} title={t('notebook.homeTitle')} id="notebook-title" />
+        <div class="notes">
+          {latest.map((p) => <PostCard {...postCardProps(p, t)} />)}
+        </div>
+        <a class="pen-link mono more" href={indexHref(lang)}>{t('notebook.allNotes')} →</a>
+      </section>
+      <DimensionLine from="05" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+    </>
+  ) : (
+    <DimensionLine from="04" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+  )}
+
+  <!-- §06 Contact -->
+  <section class="contact section-tight" id="contact" aria-labelledby="contact-title">
+    <div class="container">
+      <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" />
+      <p class="lead contact-lead">{t('contact.lead')}</p>
+    </div>
+    <div class="scene">
+      <picture class="scene-img">
+        <source media="(max-width: 760px)" type="image/webp" srcset={srcset(tall)} sizes="100vw" />
+        <source type="image/webp" srcset={srcset(wide)} sizes="100vw" />
+        <img src={wide[1].src} alt={t('contact.sceneAlt')} width="1920" height="1080" loading="lazy" decoding="async" />
+      </picture>
+      <div class="container scene-inner">
+        <div class="scene-card">
+          <ContactForm lang={lang} />
+          <div class="direct">
+            <p class="kicker">{t('contact.or')}</p>
+            <p class="email mono">{profile.email}</p>
+            <div class="btn-set">
+              <CopyButton variant="primary" value={profile.email} label={t('cta.copyEmail')} copiedLabel={t('cta.copied')} />
+              <a class="btn" href={profile.linkedin} rel="me">LinkedIn ↗</a>
+              <a class="btn" href={profile.github} rel="me">GitHub ↗</a>
+              <a class="btn btn--ghost pen-link pen-link--bare" href={profile.cv} download>{t('cta.downloadCv')}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section-tight { padding-top: var(--s-7); }
+
+  .about-grid { display: grid; gap: var(--s-7); align-items: start; }
+  @media (min-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1fr) 17rem; gap: var(--s-8); } }
+  .about-text > p { max-width: 62ch; color: var(--ink-2); }
+  .about-text > p:first-child { color: var(--ink); font-size: var(--step-1); line-height: 1.55; }
+  .about-text > * + * { margin-top: var(--s-4); }
+  .about-text > :global(.spec) { margin-top: var(--s-6); }
+  :global(.about-portrait) { max-width: 17rem; justify-self: center; }
+  :global(.portrait-img) { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; }
+  @media (max-width: 899px) { :global(.about-portrait) { order: -1; max-width: 14rem; justify-self: start; } }
+
+  .timeline { padding: 0; }
+  .more { display: inline-block; margin-top: var(--s-2); font-size: var(--step--1); }
+
+  .edu { padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); }
+  .edu > li { padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
+  .edu-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s-2) var(--s-6); }
+  @media (max-width: 640px) { .edu-row { grid-template-columns: 1fr; } }
+  .edu-period { padding-top: 0.25rem; }
+  .edu-degree { font-size: var(--step-1); }
+  .edu-inst { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); margin-top: 0.15rem; }
+  .edu-details { margin-top: var(--s-2); color: var(--ink-2); max-width: 62ch; }
+  .coursework { margin-top: var(--s-3); }
+  .coursework summary { cursor: pointer; width: fit-content; list-style: none; display: inline-flex; gap: 0.5em; align-items: center; min-height: 32px; color: var(--ink-2); }
+  .coursework summary::-webkit-details-marker { display: none; }
+  .coursework summary::before { content: '+'; color: var(--pen); font-weight: 500; width: 1ch; }
+  .coursework[open] summary::before { content: '−'; }
+  .coursework .count { color: var(--muted); }
+  .cw-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-2) 0 0; list-style: none; }
+  .cw-list li { padding: 0.15rem 0.55rem; border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); }
+
+  .work-grid { display: grid; gap: var(--s-5); margin-bottom: var(--s-5); }
+  .work-row { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+
+  .email { margin: var(--s-2) 0 var(--s-4); font-size: var(--step-1); color: var(--ink); word-break: break-all; }
+
+  /* §06: the old portfolio's mountain scene as the backdrop, form on a paper card */
+  .contact-lead { max-width: 56ch; }
+  @media (max-width: 480px) { .direct .email { font-size: var(--step-0); overflow-wrap: anywhere; } }
+  .scene { position: relative; margin-top: var(--s-6); isolation: isolate; }
+  .scene-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .scene-card { display: grid; gap: var(--s-5); }
+  .direct { padding: var(--s-4) var(--s-5); background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--rule-strong); border-radius: var(--radius); backdrop-filter: blur(6px); }
+  @media (min-width: 761px) {
+    .scene { min-height: clamp(640px, 52vw, 860px); display: flex; align-items: center; }
+    .scene-img { position: absolute; inset: 0; z-index: -1; }
+    .scene-img img { object-position: 72% 30%; }
+    .scene::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(to bottom, var(--bg) 0, transparent 14%, transparent 86%, var(--bg) 100%); }
+    .scene-inner { width: 100%; padding-block: var(--s-8); }
+    .scene-card { max-width: 34rem; }
+  }
+  @media (max-width: 760px) {
+    .scene-img img { aspect-ratio: 4 / 5; object-position: 50% 20%; }
+    .scene-inner { margin-top: calc(var(--s-8) * -1.5); position: relative; padding-bottom: var(--s-6); }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+title: "Entrada de exemplo: todas as funcionalidades do caderno numa página"
+description: "Um rascunho que mostra títulos, código, notas, figuras, notas de rodapé, etiquetas e a caixa de série. Nunca chega à produção."
+pubDate: 2026-11-03
+tags: [notebook, apex]
+series: "notebook-basics"
+seriesOrder: 1
+draft: true
+lang: pt
+translationKey: "sample-entry"
+comments: true
+---
+
+import { Image } from 'astro:assets';
+import architecture from '../../../assets/apex/architecture.png';
+
+Esta entrada existe para mostrar como fica uma publicação do Caderno. Está marcada com `draft: true`: aparece em `astro dev` com um carimbo vermelho e fica fora das versões de produção, dos feeds, das listagens e do sitemap.
+
+## Os títulos constroem o índice
+
+Cada título `##` e `###` passa a ser uma entrada do índice. Em ecrãs largos fica na margem direita e acompanha a leitura. Em ecrãs estreitos dobra-se num bloco que abre e fecha, acima do texto.
+
+### Um título de terceiro nível
+
+Os títulos de terceiro nível aparecem recuados no índice.
+
+## Blocos de código
+
+O código é realçado na compilação com o Shiki, com um tema para o papel e outro para a mesa de desenho. Cada bloco tem um botão de copiar.
+
+```ts
+/** Tempo de leitura em minutos, a cerca de 220 palavras por minuto. */
+export function readingMinutes(body = ''): number {
+  const words = body.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+```
+
+Código em linha, como `seriesOrder`, usa a letra monoespaçada.
+
+## Notas
+
+<Callout type="note">
+  Uma nota dá contexto que o leitor pode querer, mas pode saltar.
+</Callout>
+
+<Callout type="decision" title="Os rascunhos ficam locais">
+  Uma decisão regista uma escolha e o porquê. Aqui: os rascunhos só aparecem em desenvolvimento.
+</Callout>
+
+<Callout type="todo">
+  TODO: uma nota TODO marca trabalho ainda em aberto.
+</Callout>
+
+## Figuras
+
+As figuras levam um número e uma legenda, com a etiqueta `fig.` usada no resto do site.
+
+<Figure n={1} caption="Arquitetura do Apex: caminho interno dos pedidos e o repositório de especificações">
+  <Image src={architecture} alt="Diagrama de componentes do Apex: um frontend Next.js que chama um backend FastAPI, com as especificações guardadas em Markdown e num índice de histórias." widths={[720, 1200]} sizes="(min-width: 900px) 68ch, 100vw" />
+</Figure>
+
+## Notas de rodapé
+
+As notas de rodapé escrevem-se em Markdown[^1] e ficam reunidas no fim da publicação, cada uma com uma ligação de volta ao ponto onde foi citada.[^2]
+
+[^1]: Sintaxe do Markdown do GitHub: `[^1]` no texto, `[^1]: …` para a nota.
+[^2]: Nas publicações em português, o título e as ligações de volta aparecem traduzidos.

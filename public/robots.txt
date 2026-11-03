@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tomastaborda.com/sitemap-index.xml

@@ -1,0 +1,23 @@
+---
+/* §NN — Label kicker + serif title. Title optional (label-only for compact sections). */
+interface Props { n: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2' }
+const { n, label, title, id, level = 'h2' } = Astro.props;
+const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
+const Tag = level;
+---
+<div class="section-heading">
+  <p class="kicker section-label"><span class="pen">§{num}</span> — {label}</p>
+  {title ? <Tag id={id} class="section-title">{title}</Tag> : <Tag id={id} class="sr-only">{label}</Tag>}
+  <slot />
+</div>
+<style>
+  .section-heading { margin-bottom: var(--s-6); }
+  .section-label { display: flex; align-items: center; gap: 0.5em; }
+  .section-label::after {
+    content: '';
+    flex: 0 0 2.5rem;
+    height: 1px;
+    background: var(--rule-strong);
+  }
+  .section-title { margin-top: var(--s-3); max-width: 22ch; }
+</style>

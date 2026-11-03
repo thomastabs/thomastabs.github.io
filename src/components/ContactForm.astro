@@ -1,0 +1,138 @@
+---
+/* Memo-style contact form: From / Subject / Message. Sends through Web3Forms;
+   until the access key is set it opens the visitor's mail app with the fields filled in. */
+import { contactForm, contactFormReady } from '@/data/contact';
+import { profile } from '@/data/links';
+import { useTranslations, type Locale } from '@/i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email}`;
+---
+<form
+  class="memo"
+  method="post"
+  action={action}
+  enctype={contactFormReady ? undefined : 'text/plain'}
+  data-contact-form
+  data-ready={String(contactFormReady)}
+  data-to={profile.email}
+  data-sending={t('contact.form.sending')}
+  data-sent={t('contact.form.sent')}
+  data-mailto={t('contact.form.mailto')}
+  aria-labelledby="memo-title"
+>
+  <p class="memo-head">
+    <span class="kicker" id="memo-title">{t('contact.form.title')}</span>
+    <span class="mono memo-to">→ {profile.email}</span>
+  </p>
+  {contactFormReady && <input type="hidden" name="access_key" value={contactForm.accessKey} />}
+  {contactFormReady && <input type="hidden" name="from_name" value="tomastaborda.com" />}
+  <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  <div class="field">
+    <label for="cf-from">{t('contact.form.from')}</label>
+    <input id="cf-from" name="email" type="email" required autocomplete="email" inputmode="email" placeholder={t('contact.form.fromHint')} />
+  </div>
+  <div class="field">
+    <label for="cf-subject">{t('contact.form.subject')}</label>
+    <input id="cf-subject" name="subject" type="text" required maxlength="140" autocomplete="off" />
+  </div>
+  <div class="field field--area">
+    <label for="cf-message">{t('contact.form.message')}</label>
+    <textarea id="cf-message" name="message" required minlength="10" rows="6" placeholder={t('contact.form.messageHint')}></textarea>
+  </div>
+
+  <div class="memo-foot">
+    <button type="submit" class="btn btn--primary">{t('contact.form.send')} →</button>
+    <p class="mono memo-note" data-status role="status" aria-live="polite">{t('contact.form.note')}</p>
+  </div>
+  <p class="memo-error" data-error hidden>
+    {t('contact.form.error')} <a class="pen-link" href={`mailto:${profile.email}`}>{profile.email}</a>
+  </p>
+</form>
+
+<style>
+  .memo {
+    display: grid; gap: 0;
+    padding: var(--s-5) var(--s-5) var(--s-4);
+    background: var(--surface);
+    border: 1px solid var(--rule-strong);
+    border-radius: var(--radius);
+    box-shadow: 0 18px 48px -24px rgb(0 0 0 / 0.45);
+  }
+  .memo-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 2px solid var(--ink); }
+  .memo-to { font-size: var(--step--2); color: var(--muted); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .field { display: grid; grid-template-columns: 6.5rem 1fr; align-items: baseline; border-bottom: 1px solid var(--rule); }
+  .field label { font-family: var(--font-mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--muted); padding: 0.85rem 0; }
+  .field input, .field textarea {
+    width: 100%; min-height: 44px; padding: 0.7rem 0.25rem;
+    border: 0; background: transparent; color: var(--ink);
+    font: inherit; font-size: var(--step-0);
+  }
+  .field textarea { resize: vertical; min-height: 9rem; line-height: 1.55;
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.55em - 1px), var(--rule) calc(1.55em - 1px), var(--rule) 1.55em);
+    background-position: 0 0.7rem; background-attachment: local; }
+  .field--area { grid-template-columns: 1fr; }
+  .field--area label { padding-bottom: 0; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.8; }
+  .field input:focus-visible, .field textarea:focus-visible { outline: none; }
+  .field:focus-within { border-bottom-color: var(--pen); box-shadow: 0 1px 0 var(--pen); }
+  .field:focus-within label { color: var(--pen); }
+  .memo-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); padding-top: var(--s-4); }
+  .memo-note { font-size: var(--step--2); color: var(--muted); }
+  .memo-note[data-state='ok'] { color: var(--ink); }
+  .memo-note[data-state='ok']::before { content: '✓ '; color: var(--pen); }
+  .memo-error { margin-top: var(--s-3); font-size: var(--step--1); color: var(--ink-2); }
+  @media (max-width: 480px) { .field { grid-template-columns: 1fr; } .field label { padding-bottom: 0; } }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  if (form) {
+    const status = form.querySelector<HTMLElement>('[data-status]')!;
+    const error = form.querySelector<HTMLElement>('[data-error]')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const d = form.dataset;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = new FormData(form);
+      if (data.get('botcheck')) return;
+      const from = String(data.get('email') ?? ''), subject = String(data.get('subject') ?? ''), message = String(data.get('message') ?? '');
+      error.hidden = true;
+
+      if (d.ready !== 'true') {
+        const body = `${message}\n\n— ${from}`;
+        status.textContent = d.mailto!;
+        location.href = `mailto:${d.to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        return;
+      }
+
+      btn.disabled = true;
+      status.removeAttribute('data-state');
+      status.textContent = d.sending!;
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({
+            access_key: data.get('access_key'), from_name: data.get('from_name'),
+            email: from, replyto: from, subject, message, botcheck: false,
+          }),
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok || json.success === false) throw new Error(json.message || res.statusText);
+        form.reset();
+        status.dataset.state = 'ok';
+        status.textContent = d.sent!;
+      } catch {
+        status.textContent = '';
+        error.hidden = false;
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  }
+</script>

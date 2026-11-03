@@ -1,0 +1,112 @@
+---
+/* Notebook index (and tag pages): title + intro, tag index tabs, pinned page, posts by year. */
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import PostCard from '@/components/PostCard.astro';
+import { useTranslations, type Locale } from '@/i18n';
+import { getPosts, tagCounts, byYear, cardProps, tagHref, indexHref } from '@/lib/notebook';
+
+interface Props { lang: Locale; tag?: string }
+const { lang, tag } = Astro.props;
+const t = useTranslations(lang);
+const other: Locale = lang === 'en' ? 'pt' : 'en';
+
+const all = await getPosts(lang);
+const tags = tagCounts(all);
+const filtered = tag ? all.filter((p) => p.data.tags.includes(tag)) : all;
+const pinned = tag ? undefined : filtered.find((p) => p.data.pinned);
+const rest = filtered.filter((p) => p !== pinned);
+const years = byYear(rest);
+
+// Language switch: same tag page if the other language has it, otherwise its index.
+const otherHasTag = tag ? (await getPosts(other)).some((p) => p.data.tags.includes(tag)) : true;
+const altHref = tag ? (otherHasTag ? tagHref(tag, other) : indexHref(other)) : indexHref(other);
+const title = tag ? `#${tag}` : t('notebook.pageTitle');
+const metaTitle = tag ? `#${tag} · ${t('notebook.title')}` : t('notebook.title');
+const description = tag ? `${t('notebook.tagDescription')} #${tag}.` : t('notebook.description');
+const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
+---
+
+<BaseLayout lang={lang} title={metaTitle} description={description} altHref={altHref}>
+  <div class="container page-head">
+    <SectionHeading n="05" label={tag ? `${t('notebook.title')} · ${t('notebook.tagged')}` : t('notebook.title')} title={title} level="h1">
+      <p class="lead intro">{t('notebook.intro')}</p>
+      <p class="mono rss"><a class="pen-link" href={rss}>{t('notebook.rss')} ↗</a></p>
+    </SectionHeading>
+  </div>
+
+  <div class="container">
+    {tags.length > 0 && (
+      <nav class="filters" aria-label={t('notebook.filter')}>
+        <a class="tab" href={indexHref(lang)} aria-current={!tag ? 'page' : undefined}>
+          {t('notebook.all')} <span class="count">{all.length}</span>
+        </a>
+        {tags.map((x) => (
+          <a class="tab" href={tagHref(x.tag, lang)} aria-current={x.tag === tag ? 'page' : undefined}>
+            #{x.tag} <span class="count">{x.count}</span>
+          </a>
+        ))}
+      </nav>
+    )}
+
+    {filtered.length === 0 ? (
+      <div class="empty dot-grid">
+        <p class="empty-mark mono" aria-hidden="true">p. 01</p>
+        <p class="empty-text">{t('notebook.empty')}</p>
+        <p class="mono empty-rss"><a class="pen-link" href={rss}>{t('notebook.rss')} ↗</a></p>
+      </div>
+    ) : (
+      <>
+        {pinned && <div class="pinned-wrap"><PostCard pinned {...cardProps(pinned, t)} /></div>}
+        {years.map(([year, posts]) => (
+          <section class="year" aria-labelledby={`y-${year}`}>
+            <h2 class="year-h mono" id={`y-${year}`}>{year}</h2>
+            <div class="year-posts">
+              {posts.map((p) => <PostCard {...cardProps(p, t)} />)}
+            </div>
+          </section>
+        ))}
+      </>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .page-head { padding-top: clamp(3rem, 2rem + 4vw, 5.5rem); }
+  .intro { max-width: 58ch; }
+  .rss { margin-top: var(--s-3); font-size: var(--step--1); }
+
+  /* Notebook index tabs (same language as the Journey filters) */
+  .filters { display: flex; flex-wrap: wrap; margin: 0 0 var(--s-7); border-bottom: 1px solid var(--rule-strong); }
+  .tab {
+    display: inline-flex; align-items: center; gap: 0.45em;
+    margin-bottom: -1px; padding: 0.55rem 0.9rem; min-height: 44px;
+    border: 1px solid transparent; border-bottom-color: var(--rule-strong);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    color: var(--ink-2); text-decoration: none;
+    font-family: var(--font-mono); font-size: var(--step--1); letter-spacing: var(--tracking-mono);
+  }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-current='page'] { color: var(--ink); background: var(--surface); border-color: var(--rule-strong); border-bottom-color: var(--surface); }
+  .tab[aria-current='page']::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--pen); }
+  .count { color: var(--muted); font-size: 0.85em; }
+
+  .pinned-wrap { margin-bottom: var(--s-7); }
+  .year { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
+  .year + .year { margin-top: var(--s-7); }
+  .year-h { font-size: var(--step--1); color: var(--pen); letter-spacing: var(--tracking-mono); padding-bottom: var(--s-2); border-bottom: 1px solid var(--rule-strong); }
+  @media (min-width: 900px) {
+    .year { grid-template-columns: 8rem minmax(0, 1fr); gap: var(--s-6); }
+    .year-h { border-bottom: 0; padding-top: var(--s-5); }
+    .year-posts { border-top: 1px solid var(--rule-strong); }
+  }
+
+  .empty {
+    display: grid; justify-items: start; gap: var(--s-3);
+    padding: var(--s-8) var(--s-6);
+    border: 1px dashed var(--rule-strong); border-radius: var(--radius);
+  }
+  .empty-mark { color: var(--pen); font-size: var(--step--1); }
+  .empty-text { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.2; max-width: 22ch; }
+  .empty-rss { font-size: var(--step--1); }
+</style>

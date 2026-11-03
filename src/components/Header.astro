@@ -1,0 +1,292 @@
+---
+import { useTranslations, type Locale } from '@/i18n';
+import { localePath, translatePath } from '@/i18n/routes';
+import ThemeToggle from './ThemeToggle.astro';
+import Wordmark from './Wordmark.astro';
+
+interface Props {
+  lang: Locale;
+  /** Explicit target for the language switch (e.g. a post without translation). */
+  altHref?: string;
+}
+
+const { lang, altHref } = Astro.props;
+const t = useTranslations(lang);
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+
+const items = [
+  { key: 'work', label: t('nav.work'), href: localePath('work', lang) },
+  { key: 'journey', label: t('nav.journey'), href: localePath('journey', lang) },
+  { key: 'notebook', label: t('nav.notebook'), href: localePath('notebook', lang) },
+  { key: 'contact', label: t('nav.contact'), href: `${localePath('home', lang)}#contact` },
+] as const;
+
+const isCurrent = (href: string) => !href.includes('#') && (path === href || path.startsWith(href + '/'));
+
+const other: Locale = lang === 'en' ? 'pt' : 'en';
+const otherHref = altHref ?? translatePath(Astro.url.pathname, other);
+const enHref = lang === 'en' ? Astro.url.pathname : otherHref;
+const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
+---
+
+<header class="site-header" data-header>
+  <div class="container bar">
+    <Wordmark href={localePath('home', lang)} label={t('a11y.home')} />
+
+    <nav class="nav" aria-label={t('a11y.primaryNav')} id="site-nav" data-nav>
+      <ul role="list" class="nav-list">
+        {
+          items.map((item) => (
+            <li>
+              <a href={item.href} class="nav-link" aria-current={isCurrent(item.href) ? 'page' : undefined}>
+                {item.label}
+                {isCurrent(item.href) && (
+                  <svg class="circle-mark" viewBox="0 0 120 48" preserveAspectRatio="none" aria-hidden="true">
+                    <path d="M62 5C31 3 6 11 5 25s27 20 58 19 52-9 52-21S90 5 52 7" />
+                  </svg>
+                )}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="nav-tools">
+        <div class="lang" role="group" aria-label={t('a11y.lang')}>
+          <a href={enHref} hreflang="en" lang="en" aria-current={lang === 'en' ? 'true' : undefined}>EN</a>
+          <span aria-hidden="true">|</span>
+          <a href={ptHref} hreflang="pt-PT" lang="pt-PT" aria-current={lang === 'pt' ? 'true' : undefined}>PT</a>
+        </div>
+        <ThemeToggle lang={lang} />
+      </div>
+    </nav>
+
+    <button
+      class="menu-btn"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-menu-btn
+      data-label-open={t('a11y.menu.open')}
+      data-label-close={t('a11y.menu.close')}
+    >
+      <span class="sr-only" data-menu-label>{t('a11y.menu.open')}</span>
+      <span class="menu-icon" aria-hidden="true"><span></span><span></span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    backdrop-filter: blur(12px) saturate(1.2);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    min-height: var(--header-h);
+  }
+
+  .nav,
+  .nav-list,
+  .nav-tools {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav {
+    gap: var(--s-6);
+  }
+
+  .nav-list {
+    gap: var(--s-5);
+    padding: 0;
+    list-style: none;
+  }
+
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    padding: 0.35rem 0.1rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-2);
+    transition: color var(--dur) var(--ease);
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    color: var(--ink);
+  }
+
+  .circle-mark {
+    max-width: none;
+    position: absolute;
+    inset: -3px -9px;
+    width: calc(100% + 18px);
+    height: calc(100% + 6px);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .circle-mark path {
+    fill: none;
+    stroke: var(--pen);
+    stroke-width: 1.4;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .nav-tools {
+    gap: var(--s-3);
+  }
+
+  .lang {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: var(--step--1);
+    color: var(--muted);
+  }
+
+  .lang a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 32px;
+    min-height: 32px;
+    text-decoration: none;
+    color: var(--muted);
+  }
+
+  .lang a:hover {
+    color: var(--ink);
+  }
+
+  .lang a[aria-current] {
+    color: var(--ink);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: var(--pen);
+    text-underline-offset: 0.3em;
+  }
+
+  .menu-btn {
+    display: none;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    border: 0;
+    background: transparent;
+    place-items: center;
+  }
+
+  .menu-icon {
+    display: grid;
+    gap: 6px;
+    width: 22px;
+  }
+
+  .menu-icon span {
+    display: block;
+    height: 1.5px;
+    background: var(--ink);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  /* ---------- Mobile: full-screen sheet ---------- */
+  @media (max-width: 760px) {
+    /* No JS: nav wraps under the bar. With JS: sheet behind the menu button. */
+    .bar {
+      flex-wrap: wrap;
+    }
+
+    .nav {
+      flex-wrap: wrap;
+      gap: var(--s-3) var(--s-5);
+      padding-bottom: var(--s-3);
+    }
+
+    :global(.js) .menu-btn {
+      display: grid;
+    }
+
+    :global(.js) .nav {
+      position: fixed;
+      inset: var(--header-h) 0 0 0;
+      z-index: 49;
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--s-6);
+      padding: var(--s-6) var(--gutter) calc(var(--s-6) + env(safe-area-inset-bottom));
+      background: var(--bg);
+      overflow-y: auto;
+    }
+
+    :global(.js) .site-header[data-open] .nav {
+      display: flex;
+    }
+
+    :global(.js) .nav-list {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--s-2);
+    }
+
+    :global(.js) .nav-link {
+      font-family: var(--font-display);
+      font-size: var(--step-3);
+      text-transform: none;
+      letter-spacing: var(--tracking-display);
+      color: var(--ink);
+    }
+
+    :global(.js) .site-header[data-open] .menu-icon span:first-child {
+      transform: translateY(3.75px) rotate(45deg);
+    }
+    :global(.js) .site-header[data-open] .menu-icon span:last-child {
+      transform: translateY(-3.75px) rotate(-45deg);
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const btn = header?.querySelector<HTMLButtonElement>('[data-menu-btn]');
+  const label = btn?.querySelector<HTMLElement>('[data-menu-label]');
+  const nav = header?.querySelector<HTMLElement>('[data-nav]');
+
+  function setOpen(open: boolean) {
+    if (!header || !btn || !label) return;
+    header.toggleAttribute('data-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    label.textContent = (open ? btn.dataset.labelClose : btn.dataset.labelOpen) ?? '';
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) nav?.querySelector<HTMLElement>('a')?.focus();
+  }
+
+  btn?.addEventListener('click', () => setOpen(!header?.hasAttribute('data-open')));
+  nav?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header?.hasAttribute('data-open')) {
+      setOpen(false);
+      btn?.focus();
+    }
+  });
+  window.matchMedia('(min-width: 761px)').addEventListener('change', (m) => m.matches && setOpen(false));
+</script>

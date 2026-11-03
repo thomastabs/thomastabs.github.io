@@ -1,0 +1,65 @@
+---
+/* giscus, lazy-loaded when the comments section nears the viewport.
+   Theme follows the site toggle (themechange event); language follows the post. */
+import Callout from './Callout.astro';
+import { giscus, giscusReady } from '@/data/giscus';
+import { useTranslations, type Locale } from '@/i18n';
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="comments" aria-labelledby="comments-title">
+  <h2 id="comments-title" class="kicker"><span class="pen">✎</span> {t('post.comments')}</h2>
+  {giscusReady ? (
+    <div
+      class="giscus-mount"
+      data-giscus
+      data-repo={giscus.repo}
+      data-repo-id={giscus.repoId}
+      data-category={giscus.category}
+      data-category-id={giscus.categoryId}
+      data-mapping={giscus.mapping}
+      data-lang={lang}
+      data-theme-light={giscus.themeLight}
+      data-theme-dark={giscus.themeDark}
+    ></div>
+  ) : (
+    <Callout type="todo">{t('post.commentsTodo')}</Callout>
+  )}
+</section>
+<style>
+  .comments { display: grid; gap: var(--s-4); }
+  .giscus-mount { min-height: 12rem; }
+</style>
+<script>
+  const mount = document.querySelector<HTMLElement>('[data-giscus]');
+  if (mount) {
+    const d = mount.dataset;
+    const theme = () => {
+      const set = document.documentElement.dataset.theme;
+      const dark = set ? set === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      return (dark ? d.themeDark : d.themeLight) ?? 'preferred_color_scheme';
+    };
+    const load = () => {
+      const s = document.createElement('script');
+      s.src = 'https://giscus.app/client.js';
+      s.async = true;
+      s.crossOrigin = 'anonymous';
+      const attrs: Record<string, string> = {
+        repo: d.repo!, 'repo-id': d.repoId!, category: d.category!, 'category-id': d.categoryId!,
+        mapping: d.mapping!, strict: '0', 'reactions-enabled': '1', 'emit-metadata': '0',
+        'input-position': 'bottom', lang: d.lang!, loading: 'lazy', theme: theme(),
+      };
+      for (const [k, v] of Object.entries(attrs)) s.setAttribute(`data-${k}`, v);
+      mount.append(s);
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+      io.observe(mount);
+    } else load();
+    document.addEventListener('themechange', () => {
+      const f = document.querySelector<HTMLIFrameElement>('iframe.giscus-frame');
+      f?.contentWindow?.postMessage({ giscus: { setConfig: { theme: theme() } } }, 'https://giscus.app');
+    });
+  }
+</script>
