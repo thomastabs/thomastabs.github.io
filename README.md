@@ -36,7 +36,7 @@ See [`docs/writing-a-post.md`](docs/writing-a-post.md) for the full guide, and s
 
 Summary: add `src/content/notebook/en/<slug>.mdx` (or `pt/`), fill in the frontmatter (`title`, `description` up to 160 characters, `pubDate`, `lang`), and push. `draft: true` keeps it out of the production build. Each post gets an RSS entry (`/rss.xml`, `/pt/rss.xml`), an OG card, tag and series pages, and comments.
 
-The two sample drafts (`en/sample-entry.mdx`, `pt/entrada-de-exemplo.mdx`) show every feature. Delete them once real posts exist.
+`docs/post-template.mdx` shows every feature (callouts, figures, footnotes).
 
 ## Adding a project
 

@@ -1,0 +1,41 @@
+---
+title: "Job hunting after the thesis, with an AI in the loop"
+description: "How I use Claude to research companies, tailor cover letters and prepare for interviews, and where I keep the judgement for myself."
+pubDate: 2026-11-04
+tags: [career, ai]
+draft: true
+lang: en
+comments: true
+---
+
+I finished my MSc in October 2026, and since then I have been looking for my first full-time engineering role. My dissertation argued that AI is most useful when the process around it is explicit: who decides, what gets checked, and what counts as done. So I applied the same rule to my job search. Claude does the research and the drafting. I make the decisions.
+
+## The problem
+
+Applying well takes time. A good application needs research on the company, a cover letter that answers the job ad instead of reciting my CV, and preparation for an interview format I usually only half know. Done for several companies at once, the quality drops. The easy fix is to let a model write generic letters, but that is how you end up sending generic letters.
+
+## What I tried
+
+**One cover letter per role, built from the ad.** For each application, I paste the job description and Claude drafts a letter that maps each requirement to something I have actually done: the Gescol HR module at Caixa Mágica, teaching in the AI Agents bootcamp, Apex. My rule is that every claim must point to a real project. If it can't, the claim goes. I edit the draft line by line and write the opening myself.
+
+**Interview research from what candidates report.** For OpenSoft, I asked for a study plan grounded in what past candidates said, not in a generic list of Java questions. Claude went through the 25 interview reviews on Teamlyzer and summarised the pattern: a friendly process in three phases (a first conversation about my path and projects, a technical interview on Java, OOP, SQL and LeetCode-style problems, and a final conversation), rated 2.1 out of 5 for difficulty.
+
+<Callout type="decision" title="Cut what nobody asks">
+  No review mentioned JVM internals, concurrency or JDBC, so those became quick skims, and the time went to live-coding drills and SQL instead.
+</Callout>
+
+The result was a fourteen-day plan, from 7 to 21 October, of about two to three hours a day. Each day mixed Java theory (a 105-question bank), live coding (25 drills, done think-aloud and timed) and SQL (joins, GROUP BY, normalisation, schema design on paper first). The last days were two mock interviews, both in Portuguese, since the interview would likely be in Portuguese and I wanted to practise speaking the answers, not just reading them.
+
+## What happened
+
+{/* TODO: Tomás, how the OpenSoft interview went and where the process is now. Keep it to what you are comfortable sharing publicly. */}
+
+TODO: the OpenSoft outcome and current status.
+
+## What I would tell someone doing the same
+
+- **Ground it in evidence.** "Prepare me for a Java interview" gets you a textbook. "Prepare me for this company, based on what its candidates report" gets you a plan.
+- **Keep your voice.** The drafts were useful because I rewrote them. A recruiter reads many letters a day and can tell which ones were written for them.
+- **Practise out loud.** Most of the gain came from the mocks, not from reading the answers.
+
+The AI made the search faster and better organised. The choices of which roles to apply for, what to say and how to say it stayed mine, which is the arrangement my thesis argues for.

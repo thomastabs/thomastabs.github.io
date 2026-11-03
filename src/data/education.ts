@@ -23,8 +23,8 @@ export const education: Education[] = [
     institution: 'Instituto Superior Técnico',
     location: { en: 'Lisbon · Oeiras', pt: 'Lisboa · Oeiras' },
     details: {
-      en: 'Specialisations: Software Engineering, Cybersecurity. Coursework completed with a grade of 16/20.',
-      pt: 'Especializações: Engenharia de Software, Cibersegurança. Componente curricular concluída com 16/20.',
+      en: 'Specialisations: Software Engineering, Cybersecurity. Coursework average 16/20; final MSc grade not yet awarded.',
+      pt: 'Especializações: Engenharia de Software, Cibersegurança. Média da componente curricular 16/20; nota final do mestrado ainda por atribuir.',
     },
     thesis: {
       title: 'Governed Human-AI Collaboration Across the Software Development Lifecycle: A Process Framework and Its Reference Implementation',

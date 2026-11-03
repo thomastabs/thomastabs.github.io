@@ -51,6 +51,8 @@ export interface RegisterLink {
   secondary?: boolean;
   extra?: { label: L10n; href: string }[];
   todo?: string;
+  /** Shown as a non-link item while the resource is not available yet. */
+  pending?: L10n;
 }
 
 const gh = 'https://github.com/thomastabs/apex/blob/main';
@@ -84,11 +86,11 @@ export const register: RegisterLink[] = [
     extra: [{ label: { en: 'Design notes', pt: 'Notas de design' }, href: `${gh}/DESIGN.md` }],
   },
   { group: 'explore', label: { en: 'First draft (historical)', pt: 'Primeiro rascunho (histórico)' }, href: `${gh}/docs/framework/Draft-and-Ideas-v1.docx` },
-  { group: 'read', label: { en: 'IST repository record', pt: 'Registo no repositório do IST' }, href: null, todo: 'TODO: add when published on Fénix' },
+  { group: 'read', label: { en: 'IST repository record', pt: 'Registo no repositório do IST' }, href: null, pending: { en: 'being processed', pt: 'em processamento' } },
 ];
 
 export const publishedLinks = register.filter((l) => l.href !== null) as (RegisterLink & { href: string })[];
-export const todoLinks = register.filter((l) => l.href === null);
+export const pendingLinks = register.filter((l) => l.href === null && l.pending);
 
 /* ---------- Abstract (verbatim) ---------- */
 
@@ -326,6 +328,38 @@ export const findings: { title: L10n; text: L10n }[] = [
     text: {
       en: 'An independent partner organisation was pursued and abandoned: a mid-project migration from Taiga to Plane delayed it while Apex’s adapter was built, and outreach afterwards never led to a scheduled engagement. No amount of solo demonstration substitutes for a team that did not design the framework operating it.',
       pt: 'Foi procurada uma organização parceira independente, sem sucesso: uma migração a meio do projeto de Taiga para Plane atrasou o processo enquanto o adaptador do Apex era construído, e os contactos seguintes nunca chegaram a uma sessão marcada. Nenhuma demonstração a solo substitui ver uma equipa que não desenhou a framework a usá-la.',
+    },
+  },
+];
+
+/** §09, drawn from the dissertation's Discussion (§9.6), Limitations (§10.3) and Future Work (§10.4). */
+export const learned: { title: L10n; text: L10n }[] = [
+  {
+    title: { en: 'Building the framework was the hardest test of it', pt: 'Construir a framework foi o teste mais duro que lhe fiz' },
+    text: {
+      en: 'On paper, every construct looked complete. Implementing it found what the text had left unsaid: Bolt Cycle Time was first measured through the wrong proxy and only caught by checking the code against its written definition, and spec-drift detection only worked once I admitted specifications are owned per story, not per project. I now treat "can I implement this?" as a review of the idea, not a step after it.',
+      pt: 'No papel, todos os conceitos pareciam completos. Implementá-los revelou o que o texto deixava por dizer: o Bolt Cycle Time foi medido primeiro com o indicador errado e só foi corrigido ao comparar o código com a definição escrita, e a deteção de desvios da especificação só funcionou quando assumi que a especificação pertence a cada história, não ao projeto. Hoje trato "consigo implementar isto?" como uma revisão da ideia, não como um passo depois dela.',
+    },
+  },
+  {
+    title: { en: 'A control can pass and still be wrong', pt: 'Um controlo pode passar e estar errado' },
+    text: {
+      en: 'The gates did their job structurally: generation alone never satisfied a phase. But the Testing Gate accepted a suite that no longer exercised the current system, and the deployment pre-flight reported high confidence from a stale context file. Confidence is not evidence. The next version needs gates that check how fresh their inputs are, and a control for destructive actions inside a phase, which the gate model does not cover today.',
+      pt: 'Os portões cumpriram a função estrutural: gerar conteúdo nunca bastou para fechar uma fase. Mas o Portão de Testes aceitou testes que já não exercitavam o sistema atual, e a verificação antes da implantação reportou confiança alta a partir de um ficheiro de contexto desatualizado. Confiança não é evidência. A próxima versão precisa de portões que verifiquem se os dados de entrada estão atualizados, e de um controlo para ações destrutivas dentro de uma fase, que o modelo de portões hoje não cobre.',
+    },
+  },
+  {
+    title: { en: 'People meet the method through the tool', pt: 'As pessoas conhecem o método através da ferramenta' },
+    text: {
+      en: 'Interviewees liked the framework; participants rated Apex grade D (SUS 56.73), and 9 of 13 named density, orientation or navigation as what confused them, not the AI mechanisms. A cluttered screen gets read as a hard method. First-contact usability, error legibility and visual simplicity are requirements of the framework, not polish for later.',
+      pt: 'Os entrevistados gostaram da framework; os participantes deram ao Apex nota D (SUS 56,73), e 9 em 13 apontaram a densidade, a orientação ou a navegação como o que os confundiu, não os mecanismos de IA. Um ecrã sobrecarregado é lido como um método difícil. A usabilidade no primeiro contacto, a clareza dos erros e a simplicidade visual são requisitos da framework, não acabamentos para depois.',
+    },
+  },
+  {
+    title: { en: 'Measure the outcome you claim, or say you did not', pt: 'Medir o resultado que se afirma, ou dizer que não se mediu' },
+    text: {
+      en: 'The demonstration recorded 19 Fix-Bolts across 14 stories; the AI Defect Escape proxy saw one. Every instrument I used measured perception, none measured delivered quality, and the only full lifecycle run was me wearing every hat. The thesis says so plainly, and the next steps follow from it: direct production telemetry, a token and compute cost metric per Bolt with a hat that owns it, and an evaluation with independent teams on more than one project-management tool.',
+      pt: 'A demonstração registou 19 Fix-Bolts em 14 histórias; o indicador de AI Defect Escape viu um. Todos os instrumentos que usei mediram perceção, nenhum mediu a qualidade do software entregue, e o único ciclo de vida completo foi feito por mim, com todos os chapéus. A tese diz isto claramente, e os próximos passos vêm daí: telemetria direta em produção, uma métrica de custo de tokens e computação por Bolt com um chapéu responsável por ela, e uma avaliação com equipas independentes em mais do que uma ferramenta de gestão de projetos.',
     },
   },
 ];
