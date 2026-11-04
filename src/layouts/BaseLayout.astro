@@ -29,16 +29,18 @@ interface Props {
   altHref?: string;
   noindex?: boolean;
   ogType?: 'website' | 'article';
+  /** Force the header dot grid on a page that is not a section index (notebook posts). */
+  dots?: boolean;
 }
 
-const { lang, title, description, altHref, noindex = false, ogType = 'website' } = Astro.props;
+const { lang, title, description, altHref, noindex = false, ogType = 'website', dots = false } = Astro.props;
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t('site.name')}` : `${t('site.name')}`;
 const desc = description ?? t('site.description');
 const canonical = new URL(Astro.url.pathname, Astro.site);
 /* Top-level pages behind a nav item get the hero's dot grid behind their header
-   (not /contact: its photo is already the background). */
-const sectionIndex = (['work', 'journey', 'notebook'] as const)
+   (not /contact: its photo is already the background). Notebook posts opt in with `dots`. */
+const sectionIndex = dots || (['work', 'journey', 'notebook'] as const)
   .some((k) => Astro.url.pathname.replace(/\/+$/, '') === localePath(k, lang));
 const other: Locale = lang === 'en' ? 'pt' : 'en';
 const otherPath = altHref ?? translatePath(Astro.url.pathname, other);
