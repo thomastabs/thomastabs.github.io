@@ -23,7 +23,6 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
         <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} meta={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
         <p class="lead contact-lead">{t('contact.lead')}</p>
       </div>
-      {level === 'h1' && <div class="scene-dots dot-grid" aria-hidden="true"></div>}
       <picture class="scene-img">
         <source media="(max-width: 760px)" type="image/webp" srcset={srcset(tall)} sizes="100vw" />
         <source type="image/webp" srcset={srcset(wide)} sizes="100vw" />
@@ -77,7 +76,4 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
     .scene-img img { aspect-ratio: 4 / 5; object-position: 50% 20%; }
     .scene-inner { margin-top: calc(var(--s-8) * -1.5); position: relative; padding-bottom: var(--s-6); }
   }
-  /* On /contact the dot grid sits over the photo's top fade, like the other section pages */
-  .scene-dots { position: absolute; inset: 0 0 auto; height: min(46rem, 100vh); z-index: -1; pointer-events: none; background-color: transparent;
-    -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent); mask-image: linear-gradient(to bottom, #000 45%, transparent); }
 </style>

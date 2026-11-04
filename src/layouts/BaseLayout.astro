@@ -36,8 +36,9 @@ const t = useTranslations(lang);
 const fullTitle = title ? `${title} — ${t('site.name')}` : `${t('site.name')}`;
 const desc = description ?? t('site.description');
 const canonical = new URL(Astro.url.pathname, Astro.site);
-/* Top-level pages behind a nav item get the hero's dot grid behind their header. */
-const sectionIndex = (['work', 'journey', 'notebook', 'contact'] as const)
+/* Top-level pages behind a nav item get the hero's dot grid behind their header
+   (not /contact: its photo is already the background). */
+const sectionIndex = (['work', 'journey', 'notebook'] as const)
   .some((k) => Astro.url.pathname.replace(/\/+$/, '') === localePath(k, lang));
 const other: Locale = lang === 'en' ? 'pt' : 'en';
 const otherPath = altHref ?? translatePath(Astro.url.pathname, other);

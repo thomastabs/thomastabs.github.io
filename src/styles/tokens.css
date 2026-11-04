@@ -18,7 +18,7 @@
   --muted: #62666f;
   --rule: rgba(22, 24, 29, 0.1);
   --rule-strong: rgba(22, 24, 29, 0.22);
-  --grid: rgba(22, 24, 29, 0.06);
+  --grid: rgba(22, 24, 29, 0.16);
   --pen: #d6003f;
   --pen-soft: rgba(214, 0, 63, 0.1);
   --squiggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5.2C14 3.4 27 6.4 41 4.6S68 3 82 4.9 95 5.6 99 3.8' fill='none' stroke='%23d6003f' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");

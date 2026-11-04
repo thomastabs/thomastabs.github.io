@@ -81,13 +81,10 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
     position: sticky;
     top: 0;
     z-index: 50;
-    /* Dusk tint, matching the hero and the contact scene */
-    background:
-      linear-gradient(to right, color-mix(in srgb, #6b2fa0 14%, transparent), transparent 35%, transparent 60%, color-mix(in srgb, var(--pen) 22%, transparent)),
-      color-mix(in srgb, var(--bg) 82%, transparent);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
     -webkit-backdrop-filter: blur(12px) saturate(1.2);
     backdrop-filter: blur(12px) saturate(1.2);
-    border-bottom: 1px solid color-mix(in srgb, var(--pen) 45%, var(--rule));
+    border-bottom: 1px solid var(--rule);
   }
 
   .bar {
