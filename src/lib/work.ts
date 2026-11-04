@@ -35,5 +35,7 @@ export function cardProps(e: WorkEntry, lang: Locale) {
     kicker: d.links.page === 'apex' ? t('work.thesisKicker') : t('work.kicker'),
     cover: d.cover,
     coverAlt: d.coverAlt,
+    repo: d.links.repo,
+    internal: d.internal,
   };
 }
