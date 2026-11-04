@@ -118,7 +118,7 @@ const personLd = {
             </p>
           )}
           {e.coursework && (
-            <details class="coursework">
+            <details class="coursework" open>
               <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
               <ul class="cw-list" role="list">
                 {e.coursework.map((c) => <li>{c[lang]}</li>)}
