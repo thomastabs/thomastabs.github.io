@@ -26,7 +26,7 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
       <picture class="scene-img">
         <source media="(max-width: 760px)" type="image/webp" srcset={srcset(tall)} sizes="100vw" />
         <source type="image/webp" srcset={srcset(wide)} sizes="100vw" />
-        <img src={wide[1].src} alt={t('contact.sceneAlt')} width="1920" height="1080" loading={level === 'h1' ? 'eager' : 'lazy'} decoding="async" />
+        <img src={wide[1].src} alt={t('contact.sceneAlt')} width="1920" height="1080" loading={level === 'h1' ? 'eager' : 'lazy'} fetchpriority={level === 'h1' ? 'high' : undefined} decoding="async" />
       </picture>
       <div class="container scene-inner">
         <div class="scene-card">
