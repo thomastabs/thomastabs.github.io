@@ -11,4 +11,6 @@ order: 2
 links:
   repo: https://github.com/thomastabs/OutfolioV1
   demo: https://outfolio-v1.vercel.app/
+cover: ../../assets/apex/outfolio-dashboard.png
+coverAlt: "Outfolio home: profile actions and published project highlights"
 ---

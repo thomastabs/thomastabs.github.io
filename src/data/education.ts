@@ -1,4 +1,5 @@
 import type { L10n } from './types';
+import type { LogoKey } from '@/lib/logos';
 
 export interface Education {
   id: string;
@@ -11,11 +12,14 @@ export interface Education {
   details?: L10n;
   coursework?: L10n[];
   thesis?: { title: string; advisor: string; defended: L10n; grade: string };
+  logo?: LogoKey;
+  monogram?: string;
 }
 
 export const education: Education[] = [
   {
     id: 'edu-msc',
+    logo: 'tecnico',
     start: '2024-09',
     period: { en: '2024 – 2026', pt: '2024 – 2026' },
     degree: { en: 'MSc in Computer Science and Engineering (MEIC)', pt: 'Mestrado em Engenharia Informática e de Computadores (MEIC)' },
@@ -35,6 +39,7 @@ export const education: Education[] = [
   },
   {
     id: 'edu-bsc',
+    logo: 'tecnico',
     start: '2021-09',
     period: { en: '2021 – 2024', pt: '2021 – 2024' },
     degree: { en: 'BSc in Telecommunications and Informatics Engineering (LETI)', pt: 'Licenciatura em Engenharia de Telecomunicações e Informática (LETI)' },
@@ -56,6 +61,7 @@ export const education: Education[] = [
   },
   {
     id: 'edu-secondary',
+    monogram: 'ESMM',
     start: '2018-09',
     period: { en: '2018 – 2021', pt: '2018 – 2021' },
     degree: { en: 'Secondary education, Science and Technology', pt: 'Ensino secundário, Ciências e Tecnologias' },

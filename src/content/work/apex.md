@@ -12,4 +12,6 @@ links:
   page: apex
   repo: https://github.com/thomastabs/apex
   demo: https://apex-bolt.com
+cover: ../../assets/apex/app-home.png
+coverAlt: "Apex home screen: the six SDLC phases as cards, with the project sidebar on the left"
 ---

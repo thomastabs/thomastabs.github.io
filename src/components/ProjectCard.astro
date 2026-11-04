@@ -1,6 +1,8 @@
 ---
 /* Text-led spec-block card. `featured` = wide layout. Optional image → fig. caption. */
 import TagChip from './TagChip.astro';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 interface Props {
   title: string;
   summary: string;
@@ -12,10 +14,12 @@ interface Props {
   internalLabel?: string;
   featured?: boolean;
   kicker?: string;
+  cover?: ImageMetadata;
+  coverAlt?: string;
 }
-const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker } = Astro.props;
+const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker, cover, coverAlt = '' } = Astro.props;
 ---
-<article class:list={['card', { featured }]} data-reveal>
+<article class:list={['card', { featured, 'has-cover': !!cover }]} data-reveal>
   <header class="card-head">
     <p class="kicker">{kicker ?? 'project'}{year && <span> · {year}</span>}</p>
     {status && <p class="status meta"><span class="status-dot" aria-hidden="true"></span>{status}</p>}
@@ -24,6 +28,11 @@ const { title, summary, year, status, stack = [], href, links = [], internalLabe
     {href ? <a href={href} class="card-link">{title}</a> : title}
   </h3>
   <p class="summary">{summary}</p>
+  {cover && (
+    <div class="shot">
+      <Image src={cover} alt={coverAlt} widths={featured ? [640, 1040, 1400] : [400, 640]} sizes={featured ? '(min-width: 1100px) 1000px, 100vw' : '(min-width: 900px) 320px, 100vw'} loading="lazy" quality={75} />
+    </div>
+  )}
   <slot />
   {stack.length > 0 && (
     <ul class="chip-list" role="list">
@@ -63,6 +72,15 @@ const { title, summary, year, status, stack = [], href, links = [], internalLabe
   .chip-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin-top: auto; padding-top: var(--s-2); list-style: none; }
   .card-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); font-size: var(--step--1); }
   .card-links a { position: relative; z-index: 1; }
+  .shot { border: 1px solid var(--rule-strong); border-radius: calc(var(--radius) - 2px); overflow: hidden; background: var(--surface-2); }
+  .shot :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; }
+  @media (min-width: 900px) {
+    .featured.has-cover { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); column-gap: var(--s-6); row-gap: var(--s-3); align-content: start; }
+    .featured.has-cover > * { grid-column: 1; }
+    .featured.has-cover > .card-head { grid-column: 1 / -1; }
+    .featured.has-cover > .shot { grid-column: 2; grid-row: 2 / span 5; align-self: start; }
+    .featured.has-cover .shot :global(img) { aspect-ratio: 16 / 10; }
+  }
   .featured { padding: var(--s-6); }
   .featured .card-title { font-size: var(--step-3); max-width: 24ch; }
   .featured .summary { font-size: var(--step-1); max-width: 56ch; }

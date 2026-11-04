@@ -33,5 +33,7 @@ export function cardProps(e: WorkEntry, lang: Locale) {
     links,
     internalLabel: d.internal ? t('work.internalNoLink') : undefined,
     kicker: d.links.page === 'apex' ? t('work.thesisKicker') : t('work.kicker'),
+    cover: d.cover,
+    coverAlt: d.coverAlt,
   };
 }

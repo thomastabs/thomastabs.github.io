@@ -5,6 +5,7 @@ import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import DimensionLine from '@/components/DimensionLine.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
+import OrgLogo from '@/components/OrgLogo.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import Figure from '@/components/Figure.astro';
@@ -90,6 +91,8 @@ const personLd = {
           org={r.org[lang]}
           tags={[{ kind: r.kind, label: t(`tag.${r.kind}` as const) }]}
           stack={r.stack}
+          logo={r.logo}
+          monogram={r.monogram}
           notesHref={r.notesSlug ? localePath('notebook', lang, r.notesSlug) : undefined}
           notesLabel={t('cta.readNotes')}
         >
@@ -111,8 +114,13 @@ const personLd = {
           <div class="edu-row">
             <p class="meta upper edu-period">{e.period[lang]}</p>
             <div>
-              <h3 class="edu-degree">{e.degree[lang]}</h3>
-              <p class="edu-inst">{e.institution}{e.location && ` · ${e.location[lang]}`}</p>
+              <div class="edu-head">
+                <OrgLogo logo={e.logo} monogram={e.monogram} name={e.institution} />
+                <div>
+                  <h3 class="edu-degree">{e.degree[lang]}</h3>
+                  <p class="edu-inst">{e.institution}{e.location && ` · ${e.location[lang]}`}</p>
+                </div>
+              </div>
               {e.details && <p class="edu-details">{e.details[lang]}</p>}
               {e.coursework && (
                 <details class="coursework">
@@ -168,12 +176,12 @@ const personLd = {
   )}
 
   <!-- §06 Contact -->
-  <section class="contact section-tight" id="contact" aria-labelledby="contact-title">
-    <div class="container">
-      <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" />
-      <p class="lead contact-lead">{t('contact.lead')}</p>
-    </div>
+  <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="scene">
+      <div class="container scene-head">
+        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" />
+        <p class="lead contact-lead">{t('contact.lead')}</p>
+      </div>
       <picture class="scene-img">
         <source media="(max-width: 760px)" type="image/webp" srcset={srcset(tall)} sizes="100vw" />
         <source type="image/webp" srcset={srcset(wide)} sizes="100vw" />
@@ -212,6 +220,7 @@ const personLd = {
   @media (max-width: 899px) { :global(.about-portrait) { order: -1; max-width: 14rem; justify-self: start; } }
 
   .timeline { padding: 0; }
+  .edu-head { display: flex; gap: var(--s-3); align-items: flex-start; }
   .more { display: inline-block; margin-top: var(--s-2); font-size: var(--step--1); }
 
   .edu { padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); }
@@ -239,17 +248,24 @@ const personLd = {
   /* §06: the old portfolio's mountain scene as the backdrop, form on a paper card */
   .contact-lead { max-width: 56ch; }
   @media (max-width: 480px) { .direct .email { font-size: var(--step-0); overflow-wrap: anywhere; } }
-  .scene { position: relative; margin-top: var(--s-6); isolation: isolate; }
+  .scene { position: relative; isolation: isolate; }
+  .scene-head { padding-top: var(--s-7); }
   .scene-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .scene-card { display: grid; gap: var(--s-5); }
   .direct { padding: var(--s-4) var(--s-5); background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--rule-strong); border-radius: var(--radius); backdrop-filter: blur(6px); }
   @media (min-width: 761px) {
-    .scene { min-height: clamp(640px, 52vw, 860px); display: flex; align-items: center; }
-    .scene-img { position: absolute; inset: 0; z-index: -1; }
-    .scene-img img { object-position: 72% 30%; }
+    .scene { min-height: clamp(860px, 66vw, 1100px); display: flex; flex-direction: column; }
+    .scene-img { position: absolute; inset: 0; z-index: -2; }
+    .scene-img img { object-position: 72% 40%; }
+    /* Two washes: a short top/bottom fade into the page, and a left-hand wash so the
+       heading, lead and form stay readable in both themes while the right stays photo. */
+    .scene::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+      background: linear-gradient(to right, color-mix(in srgb, var(--bg) 88%, transparent) 0, color-mix(in srgb, var(--bg) 55%, transparent) 38%, transparent 62%); }
     .scene::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(to bottom, var(--bg) 0, transparent 14%, transparent 86%, var(--bg) 100%); }
-    .scene-inner { width: 100%; padding-block: var(--s-8); }
+      background: linear-gradient(to bottom, var(--bg) 0, transparent 8%, transparent 90%, var(--bg) 100%); }
+    .scene-head { padding-top: var(--s-8); }
+    .scene-head .contact-lead { color: var(--ink); }
+    .scene-inner { width: 100%; padding-block: var(--s-6) var(--s-8); }
     .scene-card { max-width: 34rem; }
   }
   @media (max-width: 760px) {

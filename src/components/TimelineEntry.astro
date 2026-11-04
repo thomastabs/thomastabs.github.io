@@ -1,5 +1,7 @@
 ---
 import TagChip from './TagChip.astro';
+import OrgLogo from './OrgLogo.astro';
+import type { LogoKey } from '@/lib/logos';
 type Kind = 'work' | 'study' | 'teaching' | 'community' | 'milestone';
 interface Props {
   id?: string;
@@ -11,16 +13,25 @@ interface Props {
   notesLabel?: string;
   stack?: string[];
   headingLevel?: 'h2' | 'h3';
+  /** Shows an organisation tile next to the title: a logo, or a monogram. */
+  logo?: LogoKey;
+  monogram?: string;
 }
-const { id, period, title, org, tags = [], notesHref, notesLabel = 'Read the notes', stack = [], headingLevel: H = 'h3' } = Astro.props;
+const { id, period, title, org, tags = [], notesHref, notesLabel = 'Read the notes', stack = [], headingLevel: H = 'h3', logo, monogram } = Astro.props;
+const withLogo = !!(logo || monogram);
 const kind = tags[0]?.kind ?? 'work';
 ---
 <li class="tl-entry" id={id} data-kind={kind} data-tags={tags.map((t) => t.kind).join(' ')} data-reveal>
   <span class="node" aria-hidden="true"></span>
   <p class="period meta">{period}</p>
   <div class="body">
-    <H class="tl-title">{title}</H>
-    {org && <p class="org">{org}</p>}
+    <div class:list={['head', { 'has-logo': withLogo }]}>
+      {withLogo && <OrgLogo logo={logo} monogram={monogram} name={org ?? title} />}
+      <div>
+        <H class="tl-title">{title}</H>
+        {org && <p class="org">{org}</p>}
+      </div>
+    </div>
     <div class="desc"><slot /></div>
     {(stack.length > 0 || tags.length > 0) && (
       <div class="chips">
@@ -32,6 +43,7 @@ const kind = tags[0]?.kind ?? 'work';
   </div>
 </li>
 <style>
+  .head.has-logo { display: flex; gap: var(--s-3); align-items: flex-start; }
   .tl-entry {
     position: relative;
     display: grid;

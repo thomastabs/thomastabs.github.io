@@ -1,5 +1,6 @@
 /* Professional and community experience, newest first. Home shows the first three. */
 import type { Kind, L10n } from './types';
+import type { LogoKey } from '@/lib/logos';
 
 export interface Experience {
   id: string;
@@ -13,11 +14,14 @@ export interface Experience {
   stack?: string[];
   /** Slug of a Notebook post → adds "Read the notes →". */
   notesSlug?: string;
+  logo?: LogoKey;
+  monogram?: string;
 }
 
 export const experience: Experience[] = [
   {
     id: 'exp-tecnico-plus-2',
+    logo: 'tecnico',
     kind: 'teaching',
     start: '2026-10',
     period: { en: '20 Oct 2026 – 10 Nov 2026', pt: '20 out. 2026 – 10 nov. 2026' },
@@ -30,6 +34,7 @@ export const experience: Experience[] = [
   },
   {
     id: 'exp-caixa-magica',
+    logo: 'caixa-magica',
     kind: 'work',
     start: '2026-07',
     period: { en: 'Jul 2026 – Sep 2026', pt: 'jul. 2026 – set. 2026' },
@@ -43,6 +48,7 @@ export const experience: Experience[] = [
   },
   {
     id: 'exp-tecnico-plus',
+    logo: 'tecnico',
     kind: 'teaching',
     start: '2026-05',
     period: { en: 'May 2026 – Jun 2026', pt: 'mai. 2026 – jun. 2026' },
@@ -56,6 +62,7 @@ export const experience: Experience[] = [
   },
   {
     id: 'exp-wondercom',
+    logo: 'wondercom',
     kind: 'work',
     start: '2024-08',
     period: { en: 'Aug 2024 – Feb 2025', pt: 'ago. 2024 – fev. 2025' },
@@ -68,6 +75,7 @@ export const experience: Experience[] = [
   },
   {
     id: 'exp-neeti',
+    monogram: 'NEETI',
     kind: 'community',
     start: '2023-01',
     period: { en: '2023 – 2025', pt: '2023 – 2025' },
@@ -83,6 +91,7 @@ export const experience: Experience[] = [
   },
   {
     id: 'exp-mentoring',
+    logo: 'tecnico',
     kind: 'community',
     start: '2022-09',
     period: { en: '2022 – 2025', pt: '2022 – 2025' },

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
+import type { LogoKey } from '@/lib/logos';
 import TimelineEntry from '@/components/TimelineEntry.astro';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
@@ -15,6 +16,7 @@ const t = useTranslations(lang);
 interface Item {
   id: string; key: string; kind: Kind; period: string; title: string; org?: string; summary?: string;
   stack?: string[]; notesHref?: string; extraHref?: { href: string; label: string };
+  logo?: LogoKey; monogram?: string;
 }
 
 /** Milestones with a Notebook post, per locale. */
@@ -26,11 +28,13 @@ const items: Item[] = [
   ...experience.map((e) => ({
     id: e.id, key: e.start, kind: e.kind, period: e.period[lang], title: e.role[lang], org: e.org[lang],
     summary: e.summary[lang], stack: e.stack, notesHref: e.notesSlug ? localePath('notebook', lang, e.notesSlug) : undefined,
+    logo: e.logo, monogram: e.monogram,
   })),
   ...education.map((e) => ({
     id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.location ? `${e.institution} · ${e.location[lang]}` : e.institution,
     summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined, e.coursework ? `${t('education.coursework')}: ${e.coursework.map((c) => c[lang]).join(', ')}.` : undefined].filter(Boolean).join(' ') || undefined,
     extraHref: e.thesis ? { href: localePath('work', lang, 'apex'), label: t('education.caseStudy') } : undefined,
+    logo: e.logo, monogram: e.monogram,
   })),
   ...milestones.map((m) => ({
     id: m.id, key: m.date, kind: 'milestone' as Kind, period: m.period[lang], title: m.title[lang], summary: m.details?.[lang],
@@ -70,6 +74,8 @@ const counts = Object.fromEntries(kinds.map((k) => [k, items.filter((i) => i.kin
           org={i.org}
           tags={[{ kind: i.kind, label: t(`tag.${i.kind}` as const) }]}
           stack={i.stack}
+          logo={i.logo}
+          monogram={i.monogram}
           notesHref={i.notesHref ?? i.extraHref?.href}
           notesLabel={i.notesHref ? t('cta.readNotes') : i.extraHref?.label}
         >
