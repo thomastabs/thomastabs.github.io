@@ -1,12 +1,14 @@
 ---
-/* §NN — Label kicker + serif title. Title optional (label-only for compact sections). */
-interface Props { n: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2' }
-const { n, label, title, id, level = 'h2' } = Astro.props;
+/* §NN — Label kicker + serif title. Title optional (label-only for compact sections).
+   `meta` turns the kicker into a full-width rule with the section's span on the right:
+   §03 — EDUCATION ─────────────────── 2018 → 2026 */
+interface Props { n: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2'; meta?: string }
+const { n, label, title, id, level = 'h2', meta } = Astro.props;
 const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
 const Tag = level;
 ---
 <div class="section-heading">
-  <p class="kicker section-label"><span class="pen">§{num}</span> — {label}</p>
+  <p class:list={['kicker section-label', { 'has-meta': meta }]}><span class="pen">§{num}</span> — {label}{meta && <span class="meta">{meta}</span>}</p>
   {title ? <Tag id={id} class="section-title">{title}</Tag> : <Tag id={id} class="sr-only">{label}</Tag>}
   <slot />
 </div>
@@ -19,5 +21,10 @@ const Tag = level;
     height: 1px;
     background: var(--rule-strong);
   }
+  .has-meta { gap: var(--s-3); }
+  .has-meta::after { display: none; }
+  .meta { display: flex; align-items: center; gap: var(--s-3); flex: 1; color: var(--muted); white-space: nowrap; }
+  .meta::before { content: ''; flex: 1; height: 1px; background: var(--rule-strong); }
+  @media (max-width: 480px) { .meta { display: none; } .has-meta::after { display: block; } }
   .section-title { margin-top: var(--s-3); max-width: 22ch; }
 </style>

@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
-import DimensionLine from '@/components/DimensionLine.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
 import OrgLogo from '@/components/OrgLogo.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
@@ -77,11 +76,10 @@ const personLd = {
     </div>
   </section>
 
-  <DimensionLine from="01" to="02" label={lang === 'pt' ? `${roles.length} funções · 2024 → 2026` : `${roles.length} roles · 2024 → 2026`} />
 
   <!-- §02 Experience -->
   <section class="container section-tight" id="experience" aria-labelledby="exp-title">
-    <SectionHeading n={2} label={t('section.experience')} title={t('experience.title')} id="exp-title" />
+    <SectionHeading n={2} label={t('section.experience')} title={t('experience.title')} id="exp-title" meta={lang === 'pt' ? `${roles.length} funções · 2024 → 2026` : `${roles.length} roles · 2024 → 2026`} />
     <ol class="timeline" role="list">
       {roles.map((r) => (
         <TimelineEntry
@@ -103,11 +101,10 @@ const personLd = {
     <a class="pen-link mono more" href={localePath('journey', lang)}>{t('cta.fullJourney')} →</a>
   </section>
 
-  <DimensionLine from="02" to="03" label="2018 → 2026" />
 
   <!-- §03 Education -->
   <section class="container section-tight" id="education" aria-labelledby="edu-title">
-    <SectionHeading n={3} label={t('section.education')} title={t('education.title')} id="edu-title" />
+    <SectionHeading n={3} label={t('section.education')} title={t('education.title')} id="edu-title" meta={'2018 → 2026'} />
     <ul class="edu" role="list">
       {education.map((e) => (
         <li id={e.id} class="annotated" data-reveal>
@@ -144,11 +141,10 @@ const personLd = {
     </ul>
   </section>
 
-  <DimensionLine from="03" to="04" label={lang === 'pt' ? `${featured.length} em destaque` : `${featured.length} featured`} />
 
   <!-- §04 Selected work -->
   <section class="container section-tight" id="work" aria-labelledby="work-title">
-    <SectionHeading n={4} label={t('section.selectedWork')} title={t('work.homeTitle')} id="work-title" />
+    <SectionHeading n={4} label={t('section.selectedWork')} title={t('work.homeTitle')} id="work-title" meta={lang === 'pt' ? `${featured.length} em destaque` : `${featured.length} featured`} />
     <div class="work-grid">
       {apex && <ProjectCard featured {...cardProps(apex, lang)} />}
       <div class="work-row">
@@ -158,28 +154,24 @@ const personLd = {
     <a class="pen-link mono more" href={localePath('work', lang)}>{t('cta.allWork')} →</a>
   </section>
 
-  {latest.length > 0 ? (
+  {latest.length > 0 && (
     <>
-      <DimensionLine from="04" to="05" label={lang === 'pt' ? `${latest.length} ${latest.length === 1 ? 'nota' : 'notas'}` : `${latest.length} ${latest.length === 1 ? 'note' : 'notes'}`} />
       <!-- §05 From the notebook (hidden when there are no posts) -->
       <section class="container section-tight" id="notebook" aria-labelledby="notebook-title">
-        <SectionHeading n={5} label={t('section.fromNotebook')} title={t('notebook.homeTitle')} id="notebook-title" />
+        <SectionHeading n={5} label={t('section.fromNotebook')} title={t('notebook.homeTitle')} id="notebook-title" meta={lang === 'pt' ? `${latest.length} ${latest.length === 1 ? 'nota' : 'notas'}` : `${latest.length} ${latest.length === 1 ? 'note' : 'notes'}`} />
         <div class="notes">
           {latest.map((p) => <PostCard {...postCardProps(p, t)} />)}
         </div>
         <a class="pen-link mono more" href={indexHref(lang)}>{t('notebook.allNotes')} →</a>
       </section>
-      <DimensionLine from="05" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
     </>
-  ) : (
-    <DimensionLine from="04" to="06" label={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
   )}
 
   <!-- §06 Contact -->
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="scene">
       <div class="container scene-head">
-        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" />
+        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" meta={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
         <p class="lead contact-lead">{t('contact.lead')}</p>
       </div>
       <picture class="scene-img">
@@ -249,7 +241,8 @@ const personLd = {
   .contact-lead { max-width: 56ch; }
   @media (max-width: 480px) { .direct .email { font-size: var(--step-0); overflow-wrap: anywhere; } }
   .scene { position: relative; isolation: isolate; }
-  .scene-head { padding-top: var(--s-7); }
+  .section-tight { padding-top: var(--s-8); }
+  .scene-head { padding-top: var(--s-8); }
   .scene-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .scene-card { display: grid; gap: var(--s-5); }
   .direct { padding: var(--s-4) var(--s-5); background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--rule-strong); border-radius: var(--radius); backdrop-filter: blur(6px); }
