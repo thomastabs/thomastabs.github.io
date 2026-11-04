@@ -17,6 +17,18 @@ export interface Experience {
 
 export const experience: Experience[] = [
   {
+    id: 'exp-tecnico-plus-2',
+    kind: 'teaching',
+    start: '2026-10',
+    period: { en: '20 Oct 2026 – 10 Nov 2026', pt: '20 out. 2026 – 10 nov. 2026' },
+    role: { en: 'Teaching Assistant, AI Agents Bootcamp (second edition)', pt: 'Assistente de Ensino, Bootcamp de Agentes de IA (segunda edição)' },
+    org: { en: 'Técnico+ Formação Avançada (IST) · Lisbon', pt: 'Técnico+ Formação Avançada (IST) · Lisboa' },
+    summary: {
+      en: 'Back for another edition of the AI Agents bootcamp, supporting participants as they build and orchestrate AI agents.',
+      pt: 'De volta para mais uma edição do bootcamp de Agentes de IA, a apoiar os participantes na construção e orquestração de agentes de IA.',
+    },
+  },
+  {
     id: 'exp-caixa-magica',
     kind: 'work',
     start: '2026-07',

@@ -17,11 +17,10 @@ interface Item {
   stack?: string[]; notesHref?: string; extraHref?: { href: string; label: string };
 }
 
-/** Milestones with a Notebook post. Posts are English-only, so both locales link the EN URL. */
-const milestoneNotes: Record<string, string> = {
-  'ms-defence': '/notebook/defending-apex/',
-  'ms-opensoft': '/notebook/job-hunting-with-an-ai/',
-};
+/** Milestones with a Notebook post, per locale. */
+const milestoneNotes: Record<string, string> = lang === 'pt'
+  ? { 'ms-defence': `${localePath('notebook', lang, 'defender-o-apex')}/`, 'ms-opensoft': `${localePath('notebook', lang, 'da-tese-a-opensoft')}/` }
+  : { 'ms-defence': `${localePath('notebook', lang, 'defending-apex')}/`, 'ms-opensoft': `${localePath('notebook', lang, 'job-hunting-with-an-ai')}/` };
 
 const items: Item[] = [
   ...experience.map((e) => ({

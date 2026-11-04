@@ -1,0 +1,57 @@
+---
+title: "Da tese à OpenSoft: procurar emprego com uma IA no processo"
+description: "Como usei o Teamlyzer e o Claude para estudar empresas e preparar as três fases da entrevista na OpenSoft, e porque o emprego encaixa na minha tese."
+pubDate: 2026-11-04
+tags: [carreira, ia]
+draft: false
+lang: pt
+translationKey: "job-hunting"
+comments: true
+---
+
+Terminei o mestrado em outubro de 2026 e passei as semanas à volta disso à procura do meu primeiro emprego a tempo inteiro em engenharia. A minha dissertação defendia que a IA é mais útil quando o processo à sua volta é explícito: quem decide, o que é verificado e o que conta como feito. Apliquei a mesma regra à procura de emprego. O Claude fez a pesquisa e os rascunhos. As decisões foram minhas.
+
+Acabou bem. A 16 de novembro de 2026 começo como Engenheiro de Software na OpenSoft.
+
+## O problema
+
+Candidatar-me bem leva tempo. Uma boa candidatura exige pesquisar a empresa, uma carta de apresentação que responda ao anúncio em vez de repetir o CV, e preparação para um formato de entrevista que normalmente só conheço pela metade. Feito para várias empresas ao mesmo tempo, a qualidade cai. A solução fácil é deixar um modelo escrever cartas genéricas, mas é assim que se acaba a enviar cartas genéricas.
+
+## O que experimentei
+
+**Primeiro o Teamlyzer, para cada empresa.** O [Teamlyzer](https://pt.teamlyzer.com) reúne avaliações de empresas tecnológicas portuguesas feitas por quem lá trabalha e por quem lá foi entrevistado. Usei-o constantemente: para decidir onde valia a pena candidatar-me, para perceber como uma empresa trata os seus engenheiros e para ver como são de facto as suas entrevistas. Antes de preparar fosse o que fosse, queria saber o que tinham perguntado a candidatos anteriores.
+
+**Uma carta de apresentação por vaga, construída a partir do anúncio.** Para cada candidatura, colava o anúncio e o Claude redigia uma carta que ligava cada requisito a algo que fiz de facto: o módulo de RH Gescol na Caixa Mágica, o ensino no bootcamp de Agentes de IA, o Apex. A minha regra era que cada afirmação tinha de apontar para um projeto real. Se não apontasse, saía. Revia cada rascunho linha a linha e escrevia eu a abertura.
+
+**Um plano de estudo construído a partir do que os candidatos contam.** Para a OpenSoft, pedi ao Claude que transformasse as 25 avaliações de entrevistas no Teamlyzer num plano, em vez de me dar uma lista genérica de perguntas de Java. O padrão era claro: um processo simpático, com dificuldade de 2,1 em 5, e uma parte técnica sobre Java, programação orientada a objetos, SQL e problemas ao estilo do LeetCode.
+
+<Callout type="decision" title="Cortar o que ninguém pergunta">
+  Nenhuma avaliação referia a JVM por dentro, concorrência ou JDBC, por isso esses temas ficaram para uma leitura rápida, e o tempo foi para exercícios de programação ao vivo e para SQL.
+</Callout>
+
+O resultado foi um plano de catorze dias, de 7 a 21 de outubro, com duas a três horas por dia. Cada dia misturava teoria de Java (um banco de 105 perguntas), programação ao vivo (25 exercícios, cronometrados e a pensar em voz alta) e SQL (joins, GROUP BY, normalização, desenho de esquemas primeiro em papel). Os últimos dias foram duas entrevistas simuladas, ambas em português, porque queria treinar a dizer as respostas e não só a lê-las.
+
+## A entrevista, fase a fase
+
+O processo real correspondeu ao que o Teamlyzer descrevia.
+
+1. **Entrevista de percurso.** Uma conversa para me conhecerem: o meu percurso académico, os projetos em que trabalhei e o que procurava.
+2. **Entrevista técnica.** Teve duas partes:
+   - **Java:** um problema de programação ao vivo, mais perguntas teóricas sobre programação orientada a objetos e sobre a própria linguagem.
+   - **Bases de dados:** desenhei o esquema de um sistema de câmaras com três tabelas, a fotografia, os seus metadados e a sua localização, e a forma como se relacionam. Seguiram-se perguntas teóricas sobre bases de dados.
+3. **Entrevista cultural.** Foi a conversa de que mais gostei. Acabámos a falar sobretudo da minha tese ([a defesa tem o seu próprio texto](/pt/caderno/defender-o-apex/)), porque a OpenSoft andava a trabalhar no mesmo problema.
+
+## Porque a OpenSoft encaixa
+
+A minha dissertação pergunta como usar a IA ao longo do ciclo de vida do software sem perder rigor, rastreabilidade e qualidade. A OpenSoft lida com isso todos os dias. A empresa é certificada pelas normas ISO 9001 (gestão da qualidade) e ISO 27001 (segurança da informação), e avaliada em CMMI-DEV v3.0, nível 3 de maturidade. Na prática, a rastreabilidade integral entre requisitos, arquitetura, user stories e código faz parte da forma como entregam software, e não é só uma aspiração.
+
+É exatamente essa cadeia que o Apex tenta manter intacta quando a IA entra nela. Nas conversas depois das entrevistas, disseram-me que o trabalho podia contribuir para as suas próprias iniciativas de inovação. Vou entrar numa equipa que já trabalha da forma que a minha tese defende para construir software, e que quer perceber onde a IA encaixa nisso.
+
+## O que diria a quem fizer o mesmo
+
+- **Ler o que os candidatos contam antes de estudar.** O Teamlyzer disse-me mais sobre a entrevista do que qualquer anúncio. "Prepara-me para uma entrevista de Java" dá um manual. "Prepara-me para esta empresa, com base no que os candidatos contam" dá um plano.
+- **Manter a própria voz.** Os rascunhos foram úteis porque os reescrevi. Um recrutador lê muitas cartas por dia e percebe quais foram escritas para ele.
+- **Treinar em voz alta.** A maior parte do ganho veio das simulações, não de ler as respostas.
+- **Levar o próprio trabalho para a sala.** A tese não foi um tema lateral na última entrevista. Foi a conversa.
+
+A IA tornou a procura mais rápida e mais organizada. A escolha das vagas, o que dizer e como dizê-lo continuaram a ser decisões minhas, que é precisamente o modelo que a minha tese defende.

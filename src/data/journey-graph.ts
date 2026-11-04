@@ -55,7 +55,7 @@ export const nodes: GraphNode[] = [
     id: 'tecnico-plus', kind: 'teaching', x: 440, y: 268, side: 'below', anchor: 'exp-tecnico-plus',
     label: { en: 'Técnico+', pt: 'Técnico+' },
     role: { en: 'TA · AI Agents Bootcamp', pt: 'Assistente · Bootcamp de Agentes de IA' },
-    years: { en: 'May – Jun 2026', pt: 'mai. – jun. 2026' },
+    years: { en: 'May – Jun · Oct – Nov 2026', pt: 'mai. – jun. · out. – nov. 2026' },
   },
   {
     id: 'caixa-magica', kind: 'work', x: 470, y: 128, side: 'left', anchor: 'exp-caixa-magica',
