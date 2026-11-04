@@ -2,7 +2,6 @@
 import JourneyGraph from './JourneyGraph.astro';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
-import { profile } from '@/data/links';
 
 interface Props { lang: Locale; headingLevel?: 'h1' | 'p'; localAnchors?: string[] }
 const { lang, headingLevel = 'h1', localAnchors } = Astro.props;
@@ -14,17 +13,14 @@ const Name = headingLevel;
     <div class="hero-copy">
       <p class="kicker">{t('hero.kicker')}</p>
       <Name id="hero-name" class="hero-name">
-        Tomás Taborda<span class="pen">.</span>
+        Tomás Taborda
       </Name>
       <p class="positioning">{t('hero.positioning')}</p>
-      <p class="status meta"><span class="live" aria-hidden="true"></span>{t('hero.status')}</p>
+      <p class="status">{t('hero.status')}</p>
       <div class="btn-set">
         <a class="btn btn--primary" href={localePath('work', lang)}>{t('cta.viewWork')}</a>
-        <a class="btn" href={localePath('work', lang, 'apex')}>{t('cta.readThesis')}</a>
-        <a class="btn btn--ghost pen-link pen-link--bare" href={profile.cv} download>
-          {t('cta.downloadCv')}
-          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" /></svg>
-        </a>
+        <a class="btn" href={localePath('work', lang, 'apex')}>{t('cta.readThesis')} →</a>
+
       </div>
     </div>
     <div class="hero-graph">
@@ -35,16 +31,17 @@ const Name = headingLevel;
 
 <style>
   /* Dusk wash: the same violet-to-red sky as the contact photo, so the page opens and
-     closes in one light. Strength is lower in light mode. */
+     closes in one light. Strength is lower in light mode. Kept as is (brand). */
   .hero {
     --dusk: 16%;
     --dusk-violet: #6b2fa0;
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border-bottom: 1px solid color-mix(in srgb, var(--pen) 30%, var(--rule));
-    padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) clamp(2.5rem, 2rem + 3vw, 4.5rem);
+    border-bottom: 1px solid var(--rule);
+    padding-block: var(--s-8) var(--s-7);
   }
+  @media (min-width: 960px) { .hero { padding-block: var(--s-9) var(--s-8); } }
   .hero::before {
     content: '';
     position: absolute;
@@ -58,10 +55,7 @@ const Name = headingLevel;
   }
   @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; } }
   :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; }
-  .hero .kicker { color: color-mix(in srgb, var(--pen) 55%, var(--ink-2)); }
-  .hero :global(.btn--primary) { --btn-bg: color-mix(in srgb, var(--pen) 82%, #000); --btn-border: var(--btn-bg); --btn-ink: #fff; }
-  .hero :global(.btn--primary:hover) { --btn-bg: var(--ink); --btn-border: var(--ink); --btn-ink: var(--bg); }
-  .hero :global(.btn:not(.btn--primary):not(.btn--ghost)) { --btn-border: color-mix(in srgb, var(--pen) 45%, var(--rule-strong)); }
+
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -69,64 +63,29 @@ const Name = headingLevel;
     align-items: center;
   }
   @media (min-width: 960px) {
-    .hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 60% 75% at 78% 105%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 2.2), transparent), transparent 70%),
-      radial-gradient(ellipse 55% 60% at 100% 0%, color-mix(in srgb, var(--dusk-violet) calc(var(--dusk) * 1.6), transparent), transparent 70%),
-      linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 0.6), transparent));
+    .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: var(--s-7); }
   }
-  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; } }
-  :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; }
-  .hero .kicker { color: color-mix(in srgb, var(--pen) 55%, var(--ink-2)); }
-  .hero :global(.btn--primary) { --btn-bg: color-mix(in srgb, var(--pen) 82%, #000); --btn-border: var(--btn-bg); --btn-ink: #fff; }
-  .hero :global(.btn--primary:hover) { --btn-bg: var(--ink); --btn-border: var(--ink); --btn-ink: var(--bg); }
-  .hero :global(.btn:not(.btn--primary):not(.btn--ghost)) { --btn-border: color-mix(in srgb, var(--pen) 45%, var(--rule-strong)); }
-  .hero-grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: var(--s-6); }
-  }
-  .hero-copy > * + * { margin-top: var(--s-5); }
+  .hero-graph { width: 100%; max-width: 420px; }
+  .hero-copy > * + * { margin-top: var(--s-3); }
+  .kicker { color: var(--ink-2); font-size: var(--t-16); }
   .hero-name {
-    margin-top: var(--s-4);
+    margin-top: var(--s-2);
     font-family: var(--font-display);
-    font-size: var(--step-hero);
-    font-weight: 540;
-    line-height: 1.02;
-    letter-spacing: -0.028em;
+    font-size: var(--t-40);
+    font-weight: 500;
+    line-height: 1.1;
     font-variation-settings: 'opsz' 144;
     color: var(--ink);
-    text-wrap: balance;
   }
+  @media (min-width: 720px) { .hero-name { font-size: var(--t-56); } }
+  /* Two lines at desktop: the copy column is ~650px, so the line runs at the 17px body size. */
   .positioning {
-    font-size: var(--step-1);
-    line-height: 1.5;
+    font-size: var(--t-17);
+    line-height: 1.6;
     color: var(--ink-2);
-    max-width: 38ch;
+    max-width: 44rem;
   }
-  .status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6em;
-    color: var(--ink);
-    text-transform: uppercase;
-  }
-  .live {
-    position: relative;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--pen);
-  }
-  .live::after {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    border: 1px solid var(--pen-soft);
-    box-shadow: 0 0 0 1px var(--pen-soft);
-  }
-  .btn-set { padding-top: var(--s-2); }
+  @media (max-width: 959px) { .positioning { font-size: var(--t-20); line-height: 1.5; } }
+  .status { color: var(--ink); font-size: var(--t-16); }
+  .btn-set { margin-top: var(--s-5); }
 </style>

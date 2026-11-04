@@ -79,7 +79,7 @@ const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
   </div>
   <ol class="ms-list">
     {milestones.map((m) => (
-      <li><time class="mono" datetime={m.d}>{formatDate(new Date(m.d), lang)}</time> {m.label[lang]}</li>
+      <li><time class="date" datetime={m.d}>{formatDate(new Date(m.d), lang)}</time> {m.label[lang]}</li>
     ))}
   </ol>
 </div>
@@ -89,18 +89,18 @@ const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
   .axis line { stroke: var(--rule); stroke-dasharray: 2 4; }
   .axis text, .lane-l { font-size: 11px; fill: var(--muted); }
   .main { stroke: var(--ink); stroke-width: 2; }
-  .branch path { fill: none; stroke: var(--tag-work); stroke-width: 1.6; }
-  .branch circle { fill: var(--bg); stroke: var(--tag-work); stroke-width: 1.6; }
-  .branch .merge { fill: var(--tag-work); }
+  .branch path { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
+  .branch circle { fill: var(--bg); stroke: var(--ink-2); stroke-width: 1.6; }
+  .branch .merge { fill: var(--ink-2); }
   .branch text { font-size: 10.5px; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
   .th-line { fill: none; stroke: var(--pen); stroke-width: 2; }
   .dot { fill: color-mix(in srgb, var(--ink) 55%, transparent); stroke: var(--bg); stroke-width: 1; }
   .dot-th { fill: color-mix(in srgb, var(--pen) 70%, transparent); }
   .ms line { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 1 2; }
   .ms text { font-size: 11px; fill: var(--ink); font-weight: 500; }
-  .ms.major text { fill: var(--pen); }
-  .ms-list { margin: var(--s-4) 0 0; padding-left: 1.8em; columns: 2 18rem; column-gap: var(--s-6); font-size: var(--step--1); color: var(--ink-2); }
-  .ms-list li { break-inside: avoid; padding: 0.15rem 0; }
-  .ms-list li::marker { font-family: var(--font-mono); color: var(--pen); }
-  .ms-list time { color: var(--muted); margin-right: 0.4em; }
+  .ms.major text { fill: var(--ink); text-decoration: underline; }
+  .ms-list { margin: var(--s-3) 0 0; padding-left: var(--s-5); columns: 2 18rem; column-gap: var(--s-6); font-size: var(--t-14); color: var(--ink-2); }
+  .ms-list li { break-inside: avoid; padding: 2px 0; }
+  .ms-list li::marker { color: var(--muted); }
+  .ms-list time { margin-right: var(--s-2); }
 </style>

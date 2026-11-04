@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
@@ -23,7 +22,7 @@ const [lead, ...rest] = featured;
   </div>
 
   <section class="container" aria-labelledby="featured-title">
-    <h2 id="featured-title" class="kicker sub"><span class="pen">a.</span> {t('work.featured')}</h2>
+    <h2 id="featured-title" class="sub">{t('work.featured')}</h2>
     <div class="featured">
       {lead && <ProjectCard featured {...cardProps(lead, lang)} />}
       <div class="grid">
@@ -33,7 +32,7 @@ const [lead, ...rest] = featured;
   </section>
 
   <section class="container archive-wrap" aria-labelledby="archive-title">
-    <h2 id="archive-title" class="kicker sub"><span class="pen">b.</span> {t('work.archive')}</h2>
+    <h2 id="archive-title" class="sub">{t('work.archive')}</h2>
     <p class="muted archive-intro">{t('work.archiveIntro')}</p>
     <div class="table-scroll">
       <table class="archive">
@@ -49,21 +48,16 @@ const [lead, ...rest] = featured;
         <tbody>
           {archive.map((e) => (
             <tr>
-              <td class="mono year">{e.data.year ?? ''}</td>
+              <td class="date year">{e.data.year ?? ''}</td>
               <th scope="row" class="name">
                 {loc(e.data.title, lang)}
                 <span class="sm-line">{loc(e.data.summary, lang)}</span>
-                {e.data.cover && (
-                  <span class="thumb" aria-hidden="true">
-                    <Image src={e.data.cover} alt="" width={240} quality={70} loading="lazy" />
-                  </span>
-                )}
               </th>
               <td class="hide-sm line">{loc(e.data.summary, lang)}</td>
-              <td class="hide-sm mono stack">{e.data.stack.join(' · ')}</td>
+              <td class="hide-sm stack">{e.data.stack.join(' · ')}</td>
               <td class="link">
                 {e.data.links.repo && (
-                  <a class="pen-link mono" href={e.data.links.repo} aria-label={`${t('work.repo')}: ${loc(e.data.title, lang)}`}>{t('work.repo')} ↗</a>
+                  <a class="pen-link" href={e.data.links.repo} aria-label={`${t('work.repo')}: ${loc(e.data.title, lang)}`}>{t('work.repo')} ↗</a>
                 )}
               </td>
             </tr>
@@ -71,46 +65,32 @@ const [lead, ...rest] = featured;
         </tbody>
       </table>
     </div>
-    <a class="pen-link mono more" href={profile.github}>{t('cta.moreOnGithub')} →</a>
+    <a class="pen-link more" href={profile.github}>{t('cta.moreOnGithub')} →</a>
   </section>
 </BaseLayout>
 
 <style>
-  .page-head { padding-top: clamp(3rem, 2rem + 4vw, 5.5rem); }
-  .intro { margin-top: var(--s-4); }
-  .sub { margin-bottom: var(--s-4); }
+  .page-head { padding-top: var(--s-8); }
+  .intro { margin-top: var(--s-3); }
+  .sub { margin-bottom: var(--s-3); font-size: var(--t-20); }
   .featured { display: grid; gap: var(--s-5); }
   .grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
 
   .archive-wrap { padding-top: var(--s-8); }
-  .archive-intro { margin-bottom: var(--s-4); }
+  .archive-intro { margin-bottom: var(--s-3); }
   .table-scroll { overflow-x: auto; }
-  .archive { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-  .archive th, .archive td { padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; }
-  .archive thead th { font-family: var(--font-mono); font-size: var(--step--2); font-weight: 400; letter-spacing: var(--tracking-mono); text-transform: uppercase; color: var(--muted); border-bottom-color: var(--rule-strong); }
-  .archive tbody tr { transition: background-color var(--dur) var(--ease); }
-  .archive tbody tr:hover { background: var(--surface-2); }
-  .year { color: var(--muted); width: 4.5rem; font-size: var(--step--1); }
-  .name { position: relative; font-weight: 500; color: var(--ink); }
+  .archive { width: 100%; border-collapse: collapse; font-size: var(--t-16); }
+  .archive th, .archive td { padding: var(--s-3) var(--s-3) var(--s-3) 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: baseline; }
+  .archive thead th { font-size: var(--t-14); font-weight: 400; color: var(--muted); border-bottom-color: var(--rule-strong); }
+  .year { width: 4.5rem; }
+  .name { font-weight: 500; color: var(--ink); }
   .line { color: var(--ink-2); }
-  .stack { color: var(--ink-2); font-size: var(--step--2); }
-  .link { text-align: right; white-space: nowrap; font-size: var(--step--1); }
+  .stack { color: var(--ink-2); font-size: var(--t-14); }
+  .link { text-align: right; white-space: nowrap; }
   .sm-line { display: none; }
-  .thumb { display: none; }
-  @media (hover: hover) and (min-width: 1000px) {
-    .thumb {
-      display: block; position: absolute; z-index: 5; left: 100%; top: 50%;
-      width: 200px; padding: 6px; background: var(--surface); border: 1px solid var(--rule-strong);
-      box-shadow: var(--shadow-tape); pointer-events: none;
-      opacity: 0; transform: translate(12px, -50%) rotate(-1.5deg);
-      transition: opacity var(--dur) var(--ease);
-    }
-    .thumb :global(img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
-    tr:hover .thumb { opacity: 1; }
-  }
   @media (max-width: 720px) {
     .hide-sm { display: none; }
-    .sm-line { display: block; margin-top: 0.15rem; font-weight: 400; color: var(--ink-2); font-size: 0.9rem; }
+    .sm-line { display: block; margin-top: var(--s-1); font-weight: 400; color: var(--ink-2); font-size: var(--t-14); }
   }
-  .more { display: inline-block; margin-top: var(--s-5); font-size: var(--step--1); }
+  .more { display: inline-block; margin-top: var(--s-5); font-size: var(--t-16); }
 </style>

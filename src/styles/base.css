@@ -29,7 +29,7 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: var(--t-17);
   line-height: var(--leading);
   font-kerning: normal;
   -webkit-font-smoothing: antialiased;
@@ -74,7 +74,7 @@ h3,
 h4 {
   font-family: var(--font-display);
   font-optical-sizing: auto;
-  font-weight: 560;
+  font-weight: 500;
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-display);
   text-wrap: balance;
@@ -82,17 +82,17 @@ h4 {
 }
 
 h1 {
-  font-size: var(--step-4);
+  font-size: var(--t-40);
 }
 h2 {
-  font-size: var(--step-3);
+  font-size: var(--t-28);
 }
 h3 {
-  font-size: var(--step-1);
-  font-weight: 580;
+  font-size: var(--t-20);
+  line-height: 1.3;
 }
 h4 {
-  font-size: var(--step-0);
+  font-size: var(--t-17);
 }
 
 p {
@@ -103,7 +103,7 @@ strong {
   font-weight: 500;
 }
 
-/* ---------- Links: red-pen underline that draws in on hover ---------- */
+/* ---------- Links: plain underline, accent on hover ---------- */
 
 a {
   color: inherit;
@@ -117,35 +117,29 @@ a {
   color: var(--ink);
   text-decoration: underline;
   text-decoration-color: var(--rule-strong);
-  background-image: var(--squiggle);
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0% 0.42em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  padding-bottom: 0.08em;
-  transition:
-    background-size var(--dur-slow) var(--ease),
-    text-decoration-color var(--dur) var(--ease),
-    color var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
 
 .pen-link:hover,
 .prose a:not(.btn):not(.footnote-backref):not([data-footnote-ref]):hover {
-  text-decoration-color: transparent;
-  background-size: 100% 0.42em;
+  color: var(--pen);
+  text-decoration-color: currentColor;
 }
 
 .pen-link--bare {
   text-decoration: none;
 }
 
+.pen-link--bare:hover {
+  text-decoration: underline;
+}
+
 /* ---------- Focus ---------- */
 
 :focus-visible {
   outline: 2px solid var(--pen);
-  outline-offset: 3px;
-  border-radius: 2px;
+  outline-offset: 4px;
+  border-radius: var(--radius);
 }
 
 /* ---------- Layout ---------- */
@@ -182,27 +176,38 @@ a {
 
 /* ---------- Type utilities ---------- */
 
+/* Mono is reserved for code, timeline dates and spec values (see .date, code, .spec).
+   These utilities used to switch to mono; they now stay in the body face. */
 .mono,
 .kicker,
 .meta {
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  letter-spacing: var(--tracking-mono);
+  font-size: var(--t-14);
   font-weight: 400;
+  line-height: 1.5;
 }
 
 .kicker {
-  text-transform: uppercase;
   color: var(--ink-2);
-  line-height: 1.5;
 }
 
 .meta {
   color: var(--muted);
 }
 
-.upper {
+/* The only uppercase on the site */
+.section-label {
+  font-size: var(--t-14);
+  line-height: 1.5;
   text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--muted);
+}
+
+.date {
+  font-family: var(--font-mono);
+  font-size: var(--t-14);
+  line-height: 1.5;
+  color: var(--muted);
 }
 
 .pen {
@@ -210,10 +215,10 @@ a {
 }
 
 .lead {
-  font-size: var(--step-1);
-  line-height: 1.55;
+  font-size: var(--t-20);
+  line-height: 1.5;
   color: var(--ink-2);
-  max-width: 60ch;
+  max-width: var(--measure);
 }
 
 .muted {
@@ -275,70 +280,53 @@ main.has-dots { position: relative; isolation: isolate; }
   padding: var(--s-2) var(--s-4);
   background: var(--ink);
   color: var(--bg);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
+  font-size: var(--t-16);
   text-decoration: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius);
 }
 
 .skip-link:focus {
   top: var(--s-3);
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Buttons: one filled primary, one text-link secondary ---------- */
 
 .btn {
-  --btn-bg: transparent;
-  --btn-ink: var(--ink);
-  --btn-border: var(--rule-strong);
   display: inline-flex;
   align-items: center;
-  gap: 0.55em;
+  gap: var(--s-2);
   min-height: 44px;
-  padding: 0.55rem 1.05rem;
-  border: 1px solid var(--btn-border);
+  padding: 0;
+  border: 0;
   border-radius: var(--radius);
-  background: var(--btn-bg);
-  color: var(--btn-ink);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--t-16);
   font-weight: 500;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
-  text-decoration: none;
-  line-height: 1.2;
+  line-height: 1.5;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-strong);
+  text-underline-offset: 0.22em;
   white-space: nowrap;
-  transition:
-    background-color var(--dur) var(--ease),
-    border-color var(--dur) var(--ease),
-    color var(--dur) var(--ease),
-    transform var(--dur) var(--ease);
+  transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease), text-decoration-color var(--dur) var(--ease);
 }
 
 .btn:hover {
-  --btn-border: var(--ink);
-  --btn-bg: var(--surface-2);
-}
-
-.btn:active {
-  transform: translateY(1px);
+  color: var(--pen);
+  text-decoration-color: currentColor;
 }
 
 .btn--primary {
-  --btn-bg: var(--ink);
-  --btn-ink: var(--bg);
-  --btn-border: var(--ink);
+  padding: var(--s-2) var(--s-5);
+  background: var(--pen-fill);
+  color: var(--on-fill);
+  text-decoration: none;
 }
 
 .btn--primary:hover {
-  --btn-bg: var(--pen);
-  --btn-border: var(--pen);
-  --btn-ink: #fff;
-}
-
-.btn--ghost {
-  --btn-border: transparent;
-  padding-inline: 0.4rem;
+  background: var(--ink);
+  color: var(--bg);
 }
 
 .btn svg {
@@ -350,29 +338,8 @@ main.has-dots { position: relative; isolation: isolate; }
 .btn-set {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-3);
-}
-
-/* ---------- Reveal on scroll (only when JS is running) ---------- */
-
-@media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
-    opacity: 0;
-    transform: translateY(var(--rise));
-    transition:
-      opacity var(--dur-slow) var(--ease),
-      transform var(--dur-slow) var(--ease);
-  }
-
-  .js [data-reveal].is-visible {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Never hide content when printing */
-@media print {
-  [data-reveal] { opacity: 1 !important; transform: none !important; }
+  align-items: center;
+  gap: var(--s-3) var(--s-5);
 }
 
 /* ---------- Theme switch cross-fade (View Transitions) ---------- */
@@ -394,3 +361,22 @@ main.has-dots { position: relative; isolation: isolate; }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- Filter pills (Journey filters, Notebook tags) ---------- */
+.filter-pills { display: flex; flex-wrap: wrap; gap: var(--s-2); margin: 0 0 var(--s-7); }
+.filter-pill {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  padding: var(--s-1) var(--s-3);
+  min-height: 44px;
+  border: 1px solid var(--rule-strong);
+  border-radius: var(--radius-pill);
+  background: transparent; color: var(--ink-2);
+  font: inherit; font-size: var(--t-14);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.filter-pill:hover { color: var(--ink); border-color: var(--ink); }
+.filter-pill[aria-pressed='true'],
+.filter-pill[aria-current='page'] { color: var(--ink); background: var(--surface-2); border-color: var(--ink); }
+.filter-pill .count { color: var(--muted); }

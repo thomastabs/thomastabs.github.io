@@ -32,7 +32,7 @@ const days = lang === 'pt' ? ['', 'seg', '', 'qua', '', 'sex', ''] : ['', 'Mon',
       <rect x={c.x} y={c.y} width={C} height={C} rx="2" data-l={level(c.n)}><title>{`${c.d}: ${c.n}`}</title></rect>
     ))}
   </svg>
-  <p class="legend mono" aria-hidden="true">
+  <p class="legend" aria-hidden="true">
     {lang === 'pt' ? 'menos' : 'less'}
     {[0, 1, 2, 3, 4].map((l) => <svg width="13" height="13"><rect width="13" height="13" rx="2" data-l={l} /></svg>)}
     {lang === 'pt' ? 'mais' : 'more'}
@@ -44,9 +44,9 @@ const days = lang === 'pt' ? ['', 'seg', '', 'qua', '', 'sex', ''] : ['', 'Mon',
   .hm-scroll > svg { width: 100%; min-width: 520px; max-width: 760px; height: auto; }
   .lbl { font-family: var(--font-mono); font-size: 9.5px; fill: var(--muted); }
   rect { fill: var(--surface-2); stroke: var(--rule); stroke-width: 0.5; }
-  rect[data-l='1'] { fill: color-mix(in srgb, var(--pen) 22%, var(--surface-2)); stroke: none; }
-  rect[data-l='2'] { fill: color-mix(in srgb, var(--pen) 45%, var(--surface-2)); stroke: none; }
-  rect[data-l='3'] { fill: color-mix(in srgb, var(--pen) 70%, var(--surface-2)); stroke: none; }
-  rect[data-l='4'] { fill: var(--pen); stroke: none; }
-  .legend { display: flex; align-items: center; gap: 4px; margin-top: var(--s-2); font-size: var(--step--2); color: var(--muted); }
+  rect[data-l='1'] { fill: color-mix(in srgb, var(--ink) 22%, var(--surface-2)); stroke: none; }
+  rect[data-l='2'] { fill: color-mix(in srgb, var(--ink) 45%, var(--surface-2)); stroke: none; }
+  rect[data-l='3'] { fill: color-mix(in srgb, var(--ink) 70%, var(--surface-2)); stroke: none; }
+  rect[data-l='4'] { fill: var(--ink); stroke: none; }
+  .legend { display: flex; align-items: center; gap: var(--s-1); margin-top: var(--s-2); font-size: var(--t-14); color: var(--muted); }
 </style>

@@ -102,7 +102,7 @@ export const milestones: Milestone[] = [
     id: 'ms-defence',
     date: '2026-10-23',
     period: { en: '23 Oct 2026', pt: '23 out. 2026' },
-    title: { en: 'MSc thesis defended — 17/20', pt: 'Tese de mestrado defendida — 17/20' },
+    title: { en: 'MSc thesis defended, 17/20', pt: 'Tese de mestrado defendida, 17/20' },
     details: {
       en: 'Governed Human-AI Collaboration Across the Software Development Lifecycle. Committee: Prof. Helena Galhardas (chair), Prof. Ademar Aguiar; supervisor Prof. Miguel Mira da Silva.',
       pt: 'Governed Human-AI Collaboration Across the Software Development Lifecycle. Júri: Prof.ª Helena Galhardas (presidente), Prof. Ademar Aguiar; orientador Prof. Miguel Mira da Silva.',

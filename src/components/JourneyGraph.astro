@@ -3,7 +3,7 @@
    Inline SVG, no libraries. Draws in once (skipped with reduced motion).
    Hover/focus a node → mono annotation. Click → scrolls to the entry.
    <720px: collapses to a compact horizontal strip. */
-import { nodes, edges, traces, type Kind } from '@/data/journey-graph';
+import { nodes, edges, traces } from '@/data/journey-graph';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
 
@@ -34,18 +34,18 @@ function curve(a: string, b: string, bend: number) {
 
 const label = (n: (typeof nodes)[number]) => {
   switch (n.side) {
-    case 'right': return { x: n.x + 15, y: n.y + 4.5, anchor: 'start' };
-    case 'left': return { x: n.x - 15, y: n.y + 4.5, anchor: 'end' };
-    case 'above': return { x: n.x, y: n.y - 16, anchor: 'middle' };
-    default: return { x: n.x, y: n.y + 27, anchor: 'middle' };
+    case 'right': return { x: n.x + 16, y: n.y + 6, anchor: 'start' };
+    case 'left': return { x: n.x - 16, y: n.y + 6, anchor: 'end' };
+    case 'above': return { x: n.x, y: n.y - 18, anchor: 'middle' };
+    default: return { x: n.x, y: n.y + 32, anchor: 'middle' };
   }
 };
 
-const CHAR = 6.4; // IBM Plex Mono @ 10.5px ≈ 0.6em advance
+const CHAR = 9.6; // IBM Plex Mono @ 16 units ≈ 0.6em advance
 const anno = (n: (typeof nodes)[number]) => {
   const lines = [n.role[lang], n.years[lang]];
   const w = Math.ceil(Math.max(...lines.map((l) => l.length)) * CHAR + 24);
-  const h = 44;
+  const h = 60;
   // Above the node, unless that would leave the top of the viewBox.
   const below = n.y - h - 18 < 0;
   const x = Math.max(4, Math.min(W - w - 4, n.x - w / 2));
@@ -53,7 +53,6 @@ const anno = (n: (typeof nodes)[number]) => {
   return { x, y, w, h, lines };
 };
 
-const kinds: Kind[] = ['work', 'study', 'teaching', 'community', 'milestone'];
 const href = (anchor: string) =>
   localAnchors.includes(anchor)
     ? `#${anchor}`
@@ -92,12 +91,12 @@ const href = (anchor: string) =>
             data-node={n.id}
             data-kind={n.kind}
             data-future={n.future ? '' : undefined}
-            aria-label={`${n.label[lang]} — ${n.role[lang]}, ${n.years[lang]}`}
+            aria-label={`${n.label[lang]}: ${n.role[lang]}, ${n.years[lang]}`}
             style={`--i:${i}`}
           >
             <circle class="hit" cx={n.x} cy={n.y} r="18" />
             {n.kind === 'milestone' && !n.future && <circle class="ring" cx={n.x} cy={n.y} r="11.5" />}
-            <circle class="dot" cx={n.x} cy={n.y} r={n.future ? 7 : 6.5} />
+            <circle class="dot" cx={n.x} cy={n.y} r={n.future ? 8 : 7.5} />
             <text class="label" x={l.x} y={l.y} text-anchor={l.anchor}>{n.label[lang]}</text>
           </a>
         );
@@ -109,10 +108,10 @@ const href = (anchor: string) =>
         const a = anno(n);
         return (
           <g class="anno" data-anno={n.id}>
-            <rect x={a.x} y={a.y} width={a.w} height={a.h} rx="3" />
-            <line x1={a.x + 10} y1={a.y + 23} x2={a.x + a.w - 10} y2={a.y + 23} />
-            <text x={a.x + 11} y={a.y + 16}>{a.lines[0]}</text>
-            <text class="yrs" x={a.x + 11} y={a.y + 36}>{a.lines[1]}</text>
+            <rect x={a.x} y={a.y} width={a.w} height={a.h} rx="4" />
+            <line x1={a.x + 12} y1={a.y + 31} x2={a.x + a.w - 12} y2={a.y + 31} />
+            <text x={a.x + 12} y={a.y + 22}>{a.lines[0]}</text>
+            <text class="yrs" x={a.x + 12} y={a.y + 50}>{a.lines[1]}</text>
           </g>
         );
       })}
@@ -131,16 +130,11 @@ const href = (anchor: string) =>
     ))}
   </ol>
 
-  <ul class="legend" role="list">
-    {kinds.map((k) => (
-      <li data-kind={k}><span class="l-dot" aria-hidden="true"></span>{t(`tag.${k}` as const)}</li>
-    ))}
-  </ul>
 </div>
 
 <style>
   .journey {
-    --k: var(--tag-work);
+    --k: var(--ink-2);
     position: relative;
   }
 
@@ -153,7 +147,7 @@ const href = (anchor: string) =>
   /* ---------- Edges ---------- */
   .edge {
     fill: none;
-    stroke: var(--pen);
+    stroke: var(--ink-2);
     stroke-width: 1.6;
     stroke-linecap: round;
   }
@@ -174,11 +168,6 @@ const href = (anchor: string) =>
   }
 
   /* ---------- Nodes ---------- */
-  [data-kind='work'] { --k: var(--tag-work); }
-  [data-kind='study'] { --k: var(--tag-study); }
-  [data-kind='teaching'] { --k: var(--tag-teaching); }
-  [data-kind='community'] { --k: var(--tag-community); }
-  [data-kind='milestone'] { --k: var(--tag-milestone); }
 
   .node { cursor: pointer; outline: none; }
   .hit { fill: transparent; }
@@ -189,29 +178,21 @@ const href = (anchor: string) =>
     paint-order: stroke;
     transition: r var(--dur) var(--ease);
   }
-  [data-kind='study'] .dot {
-    fill: var(--bg);
-    stroke: var(--k);
-    stroke-width: 2;
-  }
-  [data-future] .dot {
-    fill: var(--bg);
-    stroke: var(--pen);
-    stroke-width: 1.6;
-    stroke-dasharray: 3 3;
-  }
+  /* The one accent in the graph: where I am going next. */
+  [data-future] .dot { fill: var(--pen); }
   .ring {
     fill: none;
-    stroke: var(--pen);
+    stroke: var(--ink-2);
     stroke-width: 1.1;
     stroke-dasharray: 64 8;
     transform-box: fill-box;
     transform-origin: center;
     transform: rotate(-30deg);
   }
+  /* The graph renders at ~0.66x (420px of a 640 viewBox): 20 units ≈ 13px on screen. */
   .label {
     font-family: var(--font-body);
-    font-size: 14px;
+    font-size: 20px;
     font-weight: 500;
     fill: var(--ink);
     paint-order: stroke;
@@ -220,9 +201,9 @@ const href = (anchor: string) =>
     stroke-linejoin: round;
   }
   .node:hover .dot,
-  .node:focus-visible .dot { r: 8.5; }
+  .node:focus-visible .dot { r: 10; }
   .node:focus-visible .hit {
-    stroke: var(--pen);
+    stroke: var(--ink);
     stroke-width: 1.5;
     stroke-dasharray: 3 3;
   }
@@ -243,11 +224,10 @@ const href = (anchor: string) =>
   .anno line { stroke: var(--rule); }
   .anno text {
     font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.02em;
+    font-size: 16px;
     fill: var(--ink);
   }
-  .anno .yrs { fill: var(--pen); }
+  .anno .yrs { fill: var(--muted); }
 
   /* ---------- Draw-in (once, motion OK only) ---------- */
   @media (prefers-reduced-motion: no-preference) {
@@ -273,22 +253,6 @@ const href = (anchor: string) =>
 
   @keyframes draw { to { stroke-dashoffset: 0; } }
   @keyframes fade { to { opacity: 1; } }
-
-  /* ---------- Legend ---------- */
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-2) var(--s-4);
-    padding: 0;
-    margin-top: var(--s-4);
-    list-style: none;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--ink-2);
-  }
-  .legend li { display: inline-flex; align-items: center; gap: 0.45em; }
-  .l-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--k); }
-  .legend [data-kind='study'] .l-dot { background: transparent; box-shadow: inset 0 0 0 2px var(--k); }
 
   /* ---------- Mobile strip ---------- */
   .strip { display: none; }
@@ -318,13 +282,13 @@ const href = (anchor: string) =>
       top: 7px;
       left: 14px;
       right: 0;
-      border-top: 1.5px solid var(--pen);
+      border-top: 1.5px solid var(--ink-2);
     }
     .strip li:last-child::before { display: none; }
     .strip li:nth-last-child(2)::before { border-top-style: dashed; }
     .strip a {
       display: grid;
-      gap: 2px;
+      gap: var(--s-1);
       text-decoration: none;
       min-height: 44px;
     }
@@ -338,10 +302,9 @@ const href = (anchor: string) =>
       box-sizing: border-box;
       margin-bottom: var(--s-2);
     }
-    .strip [data-kind='study'] .s-dot { background: var(--bg); box-shadow: inset 0 0 0 2px var(--k); border: 0; }
-    .strip [data-future] .s-dot { background: var(--bg); border: 1.5px dashed var(--pen); }
-    .s-label { font-size: 0.875rem; font-weight: 500; color: var(--ink); white-space: nowrap; }
-    .s-years { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+    .strip [data-future] .s-dot { background: var(--pen); }
+    .s-label { font-size: var(--t-14); font-weight: 500; color: var(--ink); white-space: nowrap; }
+    .s-years { font-family: var(--font-mono); font-size: var(--t-14); color: var(--muted); white-space: nowrap; }
   }
 </style>
 

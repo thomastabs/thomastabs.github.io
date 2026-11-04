@@ -21,17 +21,7 @@
   --grid: rgba(22, 24, 29, 0.16);
   --pen: #d6003f;
   --pen-soft: rgba(214, 0, 63, 0.1);
-  --squiggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5.2C14 3.4 27 6.4 41 4.6S68 3 82 4.9 95 5.6 99 3.8' fill='none' stroke='%23d6003f' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-
-  /* Tag inks — used for graph nodes and chip markers (non-text, ≥3:1). */
-  --tag-work: #2b59c3;
-  --tag-study: #4a4f59;
-  --tag-teaching: #1d7a4e;
-  --tag-community: #a35f00;
-  --tag-milestone: var(--pen);
-
-  --shadow-tape: 0 1px 0 rgba(22, 24, 29, 0.04), 0 8px 24px -12px rgba(22, 24, 29, 0.18);
-  --tape: rgba(214, 196, 150, 0.55);
+  --pen-fill: #c8003b;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,16 +40,7 @@
     --grid: rgba(255, 255, 255, 0.04);
     --pen: #ff004f;
     --pen-soft: rgba(255, 0, 79, 0.14);
-    --squiggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5.2C14 3.4 27 6.4 41 4.6S68 3 82 4.9 95 5.6 99 3.8' fill='none' stroke='%23ff004f' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-
-    --tag-work: #7ea2ff;
-    --tag-study: #a0a0a0;
-    --tag-teaching: #5fcf95;
-    --tag-community: #e3a341;
-    --tag-milestone: var(--pen);
-
-    --shadow-tape: 0 1px 0 rgba(0, 0, 0, 0.4), 0 10px 28px -14px rgba(0, 0, 0, 0.8);
-    --tape: rgba(255, 255, 255, 0.12);
+    --pen-fill: #d1003f;
   }
 }
 
@@ -78,67 +59,78 @@
   --grid: rgba(255, 255, 255, 0.04);
   --pen: #ff004f;
   --pen-soft: rgba(255, 0, 79, 0.14);
-  --squiggle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1 5.2C14 3.4 27 6.4 41 4.6S68 3 82 4.9 95 5.6 99 3.8' fill='none' stroke='%23ff004f' stroke-width='1.6' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
-
-  --tag-work: #7ea2ff;
-  --tag-study: #a0a0a0;
-  --tag-teaching: #5fcf95;
-  --tag-community: #e3a341;
-  --tag-milestone: var(--pen);
-
-  --shadow-tape: 0 1px 0 rgba(0, 0, 0, 0.4), 0 10px 28px -14px rgba(0, 0, 0, 0.8);
-  --tape: rgba(255, 255, 255, 0.12);
+  --pen-fill: #d1003f;
 }
 
 /* Theme-independent tokens */
 :root {
+  /* Text on the filled primary button; logo tiles (marks are drawn for white). */
+  --on-fill: #ffffff;
+  --tile-bg: #ffffff;
+  --tile-ink: #16181d;
+
   /* Type families */
   --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
   --font-body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Fluid type scale (320px → 1280px) */
-  --step--2: 0.78rem; /* mono annotations ≈ 12.5px */
-  --step--1: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem); /* mono meta 13–14px */
-  --step-0: clamp(1.0625rem, 1.04rem + 0.12vw, 1.125rem); /* body 17–18px */
-  --step-1: clamp(1.2rem, 1.13rem + 0.35vw, 1.4rem);
-  --step-2: clamp(1.45rem, 1.3rem + 0.7vw, 1.85rem);
-  --step-3: clamp(1.8rem, 1.5rem + 1.4vw, 2.6rem);
-  --step-4: clamp(2.2rem, 1.7rem + 2.4vw, 3.4rem);
-  --step-hero: clamp(2.6rem, 6vw, 4.5rem);
+  /* Type ramp: seven sizes, fixed line heights. Nothing else is used. */
+  --t-14: 0.875rem;  /* meta, chips, captions */
+  --t-16: 1rem;      /* UI: nav, buttons, labels */
+  --t-17: 1.0625rem; /* body */
+  --t-20: 1.25rem;   /* lead, h3 */
+  --t-28: 1.75rem;   /* h2 */
+  --t-40: 2.5rem;    /* h1, page titles */
+  --t-56: 3.5rem;    /* hero name */
+  /* Legacy aliases mapped onto the ramp */
+  --step--2: var(--t-14);
+  --step--1: var(--t-14);
+  --step-0: var(--t-17);
+  --step-1: var(--t-20);
+  --step-2: var(--t-28);
+  --step-3: var(--t-28);
+  --step-4: var(--t-40);
+  --step-hero: var(--t-56);
 
-  --leading: 1.65;
-  --leading-tight: 1.12;
-  --tracking-display: -0.018em;
-  --tracking-mono: 0.04em;
-  --measure: 68ch;
+  --leading: 1.6;
+  --leading-tight: 1.15;
+  --tracking-display: 0;
+  --tracking-mono: 0;
+  --tracking-label: 0.06em;
+  --measure: 65ch;
 
-  /* Space (4px base) */
-  --s-1: 0.25rem;
-  --s-2: 0.5rem;
-  --s-3: 0.75rem;
-  --s-4: 1rem;
-  --s-5: 1.5rem;
-  --s-6: 2rem;
-  --s-7: 3rem;
-  --s-8: 4rem;
-  --s-9: 6rem;
-  --section-gap: clamp(4.5rem, 3rem + 6vw, 8rem);
+  /* Space: 8-point scale (4 is the only half-step) */
+  --s-1: 0.25rem; /* 4 */
+  --s-2: 0.5rem;  /* 8 */
+  --s-3: 1rem;    /* 16 */
+  --s-4: 1rem;    /* 16 */
+  --s-5: 1.5rem;  /* 24 */
+  --s-6: 2rem;    /* 32 */
+  --s-7: 3rem;    /* 48 */
+  --s-8: 4rem;    /* 64 */
+  --s-9: 6rem;    /* 96 */
+  --s-10: 8rem;   /* 128 */
+  --section-gap: 5rem; /* 80 mobile; 128 from 900px (below) */
 
-  /* Layout */
-  --page-max: 1200px;
-  --gutter: clamp(16px, 4vw, 40px);
+  /* Layout: one content width, one prose width */
+  --page-max: 1120px;
+  --gutter: 1rem;
   --margin-col: 14rem;
   --header-h: 64px;
 
-  /* Shape */
-  --radius-sm: 3px;
-  --radius: 6px;
+  /* Shape: one radius, plus pills for small chips */
+  --radius-sm: 4px;
+  --radius: 4px;
+  --radius-pill: 9999px;
   --hairline: 1px;
 
-  /* Motion */
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --dur: 240ms;
-  --dur-slow: 280ms;
-  --rise: 8px;
+  /* Motion: 150–250 ms, ease-out */
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --dur: 200ms;
+  --dur-slow: 250ms;
+  --rise: 0px;
+}
+
+@media (min-width: 900px) {
+  :root { --section-gap: 8rem; --gutter: 2rem; }
 }

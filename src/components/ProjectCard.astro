@@ -1,5 +1,6 @@
 ---
-/* Text-led spec-block card. `featured` = wide layout. Optional image → fig. caption. */
+/* Project card. `featured` = wide layout. `maxStack` caps the chips (4 on the home page).
+   `status` shows only for unfinished work (`unfinished`). */
 import TagChip from './TagChip.astro';
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -19,16 +20,19 @@ interface Props {
   /** No screenshot: draw a GitHub-style repository tile instead. */
   repo?: string;
   internal?: boolean;
+  maxStack?: number;
+  unfinished?: boolean;
 }
-const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker, cover, coverAlt = '', repo, internal = false } = Astro.props;
+const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker, cover, coverAlt = '', repo, internal = false, maxStack, unfinished = false } = Astro.props;
+const chips = maxStack ? stack.slice(0, maxStack) : stack;
 const repoPath = repo?.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
 const [owner, name] = repoPath ? repoPath.split('/') : [];
 const showTile = !cover && (repoPath || internal);
 ---
-<article class:list={['card', { featured, 'has-cover': !!cover }]} data-reveal>
+<article class:list={['card', { featured, 'has-cover': !!cover }]}>
   <header class="card-head">
-    <p class="kicker">{kicker ?? 'project'}{year && <span> · {year}</span>}</p>
-    {status && <p class="status meta"><span class="status-dot" aria-hidden="true"></span>{status}</p>}
+    <p class="kicker">{kicker ?? 'Project'}{year && <span> · {year}</span>}</p>
+    {status && unfinished && <p class="meta">{status}</p>}
   </header>
   <h3 class="card-title">
     {href ? <a href={href} class="card-link">{title}</a> : title}
@@ -43,25 +47,24 @@ const showTile = !cover && (repoPath || internal);
     <div class="shot tile" aria-hidden="true">
       <div class="tile-top">
         <svg class="gh" viewBox="0 0 16 16" width="22" height="22"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-        <span class="vis">{internal ? 'Private' : 'Public'}</span>
       </div>
       <p class="repo mono">
         {repoPath ? <><span class="owner">{owner}/</span><span class="rname">{name}</span></> : <><span class="owner">internal/</span><span class="rname">{title.toLowerCase().replace(/\s+/g, '-')}</span></>}
       </p>
       {stack.length > 0 && (
-        <p class="langs mono">{stack.slice(0, 3).map((s, i) => <span><i class:list={['dot', `d${i}`]}></i>{s}</span>)}</p>
+        <p class="langs">{stack.slice(0, 3).join(' · ')}</p>
       )}
     </div>
   )}
   <slot />
   {stack.length > 0 && (
     <ul class="chip-list" role="list">
-      {stack.map((s) => <li><TagChip label={s} /></li>)}
+      {chips.map((s) => <li><TagChip label={s} /></li>)}
     </ul>
   )}
   {(links.length > 0 || internalLabel) && (
     <footer class="card-links">
-      {links.map((l) => <a class="pen-link mono" href={l.href}>{l.label} {l.href.startsWith("http") ? "↗" : "→"}</a>)}
+      {links.map((l) => <a class="pen-link" href={l.href}>{l.label} {l.href.startsWith("http") ? "↗" : "→"}</a>)}
       {internalLabel && <span class="meta">{internalLabel}</span>}
     </footer>
   )}
@@ -76,46 +79,38 @@ const showTile = !cover && (repoPath || internal);
     border: 1px solid var(--rule-strong);
     border-radius: var(--radius);
     background: var(--surface);
-    transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+    transition: border-color var(--dur) var(--ease);
   }
   .card:has(.card-link):hover { border-color: var(--ink); }
-  .card-head { display: flex; justify-content: space-between; gap: var(--s-3); padding-bottom: var(--s-3); border-bottom: 1px dashed var(--rule-strong); }
-  .status { display: inline-flex; align-items: center; gap: 0.45em; text-transform: uppercase; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tag-teaching); }
-  .card-title { font-size: var(--step-2); }
+  .card-head { display: flex; justify-content: space-between; gap: var(--s-3); }
+  .card-title { font-size: var(--t-20); }
   .card-link { text-decoration: none; }
   .card-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
   .card-link:focus-visible { outline: none; }
-  .card:has(.card-link:focus-visible) { outline: 2px solid var(--pen); outline-offset: 3px; }
+  .card:has(.card-link:focus-visible) { outline: 2px solid var(--ink); outline-offset: 4px; }
   .summary { color: var(--ink-2); }
   .chip-list > li { display: flex; }
   .chip-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin-top: auto; padding-top: var(--s-2); list-style: none; }
-  .card-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); font-size: var(--step--1); }
+  .card-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); font-size: var(--t-16); }
   .card-links a { position: relative; z-index: 1; }
-  .shot { border: 1px solid var(--rule-strong); border-radius: calc(var(--radius) - 2px); overflow: hidden; background: var(--surface-2); }
+  .shot { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--surface-2); }
   .shot :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; }
   @media (min-width: 900px) {
-    .featured.has-cover { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); column-gap: var(--s-6); row-gap: var(--s-3); align-content: start; }
+    .featured.has-cover { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--s-6); row-gap: var(--s-3); align-content: start; }
     .featured.has-cover > * { grid-column: 1; }
     .featured.has-cover > .card-head { grid-column: 1 / -1; }
     .featured.has-cover > .shot { grid-column: 2; grid-row: 2 / span 5; align-self: start; }
     .featured.has-cover .shot :global(img) { aspect-ratio: 16 / 10; }
   }
-  .tile { position: relative; aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: space-between; padding: var(--s-4);
-    background:
-      radial-gradient(circle at 1px 1px, var(--rule-strong) 1px, transparent 0) 0 0 / 14px 14px,
-      var(--surface-2); color: var(--ink); }
+  .tile { position: relative; aspect-ratio: 16 / 9; display: flex; flex-direction: column; justify-content: space-between; padding: var(--s-3);
+    background: var(--surface-2); color: var(--ink); }
   .tile-top { display: flex; align-items: center; justify-content: space-between; }
   .gh { color: var(--ink); }
-  .vis { font-family: var(--font-mono); font-size: 0.7rem; padding: 0.1em 0.6em; border: 1px solid var(--rule-strong); border-radius: 999px; color: var(--muted); background: var(--surface); }
-  .repo { font-size: var(--step-0); line-height: 1.3; overflow-wrap: anywhere; }
+  .repo { font-size: var(--t-17); line-height: 1.3; overflow-wrap: anywhere; }
   .repo .owner { color: var(--muted); }
-  .repo .rname { font-weight: 600; }
-  .langs { display: flex; flex-wrap: wrap; gap: var(--s-3); font-size: 0.72rem; color: var(--ink-2); }
-  .langs span { display: inline-flex; align-items: center; gap: 0.4em; }
-  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
-  .d0 { background: var(--pen); } .d1 { background: var(--tag-teaching); } .d2 { background: var(--tag-work, #3b6fd8); }
+  .repo .rname { font-weight: 500; }
+  .langs { font-size: var(--t-14); color: var(--ink-2); }
   .featured { padding: var(--s-6); }
-  .featured .card-title { font-size: var(--step-3); max-width: 24ch; }
-  .featured .summary { font-size: var(--step-1); max-width: 56ch; }
+  .featured .card-title { font-size: var(--t-28); max-width: 24ch; }
+  .featured .summary { font-size: var(--t-17); max-width: var(--measure); }
 </style>

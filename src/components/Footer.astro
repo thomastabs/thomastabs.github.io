@@ -1,20 +1,13 @@
 ---
 import { useTranslations, type Locale } from '@/i18n';
-import { profile } from '@/data/links';
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <ul class="footer-links" role="list">
-      <li><a class="pen-link pen-link--bare" href={`mailto:${profile.email}`}>{profile.email}</a></li>
-      <li><a class="pen-link pen-link--bare" href={profile.github} rel="me">GitHub</a></li>
-      <li><a class="pen-link pen-link--bare" href={profile.linkedin} rel="me">LinkedIn</a></li>
-      <li><a class="pen-link pen-link--bare" href={profile.cv}>CV</a></li>
-    </ul>
-    <p class="stamp meta">{t('footer.hostedOn')}</p>
-  </div>
+  <p class="container footer-inner">
+    © 2026 Tomás Taborda · <a class="pen-link" href="https://github.com/thomastabs/thomastabs.github.io">{t('footer.source')}</a>
+  </p>
 </footer>
 <style>
   .site-footer {
@@ -22,23 +15,5 @@ const t = useTranslations(lang);
     border-top: 1px solid var(--rule);
     padding-block: var(--s-6) var(--s-7);
   }
-  .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-4) var(--s-6);
-  }
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-2) var(--s-5);
-    padding: 0;
-    list-style: none;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-  }
-  .stamp {
-    text-transform: uppercase;
-  }
+  .footer-inner { font-size: var(--t-14); color: var(--ink-2); }
 </style>

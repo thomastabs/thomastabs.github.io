@@ -1,24 +1,5 @@
 /* Progressive enhancements shared by every page. Tiny on purpose. */
 
-// Fade-and-rise once when entering the viewport.
-const revealables = document.querySelectorAll<HTMLElement>('[data-reveal]');
-if ('IntersectionObserver' in window && revealables.length) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries) {
-        if (e.isIntersecting) {
-          e.target.classList.add('is-visible');
-          io.unobserve(e.target);
-        }
-      }
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
-  );
-  revealables.forEach((el) => io.observe(el));
-} else {
-  revealables.forEach((el) => el.classList.add('is-visible'));
-}
-
 // Copy helper: any [data-copy] button copies its value or a target's text.
 async function copy(text: string, btn: HTMLElement) {
   try {
@@ -30,7 +11,7 @@ async function copy(text: string, btn: HTMLElement) {
     setTimeout(() => {
       btn.removeAttribute('data-copied');
       label.textContent = original;
-    }, 1600);
+    }, 2000);
   } catch {
     /* clipboard blocked: leave the button as-is */
   }

@@ -6,7 +6,6 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
-import Figure from '@/components/Figure.astro';
 import PostCard from '@/components/PostCard.astro';
 import ContactSection from '@/components/ContactSection.astro';
 import portrait from '@/assets/portrait/portrait.jpg';
@@ -49,11 +48,10 @@ const personLd = {
 
   <Hero lang={lang} localAnchors={localAnchors} />
 
-  <!-- §01 About -->
   <section class="container section" id="about" aria-labelledby="about-title">
-    <SectionHeading n={1} label={t('section.about')} title={t('about.title')} id="about-title" />
+    <SectionHeading n={1} label={t('section.about')} id="about-title" />
     <div class="about-grid">
-      <div class="about-text" data-reveal>
+      <div class="about-text">
         {about.map((p) => <p>{p[lang]}</p>)}
         <SpecBlock
           title={t('about.skills')}
@@ -61,41 +59,26 @@ const personLd = {
           rows={skills.map((g) => ({ k: g.group[lang], v: g.items.join(' · '), mono: true }))}
         />
       </div>
-      <Figure n={1} caption={t('about.figCaption')} taped class="about-portrait">
-        <Image class="portrait-img" src={portrait} alt={t('about.portrait')} widths={[300, 460, 600]} sizes="(min-width: 960px) 280px, 60vw" />
-      </Figure>
+      <Image class="portrait-img" src={portrait} alt={t('about.portrait')} widths={[300, 460, 600]} sizes="(min-width: 900px) 272px, 224px" />
     </div>
   </section>
 
-
-  <!-- §02 Experience -->
   <section class="container section-tight" id="experience" aria-labelledby="exp-title">
-    <SectionHeading n={2} label={t('section.experience')} title={t('experience.title')} id="exp-title" meta={lang === 'pt' ? `${roles.length} funções · 2024 → 2026` : `${roles.length} roles · 2024 → 2026`} />
-    <ol class="timeline" role="list">
+    <SectionHeading n={2} label={t('section.experience')} id="exp-title" />
+    <ul class="roles" role="list">
       {roles.map((r) => (
-        <TimelineEntry
-          id={r.id}
-          period={r.period[lang]}
-          title={r.role[lang]}
-          org={r.org[lang]}
-          tags={[{ kind: r.kind, label: t(`tag.${r.kind}` as const) }]}
-          stack={r.stack}
-          logo={r.logo}
-          monogram={r.monogram}
-          notesHref={r.notesSlug ? localePath('notebook', lang, r.notesSlug) : undefined}
-          notesLabel={t('cta.readNotes')}
-        >
-          <p>{r.summary[lang]}</p>
-        </TimelineEntry>
+        <li id={r.id} class="role">
+          <span class="role-name">{r.role[lang]}</span>
+          <span class="role-org">{r.org[lang]}</span>
+          <span class="date">{r.period[lang]}</span>
+        </li>
       ))}
-    </ol>
-    <a class="pen-link mono more" href={localePath('journey', lang)}>{t('cta.fullJourney')} →</a>
+    </ul>
+    <a class="pen-link more" href={localePath('journey', lang)}>{t('cta.fullJourney')} →</a>
   </section>
 
-
-  <!-- §03 Education -->
   <section class="container section-tight" id="education" aria-labelledby="edu-title">
-    <SectionHeading n={3} label={t('section.education')} title={t('education.title')} id="edu-title" meta={'2018 → 2026'} />
+    <SectionHeading n={3} label={t('section.education')} id="edu-title" />
     <ol class="timeline" role="list">
       {education.map((e) => (
         <TimelineEntry
@@ -103,93 +86,86 @@ const personLd = {
           period={e.period[lang]}
           title={e.degree[lang]}
           org={`${e.institution}${e.location ? ` · ${e.location[lang]}` : ''}`}
-          tags={[
-            { kind: 'study', label: t('tag.study') },
-            ...(e.thesis ? [{ kind: 'milestone' as const, label: `${t('education.defended')} 23.10.2026 · ${e.thesis.grade}` }] : []),
-          ]}
           logo={e.logo}
           monogram={e.monogram}
         >
           {e.details && <p>{e.details[lang]}</p>}
           {e.thesis && (
             <p class="edu-details">
-              {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}.{' '}
+              {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}. {t('education.defendedOn')} {e.thesis.defended[lang]}, {e.thesis.grade}.{' '}
               <a class="pen-link" href={localePath('work', lang, 'apex')}>{t('education.caseStudy')} →</a>
             </p>
           )}
           {e.coursework && (
-            <details class="coursework" open>
-              <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
-              <ul class="cw-list" role="list">
-                {e.coursework.map((c) => <li>{c[lang]}</li>)}
-              </ul>
-            </details>
+            <p class="coursework"><span class="cw-label">{t('education.coursework')}:</span> {e.coursework.map((c) => c[lang]).join(', ')}.</p>
           )}
         </TimelineEntry>
       ))}
     </ol>
   </section>
 
-
-  <!-- §04 Selected work -->
   <section class="container section-tight" id="work" aria-labelledby="work-title">
-    <SectionHeading n={4} label={t('section.selectedWork')} title={t('work.homeTitle')} id="work-title" meta={lang === 'pt' ? `${featured.length} em destaque` : `${featured.length} featured`} />
+    <SectionHeading n={4} label={t('section.selectedWork')} id="work-title" />
     <div class="work-grid">
-      {apex && <ProjectCard featured {...cardProps(apex, lang)} />}
+      {apex && <ProjectCard featured maxStack={4} {...cardProps(apex, lang)} />}
       <div class="work-row">
-        {others.map((e) => <ProjectCard {...cardProps(e, lang)} />)}
+        {others.map((e) => <ProjectCard maxStack={4} {...cardProps(e, lang)} />)}
       </div>
     </div>
-    <a class="pen-link mono more" href={localePath('work', lang)}>{t('cta.allWork')} →</a>
+    <a class="pen-link more" href={localePath('work', lang)}>{t('cta.allWork')} →</a>
   </section>
 
   {latest.length > 0 && (
     <>
-      <!-- §05 From the notebook (hidden when there are no posts) -->
       <section class="container section-tight" id="notebook" aria-labelledby="notebook-title">
-        <SectionHeading n={5} label={t('section.fromNotebook')} title={t('notebook.homeTitle')} id="notebook-title" meta={lang === 'pt' ? `${latest.length} ${latest.length === 1 ? 'nota' : 'notas'}` : `${latest.length} ${latest.length === 1 ? 'note' : 'notes'}`} />
+        <SectionHeading n={5} label={t('section.fromNotebook')} id="notebook-title" />
         <div class="notes">
           {latest.map((p) => <PostCard {...postCardProps(p, t)} />)}
         </div>
-        <a class="pen-link mono more" href={indexHref(lang)}>{t('notebook.allNotes')} →</a>
+        <a class="pen-link more" href={indexHref(lang)}>{t('notebook.allNotes')} →</a>
       </section>
     </>
   )}
 
-  <!-- §06 Contact -->
   <ContactSection lang={lang} />
 </BaseLayout>
 
 <style>
-  /* Breathing room between home sections */
   .section-tight { padding-top: var(--section-gap); }
   :global(.contact) { margin-top: var(--s-7); }
 
-
-  .about-grid { display: grid; gap: var(--s-7); align-items: start; }
+  .about-grid { display: grid; gap: var(--s-6); align-items: start; }
   @media (min-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1fr) 17rem; gap: var(--s-8); } }
-  .about-text > p { max-width: 62ch; color: var(--ink-2); }
-  .about-text > p:first-child { color: var(--ink); font-size: var(--step-1); line-height: 1.55; }
-  .about-text > * + * { margin-top: var(--s-4); }
+  .about-text > p { max-width: var(--measure); }
+  .about-text > * + * { margin-top: var(--s-3); }
   .about-text > :global(.spec) { margin-top: var(--s-6); }
-  :global(.about-portrait) { max-width: 17rem; justify-self: center; }
-  :global(.portrait-img) { aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%; }
-  @media (max-width: 899px) { :global(.about-portrait) { order: -1; max-width: 14rem; justify-self: start; } }
+  :global(.portrait-img) {
+    width: 100%; max-width: 17rem; height: auto;
+    aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 12%;
+    border: 1px solid var(--rule); border-radius: var(--radius);
+  }
+  @media (max-width: 899px) { :global(.portrait-img) { order: -1; max-width: 14rem; } }
+
+  .roles { list-style: none; padding: 0; margin: 0; }
+  .role {
+    display: grid; gap: 0 var(--s-3);
+    padding: var(--s-3) 0; border-bottom: 1px solid var(--rule);
+  }
+  .role:first-child { padding-top: 0; }
+  @media (min-width: 720px) {
+    .role { grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr); align-items: baseline; }
+    .role .date { text-align: right; }
+  }
+  .role-name { font-weight: 500; color: var(--ink); }
+  .role-org { color: var(--ink-2); }
 
   .timeline { padding: 0; }
-  .more { display: inline-block; margin-top: var(--s-2); font-size: var(--step--1); }
+  .more { display: inline-block; margin-top: var(--s-3); font-size: var(--t-16); }
 
   .edu-details { margin-top: var(--s-2); }
-  .coursework { margin-top: var(--s-3); }
-  .coursework summary { cursor: pointer; width: fit-content; list-style: none; display: inline-flex; gap: 0.5em; align-items: center; min-height: 32px; color: var(--ink-2); }
-  .coursework summary::-webkit-details-marker { display: none; }
-  .coursework summary::before { content: '+'; color: var(--pen); font-weight: 500; width: 1ch; }
-  .coursework[open] summary::before { content: '−'; }
-  .coursework .count { color: var(--muted); }
-  .cw-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: var(--s-2) 0 0; list-style: none; }
-  .cw-list li { padding: 0.15rem 0.55rem; border: 1px solid var(--rule-strong); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-2); }
+  .coursework { margin-top: var(--s-2); color: var(--ink-2); max-width: var(--measure); }
+  .cw-label { color: var(--ink); }
 
   .work-grid { display: grid; gap: var(--s-5); margin-bottom: var(--s-5); }
   .work-row { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
-
 </style>

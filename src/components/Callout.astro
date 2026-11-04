@@ -6,31 +6,23 @@ const t = useTranslations(getLangFromUrl(Astro.url));
 const label = t(`callout.${type}` as const);
 ---
 <aside class="callout" data-type={type}>
-  <p class="callout-label"><span class="glyph" aria-hidden="true">{type === 'decision' ? '◆' : type === 'todo' ? '☐' : '✎'}</span> {label}{title && <span class="callout-title"> · {title}</span>}</p>
+  <p class="callout-label">{label}{title && <span class="callout-title"> · {title}</span>}</p>
   <div class="callout-body"><slot /></div>
 </aside>
 <style>
   .callout {
-    padding: var(--s-4) var(--s-5);
+    padding: var(--s-3) var(--s-5);
     border: 1px solid var(--rule-strong);
-    border-left-width: 3px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     background: var(--surface);
   }
-  .callout[data-type='todo'] { border-left-color: var(--pen); background: var(--pen-soft); }
-  .callout[data-type='decision'] { border-left-color: var(--ink); }
-  .callout[data-type='note'] { border-left-color: var(--tag-work); }
   .callout-label {
-    font-family: var(--font-mono);
-    font-size: var(--step--2);
+    font-size: var(--t-14);
     font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
     color: var(--ink);
     margin-bottom: var(--s-2);
   }
-  .callout-title { color: var(--muted); font-weight: 400; text-transform: none; letter-spacing: var(--tracking-mono); }
-  .glyph { color: var(--pen); }
-  .callout-body :global(> * + *) { margin-top: 0.6em; }
-  .callout-body { font-size: 0.96em; color: var(--ink-2); }
+  .callout-title { color: var(--muted); font-weight: 400; }
+  .callout-body :global(> * + *) { margin-top: var(--s-2); }
+  .callout-body { color: var(--ink-2); }
 </style>

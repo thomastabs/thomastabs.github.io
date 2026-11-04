@@ -1,4 +1,4 @@
-/* Apex case study — single source of truth.
+/* Apex case study: single source of truth.
    Every fact here comes from the dissertation, the extended abstract, the defence
    slides or github.com/thomastabs/apex. Links with href: null are TODO and render nothing. */
 import type { L10n } from './types';
@@ -7,8 +7,8 @@ export const apexTitle =
   'Governed Human-AI Collaboration Across the Software Development Lifecycle: A Process Framework and Its Reference Implementation';
 
 export const oneLiner: L10n = {
-  en: 'A process framework for governed human–AI collaboration across the SDLC, instantiated as Apex, a working web application.',
-  pt: 'Uma framework de processo para a colaboração humano–IA governada ao longo do ciclo de vida do software, instanciada no Apex, uma aplicação web funcional.',
+  en: 'A process framework for using AI across the software lifecycle with people in control, and Apex, the web app that implements it.',
+  pt: 'Uma framework de processo para usar IA ao longo do ciclo de vida do software com as pessoas no controlo, e o Apex, a aplicação web que a implementa.',
 };
 
 export const header: { k: L10n; v: L10n | string; href?: string; mono?: boolean }[] = [
@@ -216,14 +216,14 @@ export const capabilities: { title: L10n; text: L10n }[] = [
     title: { en: 'Phased workflow with gates', pt: 'Fluxo por fases, com portões' },
     text: {
       en: 'Transitions are gated on content: no implementation without a locked Gherkin spec, no deploy without a QA sign-off or a green CI run, enforced server-side.',
-      pt: 'As transições dependem do conteúdo: sem Gherkin bloqueado não há implementação, sem aprovação de QA ou CI verde não há implantação — validado no servidor.',
+      pt: 'As transições dependem do conteúdo: sem Gherkin bloqueado não há implementação, sem aprovação de QA ou CI verde não há implantação. O servidor valida as regras.',
     },
   },
   {
     title: { en: 'Traceability graph', pt: 'Grafo de rastreabilidade' },
     text: {
-      en: 'One interactive derivation graph per project — epic → story → Gherkin → design → tasks → tests → deploy — derived from the story index, no AI involved.',
-      pt: 'Um grafo de derivação interativo por projeto — épico → história → Gherkin → design → tarefas → testes → implantação — derivado do índice de histórias, sem IA.',
+      en: 'One interactive derivation graph per project (epic → story → Gherkin → design → tasks → tests → deploy), built from the story index with no AI involved.',
+      pt: 'Um grafo de derivação interativo por projeto (épico → história → Gherkin → design → tarefas → testes → implantação), gerado a partir do índice de histórias, sem IA.',
     },
   },
   {
@@ -250,8 +250,8 @@ export const capabilities: { title: L10n; text: L10n }[] = [
   {
     title: { en: 'Spec-anchored storage', pt: 'Armazenamento ancorado na especificação' },
     text: {
-      en: 'Workflow state lives in versioned, human-readable Markdown context files plus a story index — not in a chat transcript.',
-      pt: 'O estado do fluxo vive em ficheiros de contexto Markdown versionados e legíveis, mais um índice de histórias — e não numa conversa.',
+      en: 'Workflow state lives in versioned, human-readable Markdown context files and a story index.',
+      pt: 'O estado do fluxo fica em ficheiros de contexto Markdown versionados e legíveis, e num índice de histórias.',
     },
   },
 ];

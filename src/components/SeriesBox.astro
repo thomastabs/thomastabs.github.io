@@ -1,5 +1,5 @@
 ---
-/* "Part 2 of 4 — Apex notes": every part of the series, current one marked, with prev/next. */
+/* "Part 2 of 4 · Apex notes": every part of the series, current one marked, with prev/next. */
 import { useTranslations, type Locale } from '@/i18n';
 import { postHref, seriesHref, seriesLabel, type Post } from '@/lib/notebook';
 interface Props { parts: Post[]; current: Post; series: string; lang: Locale }
@@ -12,7 +12,7 @@ const heading = t('notebook.seriesPart').replace('{n}', String(i + 1)).replace('
 ---
 <aside class="series" aria-labelledby="series-h">
   <p class="kicker" id="series-h">
-    <span class="pen">{heading}</span> — <a class="pen-link" href={seriesHref(series, lang)}>{seriesLabel(series)}</a>
+    {heading} · <a class="pen-link" href={seriesHref(series, lang)}>{seriesLabel(series)}</a>
   </p>
   <ol>
     {parts.map((p) => (
@@ -24,19 +24,19 @@ const heading = t('notebook.seriesPart').replace('{n}', String(i + 1)).replace('
     ))}
   </ol>
   {(prev || next) && (
-    <p class="series-nav mono">
+    <p class="series-nav">
       {prev && <a href={postHref(prev)} rel="prev">← {t('post.prev')}</a>}
       {next && <a href={postHref(next)} rel="next">{t('post.next')} →</a>}
     </p>
   )}
 </aside>
 <style>
-  .series { padding: var(--s-4) var(--s-5); border: 1px dashed var(--rule-strong); border-radius: var(--radius); background: var(--surface); max-width: 68ch; }
-  .series ol { margin: var(--s-3) 0 0; padding-left: 1.6em; display: grid; gap: 0.25rem; }
-  .series li::marker { font-family: var(--font-mono); font-size: 0.85em; color: var(--muted); }
+  .series { padding: var(--s-3) var(--s-5); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); max-width: var(--measure); }
+  .series ol { margin: var(--s-3) 0 0; padding-left: var(--s-5); display: grid; gap: var(--s-1); }
+  .series li::marker { color: var(--muted); }
   .series a { color: var(--ink-2); }
   .series [aria-current] { color: var(--ink); font-weight: 500; }
-  .series-nav { display: flex; justify-content: space-between; gap: var(--s-4); margin-top: var(--s-3); font-size: var(--step--1); }
+  .series-nav { display: flex; justify-content: space-between; gap: var(--s-3); margin-top: var(--s-3); font-size: var(--t-16); }
   .series-nav a { text-decoration: none; color: var(--ink); }
   .series-nav a:hover { color: var(--pen); }
   .series-nav a[rel='next'] { margin-left: auto; }

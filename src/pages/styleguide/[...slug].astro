@@ -6,8 +6,6 @@ import { Code } from 'astro:components';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
-import DimensionLine from '@/components/DimensionLine.astro';
-import MarginNote from '@/components/MarginNote.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
 import TagChip from '@/components/TagChip.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
@@ -143,7 +141,6 @@ export function traceabilityRate(artefacts: Artefact[]): number {
         </p>
         <blockquote><p>Value is conditional on process, not on model capability alone.</p></blockquote>
       </div>
-      <MarginNote>Fraunces · opsz auto · wght 540–580 · −0.018em</MarginNote>
     </div>
   </section>
 
@@ -160,7 +157,6 @@ export function traceabilityRate(artefacts: Artefact[]): number {
         <p class="kicker">2 · Margin note (≥ 1100 px; inline below)</p>
         <div class="annotated motif-box">
           <p>MSc in Computer Science and Engineering, Instituto Superior Técnico. Thesis: governed human–AI collaboration across the SDLC.</p>
-          <MarginNote>defended 23.10.2026 · 17/20</MarginNote>
         </div>
       </li>
       <li>
@@ -207,7 +203,6 @@ export function traceabilityRate(artefacts: Artefact[]): number {
 
     <p class="kicker sub">Dimension line between sections</p>
   </section>
-  <DimensionLine from="02" to="03" label="2021 → 2026" />
 
   <!-- ===================== Hero ===================== -->
   <section class="section" id="hero">

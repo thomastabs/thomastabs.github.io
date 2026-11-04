@@ -34,24 +34,21 @@ const { rows, title, compact = false } = Astro.props;
   .row {
     display: grid;
     grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr);
-    gap: var(--s-4);
+    gap: var(--s-3);
     padding: var(--s-3) 0;
     border-bottom: 1px solid var(--rule);
   }
   .row:last-child { border-bottom: 0; }
   dt {
-    font-family: var(--font-mono);
-    font-size: var(--step--2);
-    letter-spacing: var(--tracking-mono);
-    text-transform: uppercase;
+    font-size: var(--t-14);
     color: var(--muted);
-    padding-top: 0.2em;
+    padding-top: 2px;
   }
   dd { margin: 0; color: var(--ink); }
-  dd.mono { font-family: var(--font-mono); font-size: var(--step--1); }
+  dd.mono { font-family: var(--font-mono); font-size: var(--t-14); }
   .compact .row { padding: var(--s-2) 0; }
   @media (max-width: 480px) {
-    .spec { padding-inline: var(--s-4); }
+    .spec { padding-inline: var(--s-3); }
     .row { grid-template-columns: 1fr; gap: var(--s-1); }
   }
 </style>

@@ -24,7 +24,7 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
 >
   <p class="memo-head">
     <span class="kicker" id="memo-title">{t('contact.form.title')}</span>
-    <span class="mono memo-to">→ {profile.email}</span>
+    <span class="memo-to">→ {profile.email}</span>
   </p>
   {contactFormReady && <input type="hidden" name="access_key" value={contactForm.accessKey} />}
   {contactFormReady && <input type="hidden" name="from_name" value="tomastaborda.com" />}
@@ -45,7 +45,7 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
 
   <div class="memo-foot">
     <button type="submit" class="btn btn--primary">{t('contact.form.send')} →</button>
-    <p class="mono memo-note" data-status role="status" aria-live="polite">{t('contact.form.note')}</p>
+    <p class="memo-note" data-status role="status" aria-live="polite">{t('contact.form.note')}</p>
   </div>
   <p class="memo-error" data-error hidden>
     {t('contact.form.error')} <a class="pen-link" href={`mailto:${profile.email}`}>{profile.email}</a>
@@ -55,38 +55,35 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
 <style>
   .memo {
     display: grid; gap: 0;
-    padding: var(--s-5) var(--s-5) var(--s-4);
+    padding: var(--s-5) var(--s-5) var(--s-3);
     background: var(--surface);
     border: 1px solid var(--rule-strong);
     border-radius: var(--radius);
-    box-shadow: 0 18px 48px -24px rgb(0 0 0 / 0.45);
   }
-  .memo-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 2px solid var(--ink); }
-  .memo-to { font-size: var(--step--2); color: var(--muted); }
+  .memo-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--s-2); padding-bottom: var(--s-3); border-bottom: 1px solid var(--rule-strong); }
+  .memo-to { font-size: var(--t-14); color: var(--muted); }
   .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
   .field { display: grid; grid-template-columns: 6.5rem 1fr; align-items: baseline; border-bottom: 1px solid var(--rule); }
-  .field label { font-family: var(--font-mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: var(--tracking-mono); color: var(--muted); padding: 0.85rem 0; }
+  .field label { font-size: var(--t-14); color: var(--muted); padding: var(--s-3) 0; }
   .field input, .field textarea {
-    width: 100%; min-height: 44px; padding: 0.7rem 0.25rem;
+    width: 100%; min-height: 44px; padding: var(--s-2) var(--s-1);
     border: 0; background: transparent; color: var(--ink);
-    font: inherit; font-size: var(--step-0);
+    font: inherit; font-size: var(--t-17);
   }
-  .field textarea { resize: vertical; min-height: 9rem; line-height: 1.55;
-    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.55em - 1px), var(--rule) calc(1.55em - 1px), var(--rule) 1.55em);
-    background-position: 0 0.7rem; background-attachment: local; }
+  .field textarea { resize: vertical; min-height: 9rem; line-height: 1.6; }
   .field--area { grid-template-columns: 1fr; }
   .field--area label { padding-bottom: 0; }
-  .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: 0.8; }
+  .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
   .field input:focus-visible, .field textarea:focus-visible { outline: none; }
-  .field:focus-within { border-bottom-color: var(--pen); box-shadow: 0 1px 0 var(--pen); }
-  .field:focus-within label { color: var(--pen); }
-  .memo-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-4); padding-top: var(--s-4); }
-  .memo-note { font-size: var(--step--2); color: var(--muted); }
+  .field:focus-within { border-bottom-color: var(--ink); }
+  .field:focus-within label { color: var(--ink); }
+  .memo-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); padding-top: var(--s-3); }
+  .memo-note { font-size: var(--t-14); color: var(--muted); }
   .memo-note[data-state='ok'] { color: var(--ink); }
-  .memo-note[data-state='ok']::before { content: '✓ '; color: var(--pen); }
-  .memo-error { margin-top: var(--s-3); font-size: var(--step--1); color: var(--ink-2); }
+  .memo-error { margin-top: var(--s-3); font-size: var(--t-14); color: var(--ink-2); }
   @media (max-width: 480px) { .field { grid-template-columns: 1fr; } .field label { padding-bottom: 0; } }
 </style>
+
 
 <script>
   const form = document.querySelector<HTMLFormElement>('[data-contact-form]');

@@ -2,11 +2,11 @@ import type { L10n } from './types';
 
 export const about: L10n[] = [
   {
-    en: "I'm Tomás, a software engineer from Portugal. I've just completed my MSc in Computer Science and Engineering at Instituto Superior Técnico, specialising in Software Engineering and Cybersecurity. My thesis, Apex, explores how people and AI agents can work together across the whole software lifecycle without losing control of what gets built.",
-    pt: 'Sou o Tomás, engenheiro de software, de Portugal. Concluí há pouco o Mestrado em Engenharia Informática e de Computadores no Instituto Superior Técnico, com especialização em Engenharia de Software e Cibersegurança. A minha tese, o Apex, estuda como pessoas e agentes de IA podem trabalhar em conjunto ao longo de todo o ciclo de vida do software sem perder o controlo sobre aquilo que é construído.',
+    en: "I'm a software engineer in Lisbon. I did my MSc in Computer Science and Engineering at Técnico, specialising in Software Engineering and Cybersecurity. My thesis, Apex, is a framework and a working tool for using AI agents across the software lifecycle. It was graded 17/20.",
+    pt: 'Sou engenheiro de software em Lisboa. Fiz o Mestrado em Engenharia Informática e de Computadores no Técnico, com especialização em Engenharia de Software e Cibersegurança. A minha tese, o Apex, é uma framework e uma ferramenta para usar agentes de IA ao longo do ciclo de vida do software. Teve 17/20.',
   },
   {
-    en: "I'm drawn to backend and software engineering: clear interfaces, reliable services and tooling that makes teams faster. Along the way I've built an internal platform at Caixa Mágica Software, taught at an AI Agents bootcamp and supported Vodafone's fixed-line customers. On 16 November 2026 I'm joining OpenSoft, where I'll keep building and learning.",
-    pt: 'Interessa-me sobretudo a engenharia de software e de backend: interfaces claras, serviços fiáveis e ferramentas que tornam as equipas mais rápidas. Pelo caminho, construí uma plataforma interna na Caixa Mágica Software, ensinei num bootcamp de Agentes de IA e dei apoio técnico a clientes do serviço fixo da Vodafone. A 16 de novembro de 2026 entro na OpenSoft, onde vou continuar a construir e a aprender.',
+    en: 'At Caixa Mágica I built Gescol, an internal absence-management tool. I have been a teaching assistant at the Técnico+ AI Agents bootcamp twice. On 16 November 2026 I join OpenSoft.',
+    pt: 'Na Caixa Mágica desenvolvi o Gescol, uma ferramenta interna de gestão de ausências. Fui duas vezes assistente de ensino no bootcamp de Agentes de IA do Técnico+. A 16 de novembro de 2026 entro na OpenSoft.',
   },
 ];

@@ -3,6 +3,7 @@ import { useTranslations, type Locale } from '@/i18n';
 import { localePath, translatePath } from '@/i18n/routes';
 import ThemeToggle from './ThemeToggle.astro';
 import Wordmark from './Wordmark.astro';
+import { profile } from '@/data/links';
 
 interface Props {
   lang: Locale;
@@ -25,7 +26,8 @@ const isCurrent = (href: string) => !href.includes('#') && (path === href || pat
 
 const other: Locale = lang === 'en' ? 'pt' : 'en';
 const otherHref = altHref ?? translatePath(Astro.url.pathname, other);
-const enHref = lang === 'en' ? Astro.url.pathname : otherHref;
+const here = Astro.url.pathname.startsWith('/404') ? '/' : Astro.url.pathname; // 404.html is served at any URL
+const enHref = lang === 'en' ? here : otherHref;
 const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
 ---
 
@@ -40,15 +42,11 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
             <li>
               <a href={item.href} class="nav-link" aria-current={isCurrent(item.href) ? 'page' : undefined}>
                 {item.label}
-                {isCurrent(item.href) && (
-                  <svg class="circle-mark" viewBox="0 0 120 48" preserveAspectRatio="none" aria-hidden="true">
-                    <path d="M62 5C31 3 6 11 5 25s27 20 58 19 52-9 52-21S90 5 52 7" />
-                  </svg>
-                )}
               </a>
             </li>
           ))
         }
+        <li><a href={profile.cv} class="nav-link" download>{t('nav.cv')}</a></li>
       </ul>
 
       <div class="nav-tools">
@@ -77,13 +75,12 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
 </header>
 
 <style>
+  /* Solid background: text stays readable over the hero glow, code blocks and photos. */
   .site-header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    -webkit-backdrop-filter: blur(12px) saturate(1.2);
-    backdrop-filter: blur(12px) saturate(1.2);
+    background: var(--bg);
     border-bottom: 1px solid var(--rule);
   }
 
@@ -102,9 +99,7 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
     align-items: center;
   }
 
-  .nav {
-    gap: var(--s-6);
-  }
+  .nav { gap: var(--s-6); }
 
   .nav-list {
     gap: var(--s-5);
@@ -113,54 +108,26 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
   }
 
   .nav-link {
-    position: relative;
     display: inline-block;
-    padding: 0.35rem 0.1rem;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
-    letter-spacing: var(--tracking-mono);
-    text-transform: uppercase;
+    padding-block: var(--s-2);
+    font-size: var(--t-16);
     text-decoration: none;
     color: var(--ink-2);
-    transition: color var(--dur) var(--ease);
+    border-bottom: 2px solid transparent;
+    transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
   }
+  .nav-link:hover { color: var(--ink); }
+  .nav-link[aria-current='page'] { color: var(--ink); border-bottom-color: var(--pen); }
 
-  .nav-link:hover,
-  .nav-link[aria-current='page'] {
-    color: var(--ink);
-  }
-
-  .circle-mark {
-    max-width: none;
-    position: absolute;
-    inset: -3px -9px;
-    width: calc(100% + 18px);
-    height: calc(100% + 6px);
-    overflow: visible;
-    pointer-events: none;
-  }
-
-  .circle-mark path {
-    fill: none;
-    stroke: var(--pen);
-    stroke-width: 1.4;
-    stroke-linecap: round;
-    vector-effect: non-scaling-stroke;
-  }
-
-  .nav-tools {
-    gap: var(--s-3);
-  }
+  .nav-tools { gap: var(--s-3); }
 
   .lang {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    font-family: var(--font-mono);
-    font-size: var(--step--1);
+    gap: var(--s-1);
+    font-size: var(--t-14);
     color: var(--muted);
   }
-
   .lang a {
     display: inline-grid;
     place-items: center;
@@ -169,16 +136,11 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
     text-decoration: none;
     color: var(--muted);
   }
-
-  .lang a:hover {
-    color: var(--ink);
-  }
-
+  .lang a:hover { color: var(--ink); }
   .lang a[aria-current] {
     color: var(--ink);
     font-weight: 500;
     text-decoration: underline;
-    text-decoration-color: var(--pen);
     text-underline-offset: 0.3em;
   }
 
@@ -186,18 +148,12 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
     display: none;
     width: 44px;
     height: 44px;
-    margin-right: -10px;
+    margin-right: calc(var(--s-2) * -1);
     border: 0;
     background: transparent;
     place-items: center;
   }
-
-  .menu-icon {
-    display: grid;
-    gap: 6px;
-    width: 22px;
-  }
-
+  .menu-icon { display: grid; gap: 6px; width: 22px; }
   .menu-icon span {
     display: block;
     height: 1.5px;
@@ -208,20 +164,13 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
   /* ---------- Mobile: full-screen sheet ---------- */
   @media (max-width: 760px) {
     /* No JS: nav wraps under the bar. With JS: sheet behind the menu button. */
-    .bar {
-      flex-wrap: wrap;
-    }
-
+    .bar { flex-wrap: wrap; }
     .nav {
       flex-wrap: wrap;
       gap: var(--s-3) var(--s-5);
       padding-bottom: var(--s-3);
     }
-
-    :global(.js) .menu-btn {
-      display: grid;
-    }
-
+    :global(.js) .menu-btn { display: grid; }
     :global(.js) .nav {
       position: fixed;
       inset: var(--header-h) 0 0 0;
@@ -235,33 +184,22 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
       background: var(--bg);
       overflow-y: auto;
     }
-
-    :global(.js) .site-header[data-open] .nav {
-      display: flex;
-    }
-
+    :global(.js) .site-header[data-open] .nav { display: flex; }
     :global(.js) .nav-list {
       flex-direction: column;
       align-items: flex-start;
       gap: var(--s-2);
     }
-
     :global(.js) .nav-link {
       font-family: var(--font-display);
-      font-size: var(--step-3);
-      text-transform: none;
-      letter-spacing: var(--tracking-display);
+      font-size: var(--t-28);
       color: var(--ink);
     }
-
-    :global(.js) .site-header[data-open] .menu-icon span:first-child {
-      transform: translateY(3.75px) rotate(45deg);
-    }
-    :global(.js) .site-header[data-open] .menu-icon span:last-child {
-      transform: translateY(-3.75px) rotate(-45deg);
-    }
+    :global(.js) .site-header[data-open] .menu-icon span:first-child { transform: translateY(3.75px) rotate(45deg); }
+    :global(.js) .site-header[data-open] .menu-icon span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
   }
 </style>
+
 
 <script>
   const header = document.querySelector<HTMLElement>('[data-header]');
@@ -283,9 +221,29 @@ const ptHref = lang === 'pt' ? Astro.url.pathname : otherHref;
     if ((e.target as HTMLElement).closest('a')) setOpen(false);
   });
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && header?.hasAttribute('data-open')) {
+    if (!header?.hasAttribute('data-open')) return;
+    if (e.key === 'Escape') {
       setOpen(false);
       btn?.focus();
+      return;
+    }
+    // Focus trap: Tab cycles through the sheet's controls and the menu button.
+    if (e.key === 'Tab' && btn && nav) {
+      // DOM order: the sheet's links and toggles, then the menu button after them.
+      const items = [...nav.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input'), btn];
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (!active || !items.includes(active)) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     }
   });
   window.matchMedia('(min-width: 761px)').addEventListener('change', (m) => m.matches && setOpen(false));

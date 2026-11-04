@@ -1,12 +1,11 @@
 ---
-/* Tag chip. `kind` adds the journey-graph colour dot. `href` makes it a link. */
+/* Tag chip. `href` makes it a link. `kind` is accepted for compatibility and not rendered. */
 type Kind = 'work' | 'study' | 'teaching' | 'community' | 'milestone';
 interface Props { label: string; href?: string; kind?: Kind; count?: number; active?: boolean }
-const { label, href, kind, count, active = false } = Astro.props;
+const { label, href, count, active = false } = Astro.props;
 const Tag = href ? 'a' : 'span';
 ---
-<Tag class:list={['chip', { active }]} href={href} data-kind={kind} aria-current={active && href ? 'page' : undefined}>
-  {kind && <span class="dot" aria-hidden="true"></span>}
+<Tag class:list={['chip', { active }]} href={href} aria-current={active && href ? 'page' : undefined}>
   <span>{label}</span>
   {count !== undefined && <span class="count">{count}</span>}
 </Tag>
@@ -14,26 +13,18 @@ const Tag = href ? 'a' : 'span';
   .chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.45em;
-    padding: 0.2rem 0.55rem;
+    gap: var(--s-1);
+    padding: var(--s-1) var(--s-2);
     border: 1px solid var(--rule-strong);
-    border-radius: 999px;
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.02em;
+    border-radius: var(--radius-pill);
+    font-size: var(--t-14);
     color: var(--ink-2);
     text-decoration: none;
-    line-height: 1.5;
+    line-height: 1.3;
     white-space: nowrap;
-    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
   }
   a.chip:hover { border-color: var(--ink); color: var(--ink); }
-  .chip.active { background: var(--pen-soft); border-color: var(--pen); color: var(--ink); }
-  .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-  [data-kind='work'] .dot { background: var(--tag-work); }
-  [data-kind='study'] .dot { background: transparent; box-shadow: inset 0 0 0 1.5px var(--tag-study); }
-  [data-kind='teaching'] .dot { background: var(--tag-teaching); }
-  [data-kind='community'] .dot { background: var(--tag-community); }
-  [data-kind='milestone'] .dot { background: var(--tag-milestone); }
+  .chip.active { border-color: var(--ink); color: var(--ink); background: var(--surface-2); }
   .count { color: var(--muted); }
 </style>

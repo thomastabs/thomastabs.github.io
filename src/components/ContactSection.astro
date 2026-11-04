@@ -1,5 +1,5 @@
 ---
-/* §06 Contact: the mountain scene with the form and direct links. Used at the end of the
+/* Contact: the mountain scene with the form and direct links. Used at the end of the
    home page and as the whole of /contact (level="h1" there). */
 import { getImage } from 'astro:assets';
 import SectionHeading from './SectionHeading.astro';
@@ -18,9 +18,9 @@ const tall = await Promise.all([480, 800, 1080].map((w) => getImage({ src: scene
 const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.map((i) => `${i.src} ${i.options.width}w`).join(', ');
 ---
   <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="scene" data-reveal={level === 'h1' ? '' : undefined}>
+    <div class="scene">
       <div class="container scene-head" data-theme="dark">
-        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} meta={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
+        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} />
         <p class="lead contact-lead">{t('contact.lead')}</p>
       </div>
       <picture class="scene-img">
@@ -33,12 +33,12 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
           <ContactForm lang={lang} />
           <div class="direct">
             <p class="kicker">{t('contact.or')}</p>
-            <p class="email mono">{profile.email}</p>
+            <p class="email">{profile.email}</p>
             <div class="btn-set">
-              <CopyButton variant="primary" value={profile.email} label={t('cta.copyEmail')} copiedLabel={t('cta.copied')} />
+              <CopyButton value={profile.email} label={t('cta.copyEmail')} copiedLabel={t('cta.copied')} />
               <a class="btn" href={profile.linkedin} rel="me">LinkedIn ↗</a>
               <a class="btn" href={profile.github} rel="me">GitHub ↗</a>
-              <a class="btn btn--ghost pen-link pen-link--bare" href={profile.cv} download>{t('cta.downloadCv')}</a>
+              <a class="btn" href={profile.cv} download>{t('cta.downloadCv')}</a>
             </div>
           </div>
         </div>
@@ -47,11 +47,11 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
   </section>
 
 <style>
-  .email { margin: var(--s-2) 0 var(--s-4); font-size: var(--step-1); color: var(--ink); word-break: break-all; }
+  .email { margin: var(--s-2) 0 var(--s-3); font-size: var(--t-20); color: var(--ink); word-break: break-all; }
 
-  /* §06: the old portfolio's mountain scene as the backdrop, form on a paper card */
-  .contact-lead { max-width: 56ch; }
-  @media (max-width: 480px) { .direct .email { font-size: var(--step-0); overflow-wrap: anywhere; } }
+  /* The old portfolio's mountain scene as the backdrop, form on a paper card */
+  .contact-lead { max-width: var(--measure); margin-top: calc(var(--s-3) * -1); }
+  @media (max-width: 480px) { .direct .email { font-size: var(--t-17); overflow-wrap: anywhere; } }
   /* The scene is a dusk photo: its heading always uses the dark tokens (data-theme="dark"
      on .scene-head) and the washes use a fixed near-black, while the form cards follow the
      page theme. In dark mode it fades into the page; in light mode it keeps a clean edge,
@@ -63,7 +63,7 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
   .scene-head { padding-top: var(--s-8); }
   .scene-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .scene-card { display: grid; gap: var(--s-5); }
-  .direct { padding: var(--s-4) var(--s-5); background: color-mix(in srgb, var(--surface) 92%, transparent); border: 1px solid var(--rule-strong); border-radius: var(--radius); backdrop-filter: blur(6px); }
+  .direct { padding: var(--s-3) var(--s-5); background: var(--surface); border: 1px solid var(--rule-strong); border-radius: var(--radius); }
   @media (min-width: 761px) {
     .scene { min-height: clamp(860px, 66vw, 1100px); display: flex; flex-direction: column; }
     .scene-img { position: absolute; inset: 0; z-index: -2; }
@@ -86,21 +86,5 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
     .scene-img img { aspect-ratio: 9 / 16; object-position: 50% 50%; }
     .scene-img::before { content: ''; position: absolute; inset: 0 0 auto; height: 18%; background: linear-gradient(rgb(var(--night)), transparent); pointer-events: none; }
     .scene-inner { margin-top: -14%; position: relative; padding-bottom: var(--s-6); }
-  }
-  /* /contact only: a light entrance on load. The photo settles from a slight zoom while the
-     heading, lead and cards rise in turn. (On the home page the scene is static.) */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .scene[data-reveal] { opacity: 1; transform: none; }
-    :global(.js) .scene[data-reveal] .scene-img img { opacity: 0; transform: scale(1.06); transition: opacity 1.2s var(--ease), transform 2.4s var(--ease); }
-    :global(.js) .scene[data-reveal] :global(.section-heading),
-    :global(.js) .scene[data-reveal] .contact-lead,
-    :global(.js) .scene[data-reveal] .scene-card > * { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-    :global(.js) .scene.is-visible .scene-img img,
-    :global(.js) .scene.is-visible :global(.section-heading),
-    :global(.js) .scene.is-visible .contact-lead,
-    :global(.js) .scene.is-visible .scene-card > * { opacity: 1; transform: none; }
-    :global(.js) .scene.is-visible .contact-lead { transition-delay: 0.12s; }
-    :global(.js) .scene.is-visible .scene-card > :first-child { transition-delay: 0.26s; }
-    :global(.js) .scene.is-visible .scene-card > :nth-child(2) { transition-delay: 0.4s; }
   }
 </style>
