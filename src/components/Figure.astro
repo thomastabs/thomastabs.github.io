@@ -26,7 +26,14 @@ const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
     border-color: var(--rule-strong);
     box-shadow: var(--shadow-tape);
     transform: rotate(-1.2deg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
   }
+  /* Red pen line around the photo on hover */
+  .taped:hover .fig-media {
+    border-color: var(--pen);
+    box-shadow: var(--shadow-tape), 0 0 0 1px var(--pen), 0 0 0 5px var(--pen-soft);
+  }
+  @media (prefers-reduced-motion: reduce) { .taped .fig-media { transition: none; } }
   .taped .fig-media :global(img) { border-radius: 1px; }
   .taped .fig-media::before,
   .taped .fig-media::after {

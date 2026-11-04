@@ -4,11 +4,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Hero from '@/components/Hero.astro';
 import SectionHeading from '@/components/SectionHeading.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
-import OrgLogo from '@/components/OrgLogo.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import Figure from '@/components/Figure.astro';
-import MarginNote from '@/components/MarginNote.astro';
 import CopyButton from '@/components/CopyButton.astro';
 import PostCard from '@/components/PostCard.astro';
 import ContactForm from '@/components/ContactForm.astro';
@@ -105,40 +103,38 @@ const personLd = {
   <!-- §03 Education -->
   <section class="container section-tight" id="education" aria-labelledby="edu-title">
     <SectionHeading n={3} label={t('section.education')} title={t('education.title')} id="edu-title" meta={'2018 → 2026'} />
-    <ul class="edu" role="list">
+    <ol class="timeline" role="list">
       {education.map((e) => (
-        <li id={e.id} class="annotated" data-reveal>
-          <div class="edu-row">
-            <p class="meta upper edu-period">{e.period[lang]}</p>
-            <div>
-              <div class="edu-head">
-                <OrgLogo logo={e.logo} monogram={e.monogram} name={e.institution} />
-                <div>
-                  <h3 class="edu-degree">{e.degree[lang]}</h3>
-                  <p class="edu-inst">{e.institution}{e.location && ` · ${e.location[lang]}`}</p>
-                </div>
-              </div>
-              {e.details && <p class="edu-details">{e.details[lang]}</p>}
-              {e.coursework && (
-                <details class="coursework">
-                  <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
-                  <ul class="cw-list" role="list">
-                    {e.coursework.map((c) => <li>{c[lang]}</li>)}
-                  </ul>
-                </details>
-              )}
-              {e.thesis && (
-                <p class="edu-details">
-                  {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}.{' '}
-                  <a class="pen-link" href={localePath('work', lang, 'apex')}>{t('education.caseStudy')} →</a>
-                </p>
-              )}
-            </div>
-          </div>
-          {e.thesis && <MarginNote>{t('education.defended')} 23.10.2026 · {e.thesis.grade}</MarginNote>}
-        </li>
+        <TimelineEntry
+          id={e.id}
+          period={e.period[lang]}
+          title={e.degree[lang]}
+          org={`${e.institution}${e.location ? ` · ${e.location[lang]}` : ''}`}
+          tags={[
+            { kind: 'study', label: t('tag.study') },
+            ...(e.thesis ? [{ kind: 'milestone' as const, label: `${t('education.defended')} 23.10.2026 · ${e.thesis.grade}` }] : []),
+          ]}
+          logo={e.logo}
+          monogram={e.monogram}
+        >
+          {e.details && <p>{e.details[lang]}</p>}
+          {e.thesis && (
+            <p class="edu-details">
+              {t('education.thesis')}: <em>{e.thesis.title}</em>. {t('education.advisor')}: {e.thesis.advisor}.{' '}
+              <a class="pen-link" href={localePath('work', lang, 'apex')}>{t('education.caseStudy')} →</a>
+            </p>
+          )}
+          {e.coursework && (
+            <details class="coursework">
+              <summary class="meta upper">{t('education.coursework')} <span class="count">({e.coursework.length})</span></summary>
+              <ul class="cw-list" role="list">
+                {e.coursework.map((c) => <li>{c[lang]}</li>)}
+              </ul>
+            </details>
+          )}
+        </TimelineEntry>
       ))}
-    </ul>
+    </ol>
   </section>
 
 
@@ -212,17 +208,9 @@ const personLd = {
   @media (max-width: 899px) { :global(.about-portrait) { order: -1; max-width: 14rem; justify-self: start; } }
 
   .timeline { padding: 0; }
-  .edu-head { display: flex; gap: var(--s-3); align-items: flex-start; }
   .more { display: inline-block; margin-top: var(--s-2); font-size: var(--step--1); }
 
-  .edu { padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); }
-  .edu > li { padding: var(--s-5) 0; border-bottom: 1px solid var(--rule); }
-  .edu-row { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--s-2) var(--s-6); }
-  @media (max-width: 640px) { .edu-row { grid-template-columns: 1fr; } }
-  .edu-period { padding-top: 0.25rem; }
-  .edu-degree { font-size: var(--step-1); }
-  .edu-inst { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); margin-top: 0.15rem; }
-  .edu-details { margin-top: var(--s-2); color: var(--ink-2); max-width: 62ch; }
+  .edu-details { margin-top: var(--s-2); }
   .coursework { margin-top: var(--s-3); }
   .coursework summary { cursor: pointer; width: fit-content; list-style: none; display: inline-flex; gap: 0.5em; align-items: center; min-height: 32px; color: var(--ink-2); }
   .coursework summary::-webkit-details-marker { display: none; }
