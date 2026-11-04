@@ -161,6 +161,10 @@ const personLd = {
 </BaseLayout>
 
 <style>
+  /* Breathing room between home sections */
+  .section-tight { padding-top: var(--section-gap); }
+  :global(.contact) { margin-top: var(--s-7); }
+
 
   .about-grid { display: grid; gap: var(--s-7); align-items: start; }
   @media (min-width: 900px) { .about-grid { grid-template-columns: minmax(0, 1fr) 17rem; gap: var(--s-8); } }

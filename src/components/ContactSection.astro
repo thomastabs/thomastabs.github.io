@@ -18,7 +18,7 @@ const tall = await Promise.all([480, 800, 1080].map((w) => getImage({ src: scene
 const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.map((i) => `${i.src} ${i.options.width}w`).join(', ');
 ---
   <section class="contact" id="contact" aria-labelledby="contact-title">
-    <div class="scene">
+    <div class="scene" data-theme="dark" data-reveal>
       <div class="container scene-head">
         <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} meta={lang === 'pt' ? '2026 → a seguir' : '2026 → next'} />
         <p class="lead contact-lead">{t('contact.lead')}</p>
@@ -52,7 +52,13 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
   /* §06: the old portfolio's mountain scene as the backdrop, form on a paper card */
   .contact-lead { max-width: 56ch; }
   @media (max-width: 480px) { .direct .email { font-size: var(--step-0); overflow-wrap: anywhere; } }
-  .scene { position: relative; isolation: isolate; }
+  /* The scene is a dusk photo, so it is always a dark island (data-theme="dark" scopes the
+     dark tokens to it). In dark mode it fades into the page; in light mode it keeps a clean edge,
+     because fading a pale page into a dark sky only makes grey. */
+  .contact { --page-bg: var(--bg); --edge: 0%; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .contact { --edge: 8%; } }
+  :global(:root[data-theme='dark']) .contact { --edge: 8%; }
+  .scene { position: relative; isolation: isolate; background: var(--bg); color: var(--ink); }
   .scene-head { padding-top: var(--s-8); }
   .scene-img img { display: block; width: 100%; height: 100%; object-fit: cover; }
   .scene-card { display: grid; gap: var(--s-5); }
@@ -66,7 +72,7 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
     .scene::before { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
       background: linear-gradient(to right, color-mix(in srgb, var(--bg) 88%, transparent) 0, color-mix(in srgb, var(--bg) 55%, transparent) 38%, transparent 62%); }
     .scene::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
-      background: linear-gradient(to bottom, var(--bg) 0, transparent 8%, transparent 90%, var(--bg) 100%); }
+      background: linear-gradient(to bottom, var(--page-bg) 0, transparent var(--edge), transparent calc(100% - var(--edge) * 1.25), var(--page-bg) 100%); }
     .scene-head { padding-top: var(--s-8); }
     .scene-head .contact-lead { color: var(--ink); }
     .scene-inner { width: 100%; padding-block: var(--s-6) var(--s-8); }
@@ -75,5 +81,21 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
   @media (max-width: 760px) {
     .scene-img img { aspect-ratio: 4 / 5; object-position: 50% 20%; }
     .scene-inner { margin-top: calc(var(--s-8) * -1.5); position: relative; padding-bottom: var(--s-6); }
+  }
+  /* Light entrance once the scene scrolls in (or on load on /contact): the photo settles
+     from a slight zoom while the heading, lead and cards rise in turn. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .scene[data-reveal] { opacity: 1; transform: none; }
+    :global(.js) .scene-img img { opacity: 0; transform: scale(1.06); transition: opacity 1.2s var(--ease), transform 2.4s var(--ease); }
+    :global(.js) .scene :global(.section-heading),
+    :global(.js) .contact-lead,
+    :global(.js) .scene-card > * { opacity: 0; transform: translateY(14px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    :global(.js) .scene.is-visible .scene-img img { opacity: 1; transform: none; }
+    :global(.js) .scene.is-visible :global(.section-heading),
+    :global(.js) .scene.is-visible .contact-lead,
+    :global(.js) .scene.is-visible .scene-card > * { opacity: 1; transform: none; }
+    :global(.js) .scene.is-visible .contact-lead { transition-delay: 0.12s; }
+    :global(.js) .scene.is-visible .scene-card > :first-child { transition-delay: 0.26s; }
+    :global(.js) .scene.is-visible .scene-card > :nth-child(2) { transition-delay: 0.4s; }
   }
 </style>
