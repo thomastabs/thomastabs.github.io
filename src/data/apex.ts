@@ -312,22 +312,22 @@ export const findings: { title: L10n; text: L10n }[] = [
   {
     title: { en: 'Low workload, below-norm usability', pt: 'Carga baixa, usabilidade abaixo da norma' },
     text: {
-      en: 'Across thirteen sessions, perceived workload was low (Raw NASA-TLX 21.5/100) while usability sat below the published corpus mean (SUS 56.73, grade D). Difficulty concentrated at first contact with a dense interface rather than through use: the tool asks little of a practitioner who already knows where they are, and does too little to get them there.',
-      pt: 'Nas treze sessões, a carga percebida foi baixa (Raw NASA-TLX 21,5/100) e a usabilidade ficou abaixo da média publicada (SUS 56,73, nota D). A dificuldade concentrou-se no primeiro contacto com uma interface densa, e não durante o uso: a ferramenta pede pouco a quem já sabe onde está, e faz pouco para lá levar quem não sabe.',
+      en: 'Across thirteen sessions, perceived workload was low (Raw NASA-TLX 21.5/100) while usability sat below the published corpus mean (SUS 56.73, grade D). Most of the difficulty came at first contact with a dense interface: the tool asks little of a practitioner who already knows where they are, and does too little to get them there.',
+      pt: 'Nas treze sessões, a carga percebida foi baixa (Raw NASA-TLX 21,5/100) e a usabilidade ficou abaixo da média publicada (SUS 56,73, nota D). A maior parte da dificuldade surgiu no primeiro contacto com uma interface densa: a ferramenta pede pouco a quem já sabe onde está, e faz pouco para lá levar quem não sabe.',
     },
   },
   {
     title: { en: 'A gate that could be passed by a stale suite', pt: 'Um portão que um conjunto de testes obsoleto conseguia passar' },
     text: {
-      en: 'The Outfolio demonstration surfaced a Testing Gate passable by a suite that had stopped measuring the system it tested. Realised is not yet the same as reliably realised.',
-      pt: 'A demonstração com o Outfolio revelou um Portão de Testes que podia ser passado por um conjunto de testes que já não media o sistema que testava. Realizado ainda não é o mesmo que realizado de forma fiável.',
+      en: 'The Outfolio demonstration surfaced a Testing Gate passable by a suite that had stopped measuring the system it tested.',
+      pt: 'A demonstração com o Outfolio revelou um Portão de Testes que podia ser passado por um conjunto de testes que já não media o sistema que testava.',
     },
   },
   {
     title: { en: 'The partner-organisation demonstration did not happen', pt: 'A demonstração numa organização parceira não aconteceu' },
     text: {
-      en: 'An independent partner organisation was pursued and abandoned: a mid-project migration from Taiga to Plane delayed it while Apex’s adapter was built, and outreach afterwards never led to a scheduled engagement. No amount of solo demonstration substitutes for a team that did not design the framework operating it.',
-      pt: 'Foi procurada uma organização parceira independente, sem sucesso: uma migração a meio do projeto de Taiga para Plane atrasou o processo enquanto o adaptador do Apex era construído, e os contactos seguintes nunca chegaram a uma sessão marcada. Nenhuma demonstração a solo substitui ver uma equipa que não desenhou a framework a usá-la.',
+      en: 'An independent partner organisation was pursued and abandoned: a mid-project migration from Taiga to Plane delayed it while Apex’s adapter was built, and outreach afterwards never led to a scheduled engagement. The framework has still not been run by a team that did not design it.',
+      pt: 'Foi procurada uma organização parceira independente, sem sucesso: uma migração a meio do projeto de Taiga para Plane atrasou o processo enquanto o adaptador do Apex era construído, e os contactos seguintes nunca chegaram a uma sessão marcada. A framework continua por testar numa equipa que não a desenhou.',
     },
   },
 ];
@@ -337,22 +337,22 @@ export const learned: { title: L10n; text: L10n }[] = [
   {
     title: { en: 'Building the framework was the hardest test of it', pt: 'Construir a framework foi o teste mais duro que lhe fiz' },
     text: {
-      en: 'On paper, every construct looked complete. Implementing it found what the text had left unsaid: Bolt Cycle Time was first measured through the wrong proxy and only caught by checking the code against its written definition, and spec-drift detection only worked once I admitted specifications are owned per story, not per project. I now treat "can I implement this?" as a review of the idea, not a step after it.',
-      pt: 'No papel, todos os conceitos pareciam completos. Implementá-los revelou o que o texto deixava por dizer: o Bolt Cycle Time foi medido primeiro com o indicador errado e só foi corrigido ao comparar o código com a definição escrita, e a deteção de desvios da especificação só funcionou quando assumi que a especificação pertence a cada história, não ao projeto. Hoje trato "consigo implementar isto?" como uma revisão da ideia, não como um passo depois dela.',
+      en: 'On paper, every construct looked complete. Implementing it found what the text had left unsaid: Bolt Cycle Time was first measured through the wrong proxy and only caught by checking the code against its written definition, and spec-drift detection only worked once I admitted specifications are owned per story, not per project. I now ask "can I implement this?" while reviewing the idea.',
+      pt: 'No papel, todos os conceitos pareciam completos. Implementá-los revelou o que o texto deixava por dizer: o Bolt Cycle Time foi medido primeiro com o indicador errado e só foi corrigido ao comparar o código com a definição escrita, e a deteção de desvios da especificação só funcionou quando assumi que a especificação pertence a cada história, não ao projeto. Hoje pergunto "consigo implementar isto?" logo ao rever a ideia.',
     },
   },
   {
     title: { en: 'A control can pass and still be wrong', pt: 'Um controlo pode passar e estar errado' },
     text: {
-      en: 'The gates did their job structurally: generation alone never satisfied a phase. But the Testing Gate accepted a suite that no longer exercised the current system, and the deployment pre-flight reported high confidence from a stale context file. Confidence is not evidence. The next version needs gates that check how fresh their inputs are, and a control for destructive actions inside a phase, which the gate model does not cover today.',
-      pt: 'Os portões cumpriram a função estrutural: gerar conteúdo nunca bastou para fechar uma fase. Mas o Portão de Testes aceitou testes que já não exercitavam o sistema atual, e a verificação antes da implantação reportou confiança alta a partir de um ficheiro de contexto desatualizado. Confiança não é evidência. A próxima versão precisa de portões que verifiquem se os dados de entrada estão atualizados, e de um controlo para ações destrutivas dentro de uma fase, que o modelo de portões hoje não cobre.',
+      en: 'The gates did their job structurally: generation alone never satisfied a phase. But the Testing Gate accepted a suite that no longer exercised the current system, and the deployment pre-flight reported high confidence from a stale context file. The next version needs gates that check how fresh their inputs are, and a control for destructive actions inside a phase, which the gate model does not cover today.',
+      pt: 'Os portões cumpriram a função estrutural: gerar conteúdo nunca bastou para fechar uma fase. Mas o Portão de Testes aceitou testes que já não exercitavam o sistema atual, e a verificação antes da implantação reportou confiança alta a partir de um ficheiro de contexto desatualizado. A próxima versão precisa de portões que verifiquem se os dados de entrada estão atualizados, e de um controlo para ações destrutivas dentro de uma fase, que o modelo de portões hoje não cobre.',
     },
   },
   {
     title: { en: 'People meet the method through the tool', pt: 'As pessoas conhecem o método através da ferramenta' },
     text: {
-      en: 'Interviewees liked the framework; participants rated Apex grade D (SUS 56.73), and 9 of 13 named density, orientation or navigation as what confused them, not the AI mechanisms. A cluttered screen gets read as a hard method. First-contact usability, error legibility and visual simplicity are requirements of the framework, not polish for later.',
-      pt: 'Os entrevistados gostaram da framework; os participantes deram ao Apex nota D (SUS 56,73), e 9 em 13 apontaram a densidade, a orientação ou a navegação como o que os confundiu, não os mecanismos de IA. Um ecrã sobrecarregado é lido como um método difícil. A usabilidade no primeiro contacto, a clareza dos erros e a simplicidade visual são requisitos da framework, não acabamentos para depois.',
+      en: 'Interviewees liked the framework; participants rated Apex grade D (SUS 56.73), and 9 of 13 named density, orientation or navigation as what confused them, not the AI mechanisms. A cluttered screen gets read as a hard method, so first-contact usability, error legibility and visual simplicity belong in the framework’s requirements from the start.',
+      pt: 'Os entrevistados gostaram da framework; os participantes deram ao Apex nota D (SUS 56,73), e 9 em 13 apontaram a densidade, a orientação ou a navegação como o que os confundiu, não os mecanismos de IA. Um ecrã sobrecarregado é lido como um método difícil, por isso a usabilidade no primeiro contacto, a clareza dos erros e a simplicidade visual pertencem aos requisitos da framework desde o início.',
     },
   },
   {

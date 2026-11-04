@@ -11,17 +11,17 @@ comments: true
 
 I defended my MSc dissertation, *Governed Human-AI Collaboration Across the Software Development Lifecycle*, at Instituto Superior Técnico on 23 October 2026, sixteen days after submitting it. I had twenty minutes to present six months of work: a framework for bounding what AI does at each phase of the lifecycle, and Apex, the working tool that implements it. The dissertation was graded 17/20.
 
-It was harder than I expected, it went well overall, and the criticism I got was mostly criticism I agree with. This post is about those three things.
+It was harder than I expected and went well overall, and I agree with most of the criticism I got.
 
 ## Why it was hard
 
-Twenty minutes is not much for a framework with six phases, five quality gates, three governance metrics, a hat model and a reference implementation. Most of the preparation went into deciding what to leave out, and walking through the phases one at a time, which meant the evaluation got less room than it deserved.
+Twenty minutes is not much for a framework with six phases, five quality gates, three governance metrics, a hat model and a reference implementation. Most of the preparation went into deciding what to leave out and walking through the phases one at a time, so the evaluation got less room than it deserved.
 
-The moment I did not expect came from the jury's president. The practitioner and expert interviews were, for me, one of the stronger parts of the evaluation. The president saw them differently: they had been used too casually, as semi-structured conversations rather than a rigorous evaluation instrument. That was fair. An evaluation should be more rigorous than that, and mine was not.
+The moment I did not expect came from the jury's president. I saw the practitioner and expert interviews as one of the stronger parts of the evaluation. The president saw semi-structured conversations, used too casually to count as a rigorous evaluation instrument. That was fair, and the evaluation should have been more rigorous.
 
 ## What went well
 
-The framework held up. Its central idea is that every phase states what AI may contribute, what it must produce, who is accountable and what gate closes it. That came through, and so did the honesty of the results. Apex scored below average on usability (SUS 56.73, grade D) and the thesis says so. I put those numbers on the slides instead of hiding them, and I think that helped more than it hurt.
+The framework held up. Its central idea is that every phase states what AI may contribute, what it must produce, who is accountable and what gate closes it. That came through, and so did the honesty of the results. Apex scored below average on usability (SUS 56.73, grade D) and the thesis says so. I put those numbers on the slides, and I think showing them helped more than it hurt.
 
 ## What the jury pushed on
 
@@ -29,18 +29,24 @@ The framework held up. Its central idea is that every phase states what AI may c
   The method was sound in intent but not fully rigorous in execution.
 </Callout>
 
-**The DSRM format.** The dissertation follows Design Science Research Methodology: identify the problem, define objectives, design, demonstrate, evaluate, communicate. The jury's president questioned how I applied that structure. In places the chapters follow DSRM's activities more closely than the research needed. The method shaped the document more than it shaped the decisions.
+### The DSRM format
 
-**An evaluation that was too casual.** Thirteen participants, one unmoderated session each, one seeded project, a sample drawn from my own network, and instruments that measure perception rather than delivered quality. I listed all of these as threats to validity in the dissertation, but writing a limitation down does not remove it. The fair reading is that the evaluation describes how thirteen people experienced the tool. It does not show that the framework works for teams.
+The dissertation follows Design Science Research Methodology: identify the problem, define objectives, design, demonstrate, evaluate, communicate. The jury's president questioned how I applied that structure. In places the chapters follow DSRM's activities more closely than the research needed, so the method shaped the document more than the decisions.
 
-**Consistency of roles.** The framework assigns work to *hats*, functions rather than job titles. Some roles mentioned elsewhere in the text were missing from the main role table, so the model looked less closed than it is. I fixed this in the final version I submitted after the defence.
+### An evaluation that was too casual
+
+Thirteen participants, one unmoderated session each, one seeded project, a sample drawn from my own network, and instruments that measure perception and say nothing about delivered quality. I listed all of these as threats to validity in the dissertation, but listing a limitation does not remove it. The evaluation describes how thirteen people experienced the tool; it does not show that the framework works for teams.
+
+### Consistency of roles
+
+The framework assigns work to functions it calls *hats*. Some roles mentioned elsewhere in the text were missing from the main role table, so the model looked less closed than it is. I fixed this in the final version I submitted after the defence.
 
 ## What I would do differently
 
-- **Design the evaluation before the tool.** The usability study was planned around a tool that already existed. Deciding first what would prove the framework wrong, and building toward it, would have made it sharper.
-- **Get a real team early.** The partner-organisation demonstration never happened. One team that did not design the framework, using it on their own project, would have told me more than thirteen solo sessions.
-- **Use the methodology lightly.** DSRM helps you think. It should not dictate the table of contents.
+- Design the evaluation before the tool. The usability study was planned around a tool that already existed. Deciding first what would prove the framework wrong, and building toward that, would have made the study sharper.
+- Get a real team involved early. The partner-organisation demonstration never happened. One team that did not design the framework, using it on their own project, would have told me more than thirteen solo sessions.
+- Use the methodology lightly. DSRM is useful for thinking, but it should not dictate the table of contents.
 
 The thesis also came up somewhere I did not expect: [it was the main topic of my final job interview](/notebook/job-hunting-with-an-ai/).
 
-The work and its weaknesses are both in the open: the [case study](/work/apex/), the dissertation PDF and the code at [github.com/thomastabs/apex](https://github.com/thomastabs/apex).
+The [case study](/work/apex/), the dissertation PDF and the code at [github.com/thomastabs/apex](https://github.com/thomastabs/apex) are public, weaknesses included.

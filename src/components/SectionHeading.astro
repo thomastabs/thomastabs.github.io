@@ -1,23 +1,21 @@
 ---
 /* Section heading.
-   level="h2" (home sections): one small label line, "01 About". The label IS the heading.
+   level="h2" (home and Apex sections): one small label line, "About". The label IS the heading.
+   `n` is accepted for compatibility and not rendered (section numbers were removed).
    level="h1" (page heads): the page name as a serif title, with an optional lead in the slot.
    `title` and `meta` are accepted for compatibility and ignored on h2; on h1, `title` wins. */
 interface Props { n?: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2'; meta?: string }
-const { n, label, title, id, level = 'h2' } = Astro.props;
-const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
+const { label, title, id, level = 'h2' } = Astro.props;
 ---
 <div class="section-heading">
   {level === 'h1'
     ? <h1 id={id} class="page-title">{title ?? label}</h1>
-    : <h2 id={id} class="section-label">{num && <span class="num">{num}</span>}{label}</h2>}
+    : <h2 id={id} class="section-label">{label}</h2>}
   <slot />
 </div>
 <style>
   .section-heading { margin-bottom: var(--s-6); }
   h2.section-label {
-    display: flex;
-    gap: var(--s-3);
     padding-top: var(--s-3);
     border-top: 1px solid var(--rule-strong);
     font-family: var(--font-body);
@@ -26,6 +24,5 @@ const num = typeof n === 'number' ? String(n).padStart(2, '0') : n;
     line-height: 1.5;
     color: var(--ink);
   }
-  .num { color: var(--muted); font-variant-numeric: tabular-nums; }
   .page-title { font-size: var(--t-40); }
 </style>

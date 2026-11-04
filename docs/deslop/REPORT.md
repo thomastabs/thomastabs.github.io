@@ -3,7 +3,7 @@
 Branch `deslop`. Every check below was run against the production build (`npm run build`, served with `astro preview`).
 
 - `critique-before.md`: Impeccable critique, before the pass (27/40, 9 detector findings).
-- `audit-after.md`: Impeccable audit, after the pass (19/20, 2 detector findings, both kept by the brief).
+- `audit-after.md`: Impeccable audit, after the pass (19/20). The Impeccable 4.8 detector leaves one rule, `cream-palette`, which the brief keeps.
 - `removed.md`: everything removed.
 - `copy-changes.md`: every copy change, old → new.
 - `before/`, `after/`: 24 full-page screenshots each (6 pages × 1440/390 × light/dark).
@@ -31,7 +31,7 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 | Technical | Mobile layout clean | PASS | No horizontal scroll at 390 on 8 pages. The graph collapses to the strip and buttons are not full width. |
 | Technical | No placeholder text | PASS | `grep TODO dist/**/*.html` finds 0 matches. The comments TODO callout was removed. |
 | Copy | No generic taglines | PASS | Headings are labels. The hero line is the one the brief suggested. |
-| Copy | No buzzword stacks | PASS | A grep for the banned list (reliable systems, spec as the anchor, explores how, passionate, leverage, seamless, robust, crafting, drawn to, along the way, keep building) finds 0 matches in visible copy. "X, not Y" sentences were rewritten (see `copy-changes.md`). |
+| Copy | No buzzword stacks | PASS | A grep for the banned list (reliable systems, spec as the anchor, explores how, passionate, leverage, seamless, robust, crafting, drawn to, along the way, keep building) finds 0 matches in visible copy. A second pass with the humanizer skill rewrote the remaining contrasts, closers, bold run-in labels and spaced-hyphen dashes (see `copy-changes.md`). |
 | Copy | Correct footer | PASS | `© 2026 Tomás Taborda · Source`. |
 | Copy | Clear one-line value in the hero | PASS | "I build backend systems. My MSc thesis was a framework for using AI agents across the software lifecycle without losing control of what ships." It runs to 2 lines at 1280 and 1440 in EN and PT (measured from line boxes) and 3 lines at 1024. |
 
@@ -56,6 +56,9 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 - **Uppercase.** Section labels are the only uppercase. Apex had 11 sections, so the "Related notes" heading is now a plain heading to keep the page at 10.
 - **Home Experience.** Read as one line per role (role · company · dates) for all four roles, including Wondercom as you asked earlier. The brief said "3-line list"; I kept all four rather than drop one.
 - **Section-page dot grids** (on `/work`, `/journey` and `/notebook`, which you asked for earlier) are unchanged. The brief only mentions the hero and the Apex header.
-- **Humanizer.** The skill install (`npx skills add blader/humanizer`) was blocked by the session's permission classifier, so the copy pass applied its rules by hand. PT strings were rewritten in European Portuguese, not translated word by word.
+- **Humanizer.** The first copy pass applied the skill's rules by hand because the install was blocked. Once installed (v3.1.0), the skill was run over every visible EN and PT string: i18n, `src/data`, the work entries, the four posts, the Apex page and its ledger. It changed the four posts, `apex.ts` and the ledger; the i18n strings, the other data files and the work entries needed nothing. PT was edited in European Portuguese, in step with EN.
 - **Critique.** The before-critique was a single-context run. Impeccable asks for two isolated assessments; see the banner in `critique-before.md`.
+- **Impeccable 4.8.0.** Impeccable was updated from 3.9.1 before the final checks. Its rendered scan (1280×800 and 390×844, 9 pages) found stragglers, small SVG chart text, low contrast on the mobile strip years, cramped logo tiles and tight post-nav leading. All of these were fixed: chart text is now 12–14px, the strip years use `--ink-2`, the logo tiles have 44px min-width with padding, the post-nav titles have 1.3 leading and prose has `text-wrap: pretty`. The scan now reports only `cream-palette` (one per page). The brief keeps the existing `--bg`, so it stays; changing it is a one-token edit if you want it gone. The static scan finds 0. A visual check of the Apex charts after the text-size change found no overlap; the commit-graph milestone list gained 4px between its numbers and dates.
+- **Section numbers.** Removed. Labels read `About`, `The problem` and so on. They were the last numbered-marker finding from the 3.9 detector.
+- **frontend-design check.** The skill was read and the site compared against its list of generated-page defaults. Two overlap, both set by the brief: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines, mono dates and arrows on links. Absent: single-word headline accents, numbered markers, per-section entrance motion, card shadows, gradient washes. No changes were made from this check.
 - **Not changed.** The formal dissertation abstract and the thesis statement on the Apex page are quoted from the dissertation, so their wording (including one "rather than") stays as published.

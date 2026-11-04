@@ -85,22 +85,22 @@ const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
 </div>
 <style>
   .cg-scroll { overflow-x: auto; margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); }
-  svg { width: 100%; min-width: 760px; height: auto; overflow: visible; font-family: var(--font-mono); }
+  svg { width: 100%; min-width: 960px; height: auto; overflow: visible; font-family: var(--font-mono); }
   .axis line { stroke: var(--rule); stroke-dasharray: 2 4; }
-  .axis text, .lane-l { font-size: 11px; fill: var(--muted); }
+  .axis text, .lane-l { font-size: 12px; fill: var(--muted); }
   .main { stroke: var(--ink); stroke-width: 2; }
   .branch path { fill: none; stroke: var(--ink-2); stroke-width: 1.6; }
   .branch circle { fill: var(--bg); stroke: var(--ink-2); stroke-width: 1.6; }
   .branch .merge { fill: var(--ink-2); }
-  .branch text { font-size: 10.5px; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
+  .branch text { font-size: 12px; fill: var(--ink-2); paint-order: stroke; stroke: var(--surface); stroke-width: 4px; }
   .th-line { fill: none; stroke: var(--pen); stroke-width: 2; }
   .dot { fill: color-mix(in srgb, var(--ink) 55%, transparent); stroke: var(--bg); stroke-width: 1; }
   .dot-th { fill: color-mix(in srgb, var(--pen) 70%, transparent); }
   .ms line { stroke: var(--ink-2); stroke-width: 1; stroke-dasharray: 1 2; }
-  .ms text { font-size: 11px; fill: var(--ink); font-weight: 500; }
+  .ms text { font-size: 12px; fill: var(--ink); font-weight: 500; }
   .ms.major text { fill: var(--ink); text-decoration: underline; }
   .ms-list { margin: var(--s-3) 0 0; padding-left: var(--s-5); columns: 2 18rem; column-gap: var(--s-6); font-size: var(--t-14); color: var(--ink-2); }
-  .ms-list li { break-inside: avoid; padding: 2px 0; }
+  .ms-list li { break-inside: avoid; padding: 2px 0 2px var(--s-1); }
   .ms-list li::marker { color: var(--muted); }
   .ms-list time { margin-right: var(--s-2); }
 </style>

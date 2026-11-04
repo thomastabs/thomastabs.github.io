@@ -95,7 +95,7 @@ h4 {
   font-size: var(--t-17);
 }
 
-p {
+p, li, dd, td, figcaption {
   text-wrap: pretty;
 }
 

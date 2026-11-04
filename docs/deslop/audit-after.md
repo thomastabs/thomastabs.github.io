@@ -1,6 +1,6 @@
 # Audit (after the de-slop pass)
 
-Scope: the production build (`dist/`) served on localhost: `/`, `/work`, `/work/apex`, `/journey`, `/notebook`, `/notebook/defending-apex/`, `/contact` and `/pt/`. Checked at 1440 and 390 px, in both themes. Evidence comes from Lighthouse 12 (16 runs), the Impeccable detector (`detect.mjs`), a Playwright metrics script (computed styles on every visible text element) and a Playwright function script (27 interaction checks).
+Scope: the production build (`dist/`) served on localhost: `/`, `/work`, `/work/apex`, `/journey`, `/notebook`, `/notebook/defending-apex/`, `/contact` and `/pt/`. Checked at 1440 and 390 px, in both themes. Evidence comes from Lighthouse 12 (16 runs), the Impeccable 4.8.0 detector (rendered at 1280×800 and 390×844, plus the static scan), a Playwright metrics script (computed styles on every visible text element) and a Playwright function script (27 interaction checks).
 
 ## Audit health score
 
@@ -10,25 +10,27 @@ Scope: the production build (`dist/`) served on localhost: `/`, `/work`, `/work/
 | 2 | Performance | 4 | Lighthouse performance 98–100 (mobile), 100 (desktop). The scroll-reveal observer and the blur filters are gone. |
 | 3 | Responsive design | 4 | No horizontal scroll at 390 on 8 pages. The graph collapses to the strip. Filter pills and nav are 44px targets. |
 | 4 | Theming | 4 | All colours come from `tokens.css`, apart from the hero glow's violets (kept as brand) and the `theme-color` meta, which repeats the `--bg` values because a meta tag cannot read CSS variables. |
-| 5 | Anti-patterns | 3 | The detector went from 9 findings to 2. Both are `numbered-section-markers`, on `/` and `/work/apex`, which the brief keeps on purpose (`01 About`). |
+| 5 | Anti-patterns | 3 | The 3.9 detector went from 9 findings to 0 once the section numbers were removed. The 4.8 detector flags only `cream-palette` on each page, which the brief keeps. |
 | **Total** | | **19/20** | **Excellent** |
 
 ## Anti-patterns verdict
 
-**Pass, with one deliberate exception.** The site no longer reads as generated:
+**Pass, with one exception the brief keeps.** The site no longer reads as generated:
 - one serif and one sans;
 - one accent, used for the primary button, the current-nav underline, link hover and the graph's "next" node;
 - one radius, and two button styles;
 - no reveals, shadows, side stripes, margin notes, tape or tilt.
 
-The remaining tell is the numbered section label. The brief keeps it, and it is now a single quiet line (`01 ABOUT`) with no `§`, dash, meta or slogan heading under it. If you want the detector at zero, drop the numbers and keep the words.
+The section numbers are gone; each label is the word alone. The remaining tell is the warm off-white background (`--bg #f6f4ef`), which Impeccable 4.8 flags as `cream-palette`. The brief says to keep the existing tokens, so it stays.
 
 Detector, before → after:
 
 | Rule | Before | After |
 |---|---|---|
 | em-dash-overuse | `/` (9), `/work/apex` (37) | 0 |
-| numbered-section-markers | `/`, `/work/apex` | `/`, `/work/apex` (kept by the brief) |
+| numbered-section-markers | `/`, `/work/apex` | 0 (numbers removed) |
+| cream-palette (4.8 only) | n/a | every page (kept by the brief) |
+| tiny-text, low-contrast, cramped-padding, tight-leading (4.8 rendered) | n/a | 0 (fixed) |
 | flat-type-hierarchy | `/work`, `/journey` | 0 |
 | single-font (mono-heavy) | `/work/apex`, post | 0 |
 | side-tab | post callout | 0 |
@@ -36,12 +38,11 @@ Detector, before → after:
 ## Executive summary
 
 - Score: **19/20 (Excellent)**.
-- Issues: P0 0 · P1 0 · P2 1 · P3 6.
+- Issues: P0 0 · P1 0 · P2 1 · P3 5.
 - Top items:
-  - the numbered labels (kept by the brief);
-  - the wordmark's 19.2px size, which is off the ramp but is the kept logo;
-  - SVG chart text sized in viewBox units.
-- Next step: none required. Optionally, decide whether the section numbers stay.
+  - the cream background (kept by the brief);
+  - the wordmark's 19.2px size, which is off the ramp but is the kept logo.
+- Next step: none required. Optionally, decide whether `--bg` changes.
 
 ## Measured counts
 
@@ -59,24 +60,18 @@ Detector, before → after:
 
 ## Detailed findings
 
-**[P2] Numbered section labels**
-- **Location:** `SectionHeading.astro`; home (01–06), Apex (01–10).
+**[P2] Cream page background**
+- **Location:** `tokens.css`, `--bg #f6f4ef` (light theme).
 - **Category:** Anti-pattern.
-- **Impact:** The detector flags it as editorial scaffolding. It is the motif the brief chose to keep.
-- **Recommendation:** Keep it, or drop the numbers and leave the words.
-- **Suggested command:** `/impeccable quieter`.
+- **Impact:** Impeccable 4.8 and frontend-design both list a warm off-white with a serif display as a common generated-page default.
+- **Recommendation:** Keep it, as the brief says, or move `--bg` to a neutral off-white at chroma 0. That is one token, and every contrast pair would need re-measuring.
+- **Suggested command:** `/impeccable colorize`.
 
 **[P3] Wordmark at 19.2px**
 - **Location:** `Wordmark.astro`.
 - **Category:** Theming.
 - **Impact:** It is one size outside the ramp.
 - **Recommendation:** Leave it, because it is the kept logo. Move it to `--t-20` only if you decide the logo may change.
-
-**[P3] Chart text in SVG user units**
-- **Location:** `JourneyGraph`, `PhaseStrip`, `CommitGraph`, `CommitHeatmap`.
-- **Category:** Theming.
-- **Impact:** None for readers. The text scales with the drawing: for example, the graph's 20 units render at about 13px.
-- **Recommendation:** None.
 
 **[P3] Plex Mono as a third family**
 - **Category:** Typography.
@@ -96,7 +91,7 @@ Detector, before → after:
 **[P3] Screenshots in the repo**
 - **Location:** `docs/deslop/before`, `after` (about 43 MB of PNG).
 - **Impact:** Repository size only. GitHub Pages deploys `dist/`, so the site is unaffected.
-- **Recommendation:** Keep only `compare/` (4.8 MB of WebP) after review.
+- **Decision:** Kept, as you asked.
 
 ## Patterns and systemic notes
 
@@ -123,7 +118,7 @@ Detector, before → after:
 
 ## Recommended actions
 
-1. **[P2] `/impeccable quieter`**: only if you want the section numbers gone.
+1. **[P2] `/impeccable colorize`**: only if you want the cream background gone.
 2. **[P3] `/impeccable polish`**: final pass after you review the screenshots.
 
 You can ask me to run these one at a time, all at once, or in any order you prefer. Re-run `/impeccable audit` after fixes to see the score change.

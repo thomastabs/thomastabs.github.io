@@ -14,7 +14,7 @@ const initials = monogram ?? name.split(/\s+/).filter((w) => /^[A-ZÁÉÍÓÚ]/.
 <style>
   .org-logo {
     flex: none; display: grid; place-items: center;
-    width: 44px; height: 44px; border-radius: var(--radius);
+    min-width: 44px; height: 44px; padding: 0 var(--s-1); border-radius: var(--radius);
     background: var(--tile-bg); border: 1px solid var(--rule-strong); overflow: hidden;
   }
   .org-logo :global(img) { width: 78%; height: 78%; object-fit: contain; }
