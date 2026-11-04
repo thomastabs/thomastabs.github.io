@@ -4,7 +4,6 @@ import { profile } from '@/data/links';
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const rev = new Date().toISOString().slice(0, 10);
 ---
 <footer class="site-footer">
   <div class="container footer-inner">
@@ -14,10 +13,7 @@ const rev = new Date().toISOString().slice(0, 10);
       <li><a class="pen-link pen-link--bare" href={profile.linkedin} rel="me">LinkedIn</a></li>
       <li><a class="pen-link pen-link--bare" href={profile.cv}>CV</a></li>
     </ul>
-    <p class="stamp meta">
-      <span class="pen">{t('footer.rev')}</span>{' '}
-      <time datetime={rev}>{rev}</time> · {t('footer.builtWith')} · {t('footer.hostedOn')}
-    </p>
+    <p class="stamp meta">{t('footer.hostedOn')}</p>
   </div>
 </footer>
 <style>

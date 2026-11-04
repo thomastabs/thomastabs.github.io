@@ -53,8 +53,6 @@
   "notebook.empty": "First entries coming soon.",
   "notebook.pinned": "Pinned page",
   "internal": "internal project",
-  "footer.rev": "rev.",
-  "footer.builtWith": "built with Astro",
   "footer.hostedOn": "hosted on GitHub Pages",
   "footer.backToTop": "Back to top",
   "home.title": "Software engineer",
