@@ -36,6 +36,19 @@ export const education: Education[] = [
       defended: { en: '23 Oct 2026', pt: '23 out. 2026' },
       grade: '17/20',
     },
+    /* Names as on the Fénix curriculum (MEIC-T 2021 plan). */
+    coursework: [
+      { en: 'Software Architecture', pt: 'Arquitetura de Software' },
+      { en: 'Software Specification', pt: 'Especificação de Software' },
+      { en: 'Software Project Management', pt: 'Gestão de Projetos Informáticos' },
+      { en: 'Software Testing and Validation', pt: 'Teste e Validação de Software' },
+      { en: 'Software Security', pt: 'Segurança em Software' },
+      { en: 'Highly Dependable Systems', pt: 'Sistemas de Elevada Confiabilidade' },
+      { en: 'Information Systems Security and Management', pt: 'Segurança e Gestão de Sistemas de Informação' },
+      { en: 'Cybersecurity Forensics', pt: 'Ciber Segurança Forense' },
+      { en: 'Advanced Programming', pt: 'Programação Avançada' },
+      { en: 'IT Infrastructure and Services Management', pt: 'Administração e Gestão de Infraestruturas e Serviços de IT' },
+    ],
   },
   {
     id: 'edu-bsc',
