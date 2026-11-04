@@ -70,9 +70,9 @@ export const nodes: GraphNode[] = [
     years: { en: '23 Oct 2026', pt: '23 out. 2026' },
   },
   {
-    id: 'next', kind: 'milestone', x: 596, y: 72, side: 'left', anchor: 'exp-opensoft', future: true,
+    id: 'next', kind: 'milestone', x: 596, y: 72, side: 'left', anchor: 'ms-opensoft', future: true,
     label: { en: 'OpenSoft', pt: 'OpenSoft' },
-    role: { en: 'Software Engineer', pt: 'Engenheiro de Software' },
+    role: { en: 'Starting 16 Nov 2026', pt: 'A partir de 16 nov. 2026' },
     years: { en: 'Nov 2026 →', pt: 'nov. 2026 →' },
   },
 ];

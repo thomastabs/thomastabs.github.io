@@ -17,6 +17,12 @@ interface Item {
   stack?: string[]; notesHref?: string; extraHref?: { href: string; label: string };
 }
 
+/** Milestones with a Notebook post. Posts are English-only, so both locales link the EN URL. */
+const milestoneNotes: Record<string, string> = {
+  'ms-defence': '/notebook/defending-apex/',
+  'ms-opensoft': '/notebook/job-hunting-with-an-ai/',
+};
+
 const items: Item[] = [
   ...experience.map((e) => ({
     id: e.id, key: e.start, kind: e.kind, period: e.period[lang], title: e.role[lang], org: e.org[lang],
@@ -29,6 +35,7 @@ const items: Item[] = [
   })),
   ...milestones.map((m) => ({
     id: m.id, key: m.date, kind: 'milestone' as Kind, period: m.period[lang], title: m.title[lang], summary: m.details?.[lang],
+    notesHref: milestoneNotes[m.id],
     extraHref: m.id === 'ms-defence' ? { href: localePath('work', lang, 'apex'), label: t('education.caseStudy') } : undefined,
   })),
 ].sort((a, b) => b.key.localeCompare(a.key));
