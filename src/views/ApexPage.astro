@@ -38,7 +38,8 @@ import { formatDate } from '@/i18n';
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-const related = (await getPosts(lang)).filter((p) => p.data.tags.includes('apex'));
+const thesisTag = lang === 'pt' ? 'tese' : 'thesis';
+const related = (await getPosts(lang)).filter((p) => p.data.tags.includes(thesisTag));
 const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
 
 const groups = [
@@ -427,7 +428,7 @@ const scholarlyLd = {
         <p class="kicker"><span class="pen">§11</span> — {t('notebook.related')}</p>
         <h2 id="related">{t('notebook.relatedTitle')}</h2>
         <div>{related.map((p) => <PostCard {...postCardProps(p, t)} />)}</div>
-        <a class="pen-link mono" href={tagHref('apex', lang)}>#apex →</a>
+        <a class="pen-link mono" href={tagHref(thesisTag, lang)}>#{thesisTag} →</a>
       </section>
     )}
   </div>
