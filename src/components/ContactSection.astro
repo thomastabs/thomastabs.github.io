@@ -80,8 +80,12 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
     .scene-card { max-width: 34rem; }
   }
   @media (max-width: 760px) {
-    .scene-img img { aspect-ratio: 4 / 5; object-position: 50% 20%; }
-    .scene-inner { margin-top: calc(var(--s-8) * -1.5); position: relative; padding-bottom: var(--s-6); }
+    /* The old site's phone background, shown whole at its own 9:16 ratio (no crop), easing in
+       from the night sky above it; the cards overlap only the dark treeline at its foot. */
+    .scene-img { position: relative; display: block; margin-top: var(--s-5); }
+    .scene-img img { aspect-ratio: 9 / 16; object-position: 50% 50%; }
+    .scene-img::before { content: ''; position: absolute; inset: 0 0 auto; height: 18%; background: linear-gradient(rgb(var(--night)), transparent); pointer-events: none; }
+    .scene-inner { margin-top: -14%; position: relative; padding-bottom: var(--s-6); }
   }
   /* /contact only: a light entrance on load. The photo settles from a slight zoom while the
      heading, lead and cards rise in turn. (On the home page the scene is static.) */
