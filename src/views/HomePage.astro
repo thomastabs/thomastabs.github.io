@@ -30,7 +30,7 @@ interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const roles = experience.slice(0, 3);
+const roles = experience.filter((e) => e.kind !== 'community');
 const { featured } = await getWork();
 const [apex, ...rest] = featured;
 const others = rest.slice(0, 3);

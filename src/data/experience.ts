@@ -1,4 +1,4 @@
-/* Professional and community experience, newest first. Home shows the first three. */
+/* Professional and community experience, newest first. Home shows every non-community entry. */
 import type { Kind, L10n } from './types';
 import type { LogoKey } from '@/lib/logos';
 
