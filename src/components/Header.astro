@@ -18,7 +18,7 @@ const items = [
   { key: 'work', label: t('nav.work'), href: localePath('work', lang) },
   { key: 'journey', label: t('nav.journey'), href: localePath('journey', lang) },
   { key: 'notebook', label: t('nav.notebook'), href: localePath('notebook', lang) },
-  { key: 'contact', label: t('nav.contact'), href: `${localePath('home', lang)}#contact` },
+  { key: 'contact', label: t('nav.contact'), href: localePath('contact', lang) },
 ] as const;
 
 const isCurrent = (href: string) => !href.includes('#') && (path === href || path.startsWith(href + '/'));

@@ -252,6 +252,19 @@ a {
   }
 }
 
+/* Section index pages: the dot grid behind the page header, fading out downwards */
+main.has-dots { position: relative; isolation: isolate; }
+.page-dots {
+  position: absolute;
+  inset: 0 0 auto;
+  height: min(46rem, 100vh);
+  z-index: -1;
+  pointer-events: none;
+  background-color: transparent;
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+
 /* ---------- Skip link ---------- */
 
 .skip-link {

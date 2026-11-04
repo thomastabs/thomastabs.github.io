@@ -70,6 +70,8 @@
   "education.defended": "defended",
   "work.homeTitle": "Things I've built",
   "notebook.homeTitle": "Latest notes",
+  "contact.metaTitle": "Contact",
+  "contact.description": "Get in touch with Tomás Taborda: a message form, email, LinkedIn, GitHub and CV.",
   "contact.title": "Write to me",
   "contact.lead": "Want to talk about spec-anchored AI work, a project, or anything on this site? Leave a message below and it lands in my inbox.",
   "journey.title": "The path so far",

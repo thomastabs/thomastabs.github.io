@@ -5,6 +5,7 @@ const segments: Record<string, Record<Locale, string>> = {
   journey: { en: 'journey', pt: 'percurso' },
   work: { en: 'work', pt: 'trabalho' },
   notebook: { en: 'notebook', pt: 'caderno' },
+  contact: { en: 'contact', pt: 'contacto' },
 };
 
 export type RouteKey = keyof typeof segments | 'home';

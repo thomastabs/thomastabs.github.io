@@ -58,7 +58,7 @@ const href = (anchor: string) =>
   localAnchors.includes(anchor)
     ? `#${anchor}`
     : anchor === 'contact'
-      ? `${localePath('home', lang)}#contact`
+      ? localePath('contact', lang)
       : `${localePath('journey', lang)}#${anchor}`;
 ---
 

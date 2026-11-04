@@ -18,7 +18,7 @@ import frauncesOpsz from '@fontsource-variable/fraunces/files/fraunces-latin-ops
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import { htmlLang, useTranslations, type Locale } from '@/i18n';
-import { translatePath } from '@/i18n/routes';
+import { translatePath, localePath } from '@/i18n/routes';
 import { ogPathFor } from '@/lib/og';
 
 interface Props {
@@ -36,6 +36,9 @@ const t = useTranslations(lang);
 const fullTitle = title ? `${title} — ${t('site.name')}` : `${t('site.name')}`;
 const desc = description ?? t('site.description');
 const canonical = new URL(Astro.url.pathname, Astro.site);
+/* Top-level pages behind a nav item get the hero's dot grid behind their header. */
+const sectionIndex = (['work', 'journey', 'notebook', 'contact'] as const)
+  .some((k) => Astro.url.pathname.replace(/\/+$/, '') === localePath(k, lang));
 const other: Locale = lang === 'en' ? 'pt' : 'en';
 const otherPath = altHref ?? translatePath(Astro.url.pathname, other);
 const enUrl = new URL(lang === 'en' ? Astro.url.pathname : otherPath, Astro.site);
@@ -90,7 +93,8 @@ const ogImage = new URL(ogPathFor(Astro.url.pathname), Astro.site);
   <body>
     <a class="skip-link" href="#main">{t('a11y.skip')}</a>
     <Header lang={lang} altHref={altHref} />
-    <main id="main" tabindex="-1">
+    <main id="main" tabindex="-1" class:list={{ 'has-dots': sectionIndex }}>
+      {sectionIndex && <div class="page-dots dot-grid" aria-hidden="true"></div>}
       <slot />
     </main>
     <Footer lang={lang} />
