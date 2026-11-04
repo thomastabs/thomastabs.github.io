@@ -13,7 +13,7 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 
 | Area | Item | Result | Evidence |
 |---|---|---|---|
-| Visual | No purple outside the hero glow | PASS | The violets exist only in `Hero.astro` (`--dusk-violet`). There is no purple token, hover or shadow anywhere else. |
+| Visual | No purple outside the hero glow | PASS | The violet exists only in `Hero.astro` (`--dusk-violet`), now a faint top-right corner at about a third of its old strength and size. There is no purple token, hover or shadow anywhere else. |
 | Visual | No emoji or sparkles | PASS | The ✎ ◆ ☐ ✓ glyphs were removed from callouts, comments and the form. Arrows (→ ↗ ↓) remain as link affordances. |
 | Visual | Subtle hovers only | PASS | Cards change border colour only. Buttons and links change colour only. There are no transforms on hover (no `transform` in any `:hover` rule). |
 | Visual | Icons sized to text | PASS | The GitHub mark is 22px on repo tiles, the copy icon is 1em and the pin is 16px. |
@@ -46,7 +46,7 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 - 0 AA contrast failures.
 
 **Kept unchanged** (diffed against `main`):
-- hero glow gradient: identical;
+- hero glow gradient: same shape; at your later request the violet was toned down (strength ×1.6 → ×0.5, ellipse 55×60% → 35×40%) and the red slightly (×2.2 → ×1.7);
 - `.dot-grid` CSS and its uses on the hero and the Apex header: identical;
 - `Wordmark.astro` and `favicon.svg`: no diff.
 
@@ -54,7 +54,7 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 
 - **Hero sub-line length.** To fit the sentence in 2 lines beside a 420px graph, it is set at the 17px body size on desktop (20px below 960px). The PT line was shortened to fit: "Desenvolvo sistemas de backend. A minha tese foi uma framework para usar agentes de IA em todo o ciclo de vida do software sem perder o controlo."
 - **Uppercase.** Section labels are the only uppercase. Apex had 11 sections, so the "Related notes" heading is now a plain heading to keep the page at 10.
-- **Home Experience.** Read as one line per role (role · company · dates) for all four roles, including Wondercom as you asked earlier. The brief said "3-line list"; I kept all four rather than drop one.
+- **Home Experience.** At your later request it uses the same timeline as Education: dates, the organisation logo, role, organisation and the one-line summary, for all four roles. The full history stays on /journey.
 - **Section-page dot grids** (on `/work`, `/journey` and `/notebook`, which you asked for earlier) are unchanged. The brief only mentions the hero and the Apex header.
 - **Humanizer.** The first copy pass applied the skill's rules by hand because the install was blocked. Once installed (v3.1.0), the skill was run over every visible EN and PT string: i18n, `src/data`, the work entries, the four posts, the Apex page and its ledger. It changed the four posts, `apex.ts` and the ledger; the i18n strings, the other data files and the work entries needed nothing. PT was edited in European Portuguese, in step with EN.
 - **Critique.** The before-critique was a single-context run. Impeccable asks for two isolated assessments; see the banner in `critique-before.md`.

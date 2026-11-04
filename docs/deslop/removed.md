@@ -46,7 +46,7 @@
 - Side-stripe borders: callouts (3px left), the thesis quote, the prose blockquote and the Apex findings.
 
 ## Layout and content
-- Home Experience timeline (summaries, chips, logos) → a list of role · company · dates linking to /journey.
+- Kind and tech chips on the home Experience timeline. (The timeline itself, with logos and summaries, was later restored in the Education style.)
 - Kind chips (`• work`, `• teaching`) on every timeline entry, and tech chips on the timeline.
 - Graph legend.
 - Status badges on project cards ("Defended · 17/20", "Live demo", "Complete", "Internal") and the Public / Private pill on repo tiles.

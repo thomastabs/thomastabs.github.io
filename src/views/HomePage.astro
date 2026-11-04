@@ -65,15 +65,20 @@ const personLd = {
 
   <section class="container section-tight" id="experience" aria-labelledby="exp-title">
     <SectionHeading n={2} label={t('section.experience')} id="exp-title" />
-    <ul class="roles" role="list">
+    <ol class="timeline" role="list">
       {roles.map((r) => (
-        <li id={r.id} class="role">
-          <span class="role-name">{r.role[lang]}</span>
-          <span class="role-org">{r.org[lang]}</span>
-          <span class="date">{r.period[lang]}</span>
-        </li>
+        <TimelineEntry
+          id={r.id}
+          period={r.period[lang]}
+          title={r.role[lang]}
+          org={r.org[lang]}
+          logo={r.logo}
+          monogram={r.monogram}
+        >
+          <p>{r.summary[lang]}</p>
+        </TimelineEntry>
       ))}
-    </ul>
+    </ol>
     <a class="pen-link more" href={localePath('journey', lang)}>{t('cta.fullJourney')} →</a>
   </section>
 
@@ -146,18 +151,6 @@ const personLd = {
   }
   @media (max-width: 899px) { :global(.portrait-img) { order: -1; max-width: 14rem; } }
 
-  .roles { list-style: none; padding: 0; margin: 0; }
-  .role {
-    display: grid; gap: 0 var(--s-3);
-    padding: var(--s-3) 0; border-bottom: 1px solid var(--rule);
-  }
-  .role:first-child { padding-top: 0; }
-  @media (min-width: 720px) {
-    .role { grid-template-columns: minmax(0, 2fr) minmax(0, 2fr) minmax(0, 1fr); align-items: baseline; }
-    .role .date { text-align: right; }
-  }
-  .role-name { font-weight: 500; color: var(--ink); }
-  .role-org { color: var(--ink-2); }
 
   .timeline { padding: 0; }
   .more { display: inline-block; margin-top: var(--s-3); font-size: var(--t-16); }

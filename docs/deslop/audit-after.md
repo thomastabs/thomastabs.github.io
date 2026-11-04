@@ -9,7 +9,7 @@ Scope: the production build (`dist/`) served on localhost: `/`, `/work`, `/work/
 | 1 | Accessibility | 4 | Lighthouse a11y 100 on all 16 runs. 0 text elements below AA in either theme at either width. The mobile menu now traps focus. |
 | 2 | Performance | 4 | Lighthouse performance 98–100 (mobile), 100 (desktop). The scroll-reveal observer and the blur filters are gone. |
 | 3 | Responsive design | 4 | No horizontal scroll at 390 on 8 pages. The graph collapses to the strip. Filter pills and nav are 44px targets. |
-| 4 | Theming | 4 | All colours come from `tokens.css`, apart from the hero glow's violets (kept as brand) and the `theme-color` meta, which repeats the `--bg` values because a meta tag cannot read CSS variables. |
+| 4 | Theming | 4 | All colours come from `tokens.css`, apart from the hero glow's violet (kept as brand, toned down to a faint corner) and the `theme-color` meta, which repeats the `--bg` values because a meta tag cannot read CSS variables. |
 | 5 | Anti-patterns | 3 | The 3.9 detector went from 9 findings to 0 once the section numbers were removed. The 4.8 detector flags only `cream-palette` on each page, which the brief keeps. |
 | **Total** | | **19/20** | **Excellent** |
 

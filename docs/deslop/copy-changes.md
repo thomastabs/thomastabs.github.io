@@ -289,7 +289,7 @@ Run with the humanizer skill (v3.1.0) after it was installed. Each row is the li
 ## Structural copy changes
 
 - Section headings: the `§NN — LABEL · meta` kicker plus a slogan h2 became one label, `01 About`. Slogan h2s removed on the home page and on the Apex page (for example "In two sentences", "Adoption has outpaced method", "Six phases, five gates, one specification", "The Apex app", "Built to production standards", "What the evidence says", "How it was built", "What I would carry into the next one").
-- Home Experience: per-role summaries and chips removed from the home page; it lists role · company · dates and links to /journey, where the one-sentence summaries live.
+- Home Experience: chips removed; it uses the Education timeline style with logos and the one-sentence summaries, and links to /journey.
 - Hero: the CV button and the status dot were removed; "Read the thesis" gained an arrow.
 - Footer: email, GitHub, LinkedIn, CV and "hosted on GitHub Pages" replaced by `© 2026 Tomás Taborda · Source`.
 - Page titles: separator `—` → `·` (for example "Work · Tomás Taborda").
