@@ -24,7 +24,7 @@ export const experience: Experience[] = [
     logo: 'tecnico',
     kind: 'teaching',
     start: '2026-10',
-    period: { en: '20 Oct 2026 – 10 Nov 2026', pt: '20 out. 2026 – 10 nov. 2026' },
+    period: { en: 'Oct 2026 – Nov 2026', pt: 'out. 2026 – nov. 2026' },
     role: { en: 'Teaching Assistant, AI Agents Bootcamp (second edition)', pt: 'Assistente de Ensino, Bootcamp de Agentes de IA (segunda edição)' },
     org: { en: 'Técnico+ Formação Avançada (IST) · Lisbon', pt: 'Técnico+ Formação Avançada (IST) · Lisboa' },
     summary: {
