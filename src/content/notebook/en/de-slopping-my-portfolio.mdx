@@ -9,13 +9,25 @@ translationKey: "de-slopping-portfolio"
 comments: true
 ---
 
+import { Image } from 'astro:assets';
+import before from '@/assets/notebook/deslop-home-before.webp';
+import after from '@/assets/notebook/deslop-home-after.webp';
+
 Most of this site was first built with an AI coding agent. It worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
 
 So I did to the design what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
 
+<Figure caption="Before: the home page as first generated, with the uppercase mono kicker, the red full stop, three button styles, the colour-coded graph with its legend, and the § section label below.">
+  <Image src={before} alt="The old home hero in dark mode: an uppercase red mono kicker, the name with a red full stop, a long tagline, a status dot, three buttons and a colour-coded graph with a legend." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
+</Figure>
+
+<Figure caption="After: one sans line above the name, a one-sentence positioning line, two buttons, a monochrome graph and a plain section label.">
+  <Image src={after} alt="The new home hero in dark mode: a small grey line above the name, a two-line positioning sentence, a red View work button and a text link, and a grey graph of the path." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
+</Figure>
+
 ## The brief
 
-The starting point was a written de-slop brief. It was specific about outcomes and left the method open:
+The starting point was a de-slop brief I wrote myself, with ideas from Reddit threads on what makes a generated UI recognisable and with Claude's help on the wording. It was specific about outcomes and left the method open:
 
 - one serif and one sans, with mono only for code, dates and spec values;
 - one type ramp, one radius, one accent colour and two button styles;
@@ -37,7 +49,7 @@ After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near
 
 ### Humanizer for the copy
 
-[humanizer](https://github.com/blader/humanizer) rewrites text that reads as generated: "not X but Y" contrasts, one-line closers, forced lists of three, dashes everywhere, bold labels used as decoration. It ran over every visible string in English and Portuguese. The UI strings and the data files needed nothing by then. The posts did: it removed several "rather than" contrasts, a closing paragraph that repeated the opening of a post, and closers such as "Confidence is not evidence" that restated the sentence before them. The rule I cared about most was that it keeps facts and adds none. The dissertation abstract and the thesis statement stayed verbatim.
+[humanizer](https://github.com/blader/humanizer) rewrites text that reads as generated: "not X but Y" contrasts, one-line closers, forced lists of three, dashes everywhere, bold labels used as decoration. It ran over every visible string in English and Portuguese. The UI strings and most data files needed nothing by then. The posts and the Apex page data did: it removed several "rather than" contrasts, a closing paragraph that repeated the opening of a post, and closers such as "Confidence is not evidence" that restated the sentence before them. The rule I cared about most was that it keeps facts and adds none. The dissertation abstract and the thesis statement stayed verbatim.
 
 ### frontend-design as a second opinion
 
@@ -66,5 +78,3 @@ The tools found problems. They did not decide what the site should be.
 ## What I would reuse
 
 Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent that generated the first design did most of the de-slopping, and the difference was the process around it.
-
-{/* TODO before publishing: add one before/after image pair from docs/deslop/compare/ (home 1440 dark is the clearest). */}

@@ -1,0 +1,80 @@
+---
+title: "Limpar o design do meu portfólio com um brief e três skills"
+description: "O primeiro design deste site foi gerado e notava-se. Como um brief, o Impeccable, o humanizer e verificações medidas o tornaram mais simples."
+pubDate: 2026-11-04
+tags: [ia, design]
+draft: true
+lang: pt
+translationKey: "de-slopping-portfolio"
+comments: true
+---
+
+import { Image } from 'astro:assets';
+import before from '@/assets/notebook/deslop-home-before.webp';
+import after from '@/assets/notebook/deslop-home-after.webp';
+
+A maior parte deste site foi construída primeiro com um agente de programação de IA. Funcionava, o conteúdo era real, e parecia gerado. Todas as secções abriam com o mesmo andaime: um pequeno rótulo em maiúsculas com o número da secção e um sufixo, um slogan com serifa por baixo, e depois cartões com etiquetas coloridas. A ideia de "caderno de engenharia" aparecia cinco vezes: marcas de secção, linhas de cota, uma fotografia colada com fita e inclinada, notas na margem e sublinhados a caneta vermelha. Nenhuma parecia uma escolha, porque estavam todas ligadas ao mesmo tempo.
+
+Por isso fiz ao design o que a minha tese defende para a IA em qualquer fase do trabalho: escrever o que significa estar feito, deixar o agente trabalhar com base nisso, e verificar o resultado com algo que não seja a opinião do próprio agente.
+
+<Figure caption="Antes: a página inicial como foi gerada, com o rótulo em maiúsculas e monoespaçado, o ponto final vermelho, três estilos de botão, o grafo com cores por tipo e a sua legenda, e o rótulo de secção com § por baixo.">
+  <Image src={before} alt="O topo antigo da página inicial (versão inglesa) em modo escuro: um rótulo vermelho em maiúsculas, o nome com um ponto final vermelho, uma frase longa, um ponto de estado, três botões e um grafo colorido com legenda." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
+</Figure>
+
+<Figure caption="Depois: uma linha simples acima do nome, uma frase de posicionamento, dois botões, um grafo monocromático e um rótulo de secção simples.">
+  <Image src={after} alt="O novo topo da página inicial (versão inglesa) em modo escuro: uma pequena linha cinzenta acima do nome, uma frase de posicionamento em duas linhas, um botão vermelho «View work» e uma ligação de texto, e um grafo cinzento do percurso." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
+</Figure>
+
+## O brief
+
+O ponto de partida foi um brief que escrevi eu, com ideias de discussões no Reddit sobre o que torna uma interface gerada reconhecível e com a ajuda do Claude na redação. Era concreto quanto aos resultados e deixava o método em aberto:
+
+- uma fonte com serifa e uma sem serifa, com a monoespaçada só para código, datas e valores de especificação;
+- uma escala tipográfica, um raio de canto, uma cor de destaque e dois estilos de botão;
+- nada de animações ao fazer scroll, sombras, inclinações ou emoji como ícones;
+- texto simples, com uma lista de expressões proibidas em que a primeira versão se apoiava ("reliable systems", "with the spec as the anchor", "drawn to", "along the way");
+- manter o que era meu: o brilho do topo, a grelha de pontos, o logótipo e a fotografia ao entardecer na página de contacto.
+
+Trazia também as regras que valem para tudo neste site: nada de número de telefone ou morada, e nada inventado. Se um facto não podia ser verificado, passava a um TODO visível ou ficava de fora.
+
+## O processo
+
+Corri-o no Claude Code com três skills instaladas, e o Claude escreveu alguns scripts para as verificações.
+
+### Impeccable, antes e depois
+
+O [Impeccable](https://github.com/pbakaus/impeccable) é uma skill de design com um comando de crítica, um comando de auditoria e um detetor baseado em regras para padrões comuns de interfaces geradas. A crítica, antes de qualquer alteração, deu ao site 27/40 nas heurísticas de Nielsen, com 1/4 em design estético e minimalista. O detetor encontrou 9 problemas nas páginas construídas, incluindo 37 travessões só na página do Apex, números de secção em todas as secções, uma hierarquia tipográfica em que os tamanhos pequenos eram 12, 14,4 e 15,2 px, e uma caixa de destaque com uma risca colorida de lado.
+
+Depois da passagem, a auditoria deu 19/20. Atualizar o Impeccable da versão 3.9 para a 4.8 perto do fim valeu a pena: a nova versão desenha cada página em largura de computador e de telemóvel e encontrou problemas que a primeira não via, como etiquetas de gráficos com cerca de 9 px, anos de um gráfico com contraste de 3,2:1 sobre o brilho do topo no telemóvel, e logótipos sem margem interior. Ficou tudo corrigido. O único alerta que resta é o fundo creme da página, que mantive.
+
+### Humanizer para o texto
+
+O [humanizer](https://github.com/blader/humanizer) reescreve texto que soa a gerado: contrastes do tipo "não X, mas Y", frases finais de uma linha, listas forçadas de três, travessões por todo o lado, negritos usados como decoração. Correu sobre todo o texto visível, em inglês e em português. Nessa altura, os textos da interface e a maior parte dos ficheiros de dados já não precisavam de nada. Os artigos e os dados da página do Apex precisavam: retirou vários contrastes com "em vez de", um parágrafo final que repetia a abertura de um artigo, e frases como "Confiança não é evidência", que repetiam a frase anterior. A regra que mais me importava era manter os factos e não acrescentar nenhum. O resumo da dissertação e a tese ficaram palavra por palavra.
+
+### frontend-design como segunda opinião
+
+A skill frontend-design enumera os traços à volta dos quais as páginas geradas se juntam hoje. Dois ainda se aplicam a este site: o fundo esbranquiçado quente com títulos com serifa, e os rótulos de secção em maiúsculas com linhas de metadados separadas por `·`. O brief definia ambos, por isso ficaram. Tudo o resto dessa lista (uma palavra destacada no título, números de secção, animações de entrada em cada secção, sombras nos cartões) desapareceu.
+
+### Verificações que não são a opinião do agente
+
+A parte que manteria em qualquer projeto é a verificação. O Claude escreveu pequenos scripts em Playwright que mediam o site construído em vez de o descrever:
+
+- um script de métricas que lê o estilo calculado de cada elemento de texto visível em 7 páginas, em 2 larguras e nos 2 temas, e reporta famílias tipográficas, tamanhos, raios de canto, número de elementos em maiúsculas, usos da cor de destaque por ecrã e falhas de contraste;
+- 27 verificações de funcionamento: tema, mudança de língua, filtros, botões de copiar, o foco preso no menu de telemóvel, ausência de scroll horizontal;
+- um verificador de ligações sobre todas as páginas construídas e todas as ligações externas;
+- Lighthouse em 8 páginas, em telemóvel e computador.
+
+O resultado, medido: 7 tamanhos de letra (14, 16, 17, 20, 28, 40 e 56 px), raios de 4 px e de pílula, no máximo 2 usos da cor de destaque por ecrã, 0 falhas de contraste, 0 ligações internas partidas, e desempenho no Lighthouse entre 98 e 100, com 100 em tudo o resto. As capturas de antes e depois de 6 páginas, em 2 larguras e nos 2 temas, estão no repositório, ao lado de um relatório que liga cada ponto do brief à sua evidência.
+
+## Onde o meu critério continuou a contar
+
+As ferramentas encontraram problemas. Não decidiram o que o site devia ser.
+
+- O brief pedia uma lista curta na secção de Experiência da página inicial. Quando a vi publicada, era uma lista aborrecida ao lado de uma cronologia de Formação com logótipos, por isso a Experiência usa agora a mesma cronologia.
+- O brief mantinha o brilho do topo como marca. Mais tarde reduzi o violeta a um canto discreto, porque num ecrã escuro era a coisa mais forte da página.
+- O detetor assinala o fundo creme. Mantive-o, sabendo que é uma das escolhas geradas mais comuns, porque mudá-lo obriga a medir outra vez todos os pares de cores, e gosto dele.
+- Dois passos correram em modo degradado, e o relatório di-lo: a instalação do humanizer foi bloqueada da primeira vez, por isso a primeira revisão do texto aplicou as regras à mão, e a crítica inicial correu num só contexto, quando o Impeccable pede duas avaliações independentes.
+
+## O que voltaria a usar
+
+Escrever o brief como uma lista de resultados verificáveis. Dar ao agente skills que codificam gosto, para que não invente uma linguagem de design do zero. Depois medir o resultado com scripts e guardar a evidência no repositório. O mesmo agente que gerou o primeiro design fez a maior parte da limpeza, e a diferença esteve no processo à sua volta.
