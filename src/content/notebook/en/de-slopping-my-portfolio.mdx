@@ -1,0 +1,70 @@
+---
+title: "De-slopping my portfolio with a brief and three skills"
+description: "This site's first design was generated and looked it. How a written brief, Impeccable, humanizer and a set of checks took it back to something plainer."
+pubDate: 2026-11-04
+tags: [ai, design]
+draft: true
+lang: en
+translationKey: "de-slopping-portfolio"
+comments: true
+---
+
+Most of this site was first built with an AI coding agent. It worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
+
+So I did to the design what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
+
+## The brief
+
+The starting point was a written de-slop brief. It was specific about outcomes and left the method open:
+
+- one serif and one sans, with mono only for code, dates and spec values;
+- one type ramp, one radius, one accent colour and two button styles;
+- no reveal-on-scroll, shadows, tilts or emoji used as icons;
+- plain copy, with a banned list of phrases the first version leaned on ("reliable systems", "with the spec as the anchor", "drawn to", "along the way");
+- keep the things that were mine: the hero glow, the dot grid, the wordmark and the dusk photo on the contact page.
+
+It also carried the rules that apply to everything on this site: no phone number or address, and nothing invented. If a fact could not be checked, it became a visible TODO or was left out.
+
+## The pipeline
+
+I ran it in Claude Code with three skills installed, and Claude wrote a handful of scripts for the checks.
+
+### Impeccable, before and after
+
+[Impeccable](https://github.com/pbakaus/impeccable) is a design skill with a critique command, an audit command and a rule-based detector for common generated-UI patterns. The critique before any change scored the site 27/40 on Nielsen's heuristics, with a 1/4 on aesthetic and minimalist design. Its detector found 9 problems on the built pages, including 37 em dashes on the Apex page alone, numbered section markers on every section, a type hierarchy where the small sizes were 12, 14.4 and 15.2 px, and a callout with a coloured side stripe.
+
+After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near the end was worth it: the new version renders each page at desktop and mobile widths and found problems the first one could not see, such as chart labels around 9 px, chart years at 3.2:1 contrast over the hero glow on mobile, and logo tiles with no padding. All of those are fixed. The one finding left is the cream page background, which I kept.
+
+### Humanizer for the copy
+
+[humanizer](https://github.com/blader/humanizer) rewrites text that reads as generated: "not X but Y" contrasts, one-line closers, forced lists of three, dashes everywhere, bold labels used as decoration. It ran over every visible string in English and Portuguese. The UI strings and the data files needed nothing by then. The posts did: it removed several "rather than" contrasts, a closing paragraph that repeated the opening of a post, and closers such as "Confidence is not evidence" that restated the sentence before them. The rule I cared about most was that it keeps facts and adds none. The dissertation abstract and the thesis statement stayed verbatim.
+
+### frontend-design as a second opinion
+
+The frontend-design skill lists the traits generated pages cluster around right now. Two of them still apply to this site: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines. The brief set both, so they stayed. Everything else on that list (one-word headline accents, numbered markers, entrance animations on every section, card shadows) is gone.
+
+### Checks that are not the agent's opinion
+
+The part I would keep for any project is the verification. Claude wrote small Playwright scripts that measured the built site instead of describing it:
+
+- a metrics script that reads the computed style of every visible text element on 7 pages, at 2 widths and in 2 themes, and reports font families, type sizes, radii, uppercase count, accent uses per screen and contrast failures;
+- 27 function checks: theme toggle, language switch, filters, copy buttons, the mobile menu's focus trap, no horizontal scroll;
+- a link checker over every built page and every external link;
+- Lighthouse on 8 pages, mobile and desktop.
+
+The result, measured: 7 type sizes (14, 16, 17, 20, 28, 40 and 56 px), radii of 4 px and a pill, at most 2 accent uses per screen, 0 contrast failures, 0 broken internal links, and Lighthouse performance between 98 and 100 with 100 everywhere else. Before and after screenshots of 6 pages, at 2 widths and in 2 themes, are in the repository next to a report that maps each line of the brief to its evidence.
+
+## Where my judgement still mattered
+
+The tools found problems. They did not decide what the site should be.
+
+- The brief asked for a short list in the home Experience section. Once I saw it live, it was a boring list next to an Education timeline with logos, so Experience now uses the same timeline.
+- The brief kept the hero glow as brand. Later I toned its violet down to a faint corner, because on a dark screen it was the loudest thing on the page.
+- The detector flags the cream background. I kept it, knowing it is one of the most common generated defaults, because changing it means re-measuring every colour pair and I like it.
+- Two steps ran degraded and the report says so: the humanizer install was blocked the first time, so the first copy pass applied its rules by hand, and the before-critique ran in one context where Impeccable asks for two independent assessments.
+
+## What I would reuse
+
+Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent that generated the first design did most of the de-slopping, and the difference was the process around it.
+
+{/* TODO before publishing: add one before/after image pair from docs/deslop/compare/ (home 1440 dark is the clearest). */}
