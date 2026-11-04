@@ -34,10 +34,34 @@ const Name = headingLevel;
 </section>
 
 <style>
+  /* Dusk wash: the same violet-to-red sky as the contact photo, so the page opens and
+     closes in one light. Strength is lower in light mode. */
   .hero {
-    border-bottom: 1px solid var(--rule);
+    --dusk: 16%;
+    --dusk-violet: #6b2fa0;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-bottom: 1px solid color-mix(in srgb, var(--pen) 30%, var(--rule));
     padding-block: clamp(3rem, 2rem + 5vw, 6.5rem) clamp(2.5rem, 2rem + 3vw, 4.5rem);
   }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 75% at 78% 105%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 2.2), transparent), transparent 70%),
+      radial-gradient(ellipse 55% 60% at 100% 0%, color-mix(in srgb, var(--dusk-violet) calc(var(--dusk) * 1.6), transparent), transparent 70%),
+      linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 0.6), transparent));
+  }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; } }
+  :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; }
+  .hero .kicker { color: color-mix(in srgb, var(--pen) 55%, var(--ink-2)); }
+  .hero :global(.btn--primary) { --btn-bg: color-mix(in srgb, var(--pen) 82%, #000); --btn-border: var(--btn-bg); --btn-ink: #fff; }
+  .hero :global(.btn--primary:hover) { --btn-bg: var(--ink); --btn-border: var(--ink); --btn-ink: var(--bg); }
+  .hero :global(.btn:not(.btn--primary):not(.btn--ghost)) { --btn-border: color-mix(in srgb, var(--pen) 45%, var(--rule-strong)); }
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -45,7 +69,24 @@ const Name = headingLevel;
     align-items: center;
   }
   @media (min-width: 960px) {
-    .hero-grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: var(--s-6); }
+    .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 75% at 78% 105%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 2.2), transparent), transparent 70%),
+      radial-gradient(ellipse 55% 60% at 100% 0%, color-mix(in srgb, var(--dusk-violet) calc(var(--dusk) * 1.6), transparent), transparent 70%),
+      linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 0.6), transparent));
+  }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; } }
+  :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; }
+  .hero .kicker { color: color-mix(in srgb, var(--pen) 55%, var(--ink-2)); }
+  .hero :global(.btn--primary) { --btn-bg: color-mix(in srgb, var(--pen) 82%, #000); --btn-border: var(--btn-bg); --btn-ink: #fff; }
+  .hero :global(.btn--primary:hover) { --btn-bg: var(--ink); --btn-border: var(--ink); --btn-ink: var(--bg); }
+  .hero :global(.btn:not(.btn--primary):not(.btn--ghost)) { --btn-border: color-mix(in srgb, var(--pen) 45%, var(--rule-strong)); }
+  .hero-grid { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: var(--s-6); }
   }
   .hero-copy > * + * { margin-top: var(--s-5); }
   .hero-name {
