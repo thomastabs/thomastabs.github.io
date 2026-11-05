@@ -266,8 +266,8 @@ main.has-dots { position: relative; isolation: isolate; }
   z-index: -1;
   pointer-events: none;
   background-color: transparent;
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
-  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, var(--ink) 45%, transparent);
+  mask-image: linear-gradient(to bottom, var(--ink) 45%, transparent);
 }
 
 /* ---------- Skip link ---------- */

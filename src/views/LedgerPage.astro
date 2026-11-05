@@ -308,7 +308,14 @@ const description = L('The git history of the Apex app and the MSc dissertation,
         render();
       });
     });
-    more.addEventListener('click', () => { expanded = true; render(); });
+    more.addEventListener('click', () => {
+      const shownBefore = new Set(rows.filter((r) => !r.hidden));
+      expanded = true;
+      render();
+      // The button hides itself, so move focus to the first revealed entry.
+      const first = rows.find((r) => !r.hidden && !shownBefore.has(r));
+      if (first) { first.tabIndex = -1; first.focus(); }
+    });
     render();
   }
 </script>

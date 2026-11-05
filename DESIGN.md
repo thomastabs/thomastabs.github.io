@@ -51,7 +51,7 @@ typography:
     fontWeight: 400
   wordmark:
     fontFamily: "Fraunces Variable, Iowan Old Style, Georgia, serif"
-    fontSize: "1.2rem"
+    fontSize: "1.25rem"
     fontWeight: 500
   chart-small:
     fontFamily: "IBM Plex Mono, ui-monospace, monospace"
