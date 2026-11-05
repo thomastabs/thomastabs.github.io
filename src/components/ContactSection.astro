@@ -80,11 +80,12 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
     .scene-card { max-width: 34rem; }
   }
   @media (max-width: 760px) {
-    /* The old site's phone background, shown whole at its own 9:16 ratio (no crop), easing in
-       from the night sky above it; the cards overlap only the dark treeline at its foot. */
-    .scene-img { position: relative; display: block; margin-top: var(--s-5); }
+    /* Phones: form and email first, then the old site's phone background, shown whole at its
+       own 9:16 ratio (no crop), easing in from the night sky above it. */
+    .scene { display: flex; flex-direction: column; }
+    .scene-img { position: relative; display: block; order: 2; }
     .scene-img img { aspect-ratio: 9 / 16; object-position: 50% 50%; }
     .scene-img::before { content: ''; position: absolute; inset: 0 0 auto; height: 18%; background: linear-gradient(rgb(var(--night)), transparent); pointer-events: none; }
-    .scene-inner { margin-top: -14%; position: relative; padding-bottom: var(--s-6); }
+    .scene-inner { order: 1; width: 100%; padding-block: var(--s-5) var(--s-6); }
   }
 </style>

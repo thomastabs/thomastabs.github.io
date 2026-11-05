@@ -24,7 +24,7 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
 >
   <p class="memo-head">
     <span class="kicker" id="memo-title">{t('contact.form.title')}</span>
-    <span class="memo-to">→ {profile.email}</span>
+    <span class="memo-to">{profile.email}</span>
   </p>
   {contactFormReady && <input type="hidden" name="access_key" value={contactForm.accessKey} />}
   {contactFormReady && <input type="hidden" name="from_name" value="tomastaborda.com" />}
@@ -32,11 +32,11 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
 
   <div class="field">
     <label for="cf-from">{t('contact.form.from')}</label>
-    <input id="cf-from" name="email" type="email" required autocomplete="email" inputmode="email" placeholder={t('contact.form.fromHint')} />
+    <input id="cf-from" name="email" type="email" required autocomplete="email" inputmode="email" />
   </div>
   <div class="field">
     <label for="cf-subject">{t('contact.form.subject')}</label>
-    <input id="cf-subject" name="subject" type="text" required maxlength="140" autocomplete="off" />
+    <input id="cf-subject" name="subject" type="text" required autocomplete="off" />
   </div>
   <div class="field field--area">
     <label for="cf-message">{t('contact.form.message')}</label>
@@ -44,10 +44,10 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
   </div>
 
   <div class="memo-foot">
-    <button type="submit" class="btn btn--primary">{t('contact.form.send')} →</button>
+    <button type="submit" class="btn btn--primary">{t('contact.form.send')}</button>
     <p class="memo-note" data-status role="status" aria-live="polite">{t('contact.form.note')}</p>
   </div>
-  <p class="memo-error" data-error hidden>
+  <p class="memo-error" data-error role="alert" hidden>
     {t('contact.form.error')} <a class="pen-link" href={`mailto:${profile.email}`}>{profile.email}</a>
   </p>
 </form>
@@ -74,13 +74,13 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
   .field--area { grid-template-columns: 1fr; }
   .field--area label { padding-bottom: 0; }
   .field input::placeholder, .field textarea::placeholder { color: var(--muted); }
-  .field input:focus-visible, .field textarea:focus-visible { outline: none; }
+  .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; border-radius: var(--radius); }
   .field:focus-within { border-bottom-color: var(--ink); }
   .field:focus-within label { color: var(--ink); }
   .memo-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3); padding-top: var(--s-3); }
   .memo-note { font-size: var(--t-14); color: var(--muted); }
-  .memo-note[data-state='ok'] { color: var(--ink); }
-  .memo-error { margin-top: var(--s-3); font-size: var(--t-14); color: var(--ink-2); }
+  .memo-note[data-state='ok'] { color: var(--ink); font-size: var(--t-16); font-weight: 500; }
+  .memo-error { margin-top: var(--s-3); font-size: var(--t-16); color: var(--ink); }
   @media (max-width: 480px) { .field { grid-template-columns: 1fr; } .field label { padding-bottom: 0; } }
 </style>
 
@@ -110,9 +110,12 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
       btn.disabled = true;
       status.removeAttribute('data-state');
       status.textContent = d.sending!;
+      const timeout = new AbortController();
+      const timer = setTimeout(() => timeout.abort(), 15000);
       try {
         const res = await fetch(form.action, {
           method: 'POST',
+          signal: timeout.signal,
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify({
             access_key: data.get('access_key'), from_name: data.get('from_name'),
@@ -128,6 +131,7 @@ const action = contactFormReady ? contactForm.endpoint : `mailto:${profile.email
         status.textContent = '';
         error.hidden = false;
       } finally {
+        clearTimeout(timer);
         btn.disabled = false;
       }
     });
