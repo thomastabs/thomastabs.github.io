@@ -381,7 +381,5 @@ main.has-dots { position: relative; isolation: isolate; }
 .filter-pill[aria-current='page'] { color: var(--ink); background: var(--surface-2); border-color: var(--ink); }
 .filter-pill .count { color: var(--muted); }
 
-/* Phones: standalone text links get a 24px minimum target (WCAG 2.5.8). Prose links stay inline. */
-@media (max-width: 760px) {
-  a.pen-link { display: inline-block; min-height: 24px; padding-block: 2px; }
-}
+/* Standalone text links get a 24px minimum target (WCAG 2.5.8). Prose links stay inline. */
+a.pen-link { display: inline-block; min-height: 24px; padding-block: 2px; }

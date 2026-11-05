@@ -97,7 +97,7 @@
   --tracking-display: 0;
   --tracking-mono: 0;
   --tracking-label: 0.06em;
-  --measure: 65ch;
+  --measure: 32.5em; /* about 65 characters of Plex Sans; ch would resolve to the wider digit 0 */
 
   /* Space: 8-point scale (4 is the only half-step) */
   --s-1: 0.25rem; /* 4 */

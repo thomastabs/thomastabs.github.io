@@ -69,7 +69,7 @@ const Name = headingLevel;
   .hero-copy > * + * { margin-top: var(--s-3); }
   /* The header holds the CV link on wide screens; the phone menu hides it. */
   .hero-cv { display: none; }
-  @media (max-width: 760px) { .hero-cv { display: inline-flex; } }
+  @media (max-width: 760px) { .hero-cv { display: inline-flex; min-width: 24px; justify-content: center; } }
   .hero-name {
     margin-top: var(--s-2);
     font-family: var(--font-display);

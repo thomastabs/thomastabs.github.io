@@ -102,7 +102,7 @@ An engineering notebook: neutral paper in light mode, a drafting table in dark m
 - Fraunces: hero name, page titles and item titles. The owner rejected it for section titles.
 - IBM Plex Sans: section titles and all UI and body text. Sentence case, no uppercase labels.
 - IBM Plex Mono: dates, numeric spec values and code only.
-- Text measure is 65ch. Don't widen paragraphs: the owner tried it and reverted it. Full-width boxes are fine with the text inside capped.
+- Text measure is 32.5em (`--measure`), about 65 characters of Plex Sans. Don't widen paragraphs: the owner tried it and reverted it. Full-width boxes are fine with the text inside capped.
 
 ## Layout
 

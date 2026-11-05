@@ -59,7 +59,7 @@
 .prose :not(pre) > code,
 code.inline {
   font-family: var(--font-mono);
-  font-size: 0.875em;
+  font-size: var(--t-16);
   padding: 0 var(--s-1);
   border-radius: var(--radius);
   background: var(--surface-2);
