@@ -53,12 +53,15 @@ const anno = (n: (typeof nodes)[number]) => {
   return { x, y, w, h, lines };
 };
 
-const href = (anchor: string) =>
-  localAnchors.includes(anchor)
+const href = (n: Pick<(typeof nodes)[number], 'anchor' | 'page'>) => {
+  if (n.page === 'apex') return localePath('work', lang, 'apex');
+  const { anchor } = n;
+  return localAnchors.includes(anchor)
     ? `#${anchor}`
     : anchor === 'contact'
       ? localePath('contact', lang)
       : `${localePath('journey', lang)}#${anchor}`;
+};
 
 /* Phone path: newest stop on top, so it reads like the timelines below. Each row is ROW tall. */
 const ROW = 64;
@@ -98,7 +101,7 @@ const phoneCurve = (i: number, off = 0) => {
         return (
           <a
             class="node"
-            href={href(n.anchor)}
+            href={href(n)}
             data-node={n.id}
             data-kind={n.kind}
             data-future={n.future ? '' : undefined}
@@ -148,7 +151,7 @@ const phoneCurve = (i: number, off = 0) => {
       <ol class="p-list" role="list" aria-label={t('graph.title')}>
         {phoneStops.map((n) => (
           <li>
-            <a href={href(n.anchor)}>
+            <a href={href(n)}>
               <span class="p-label">{n.label[lang]}</span>
               <span class="p-years">{n.years[lang]}</span>
             </a>

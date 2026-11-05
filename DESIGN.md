@@ -99,9 +99,9 @@ An engineering notebook: neutral paper in light mode, a drafting table in dark m
 
 ## Typography
 
-- Fraunces: hero name, page titles and item titles. The owner rejected it for section titles.
+- Fraunces: hero name, page titles and item titles. The owner rejected it for section titles. Every h1 and the hero name use the display cut (`opsz` 144); only the hero name is 56px.
 - IBM Plex Sans: section titles and all UI and body text. Sentence case, no uppercase labels.
-- IBM Plex Mono: dates, numeric spec values and code only.
+- IBM Plex Mono: dates, numeric spec values and code only. Every date uses it, through `.date` or a mono spec row.
 - Text measure is 32.5em (`--measure`), about 65 characters of Plex Sans. Don't widen paragraphs: the owner tried it and reverted it. Full-width boxes are fine with the text inside capped.
 
 ## Layout

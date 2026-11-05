@@ -17,6 +17,8 @@ export interface GraphNode {
   side: 'right' | 'left' | 'above' | 'below';
   /** Anchor on the page (Home / Journey entry id). */
   anchor: string;
+  /** Links to this site page instead of the anchor. */
+  page?: 'apex';
   future?: boolean;
 }
 
@@ -64,7 +66,7 @@ export const nodes: GraphNode[] = [
     years: { en: 'Jul – Sep 2026', pt: 'jul. – set. 2026' },
   },
   {
-    id: 'apex', kind: 'milestone', x: 572, y: 236, side: 'below', anchor: 'edu-msc',
+    id: 'apex', kind: 'milestone', x: 572, y: 236, side: 'below', anchor: 'edu-msc', page: 'apex',
     label: { en: 'Apex thesis', pt: 'Tese Apex' },
     role: { en: 'MSc thesis defended, 17/20', pt: 'Tese defendida, 17/20' },
     years: { en: '23 Oct 2026', pt: '23 out. 2026' },

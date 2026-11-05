@@ -53,7 +53,7 @@ const topHrefs = ['/docs/apex-dissertation.pdf', 'https://apex-bolt.com', 'https
 const topLinks = topHrefs.map((href) => apex.publishedLinks.find((l) => l.href === href)!);
 
 const sections = [
-  { id: 'abstract', label: L('Abstract', 'Resumo') },
+  { id: 'abstract', label: L('In short', 'Em resumo') },
   { id: 'problem', label: L('Problem', 'Problema') },
   { id: 'framework', label: L('Framework', 'Framework') },
   { id: 'app', label: L('Implementation', 'Implementação') },
@@ -64,6 +64,11 @@ const sections = [
   { id: 'learned', label: L('Learned', 'Aprendizagens') },
   { id: 'cite', label: L('Cite', 'Citar') },
 ];
+
+/* The first screen keeps three facts; the rest of the record sits one click away. */
+const keySpec = ['Degree', 'Defended', 'Grade'];
+const specRows = apex.header.filter((r) => !r.href).map((r) => ({ ...r, id: r.k.en }));
+const toSpec = (r: (typeof specRows)[number]) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono });
 
 const gallery = [
   { src: appHome, n: '02a', cap: L('Apex home: the six SDLC phases and their status', 'Início do Apex: as seis fases e o seu estado'), alt: L('Apex dashboard listing the six SDLC phase cards with status badges and a sidebar of project context.', 'Painel do Apex com os cartões das seis fases e respetivos estados, e uma barra lateral com o contexto do projeto.') },
@@ -110,6 +115,7 @@ const scholarlyLd = {
         <a class="pen-link pen-link--bare" href={localePath('work', lang)}>{t('nav.work')}</a> / <span aria-current="page">Apex</span>
       </nav>
       <h1 class="apex-title">Apex</h1>
+      <blockquote class="thesis-quote"><p>{apex.problemThesis[lang]}</p></blockquote>
       <p class="lead oneliner">{apex.oneLiner[lang]}</p>
       <div class="links-top">
         {topLinks.map((l) => (
@@ -117,7 +123,11 @@ const scholarlyLd = {
         ))}
       </div>
       <div class="head-spec">
-        <SpecBlock rows={apex.header.filter((r) => !r.href).map((r) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono }))} />
+        <SpecBlock rows={specRows.filter((r) => keySpec.includes(r.id)).map(toSpec)} />
+        <details class="spec-more">
+          <summary>{L('Full thesis record', 'Registo completo da tese')}</summary>
+          <SpecBlock rows={specRows.filter((r) => !keySpec.includes(r.id)).map(toSpec)} />
+        </details>
       </div>
     </div>
   </header>
@@ -164,7 +174,7 @@ const scholarlyLd = {
   <div class="container apex-body">
     <!-- ===== Abstract ===== -->
     <section class="block" aria-labelledby="abstract">
-      <SectionHeading n={1} label={L('Abstract', 'Resumo')} id="abstract" />
+      <SectionHeading n={1} label={L('In short', 'Em resumo')} id="abstract" />
       <p class="lead">{apex.abstractLead[lang]}</p>
       <details class="full-abstract">
         <summary class="meta">{L('Full abstract', 'Resumo completo')}</summary>
@@ -175,7 +185,6 @@ const scholarlyLd = {
     <!-- ===== Problem ===== -->
     <section class="block" aria-labelledby="problem">
       <SectionHeading n={2} label={L('The problem', 'O problema')} id="problem" />
-      <blockquote class="thesis-quote"><p>{apex.problemThesis[lang]}</p></blockquote>
       <ul class="facts" role="list">
         {apex.problemFacts.map((f) => (
           <li class="fact">
@@ -472,9 +481,13 @@ const scholarlyLd = {
   .apex-head { padding-block: var(--s-8) var(--s-7); border-bottom: 1px solid var(--rule); }
   .apex-head .container > * + * { margin-top: var(--s-3); }
   .crumbs { color: var(--muted); }
-  .apex-title { font-size: var(--t-56); font-variation-settings: 'opsz' 144; line-height: 1.1; }
   .oneliner { max-width: var(--measure); }
   .head-spec { margin-top: var(--s-6) !important; }
+  .spec-more { margin-top: var(--s-3); }
+  .spec-more summary { cursor: pointer; display: flex; gap: var(--s-2); align-items: center; min-height: 44px; list-style: none; }
+  .spec-more summary::-webkit-details-marker { display: none; }
+  .spec-more summary::before { content: '+'; color: var(--muted); width: 1ch; }
+  .spec-more[open] summary::before { content: '\2212'; }
 
   .links-bar { border-bottom: 1px solid var(--rule); background: var(--surface); }
   .apex-head .links-top { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin-top: var(--s-5); }

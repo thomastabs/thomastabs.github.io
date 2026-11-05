@@ -75,8 +75,8 @@ const description = L('The git history of the Apex app and the MSc dissertation,
     </nav>
     <h1>{L('Apex and thesis ledger', 'Diário do Apex e da tese')}</h1>
     <p class="lead">{L(
-      "Everything since 6d212b6, the repository's first commit, read back out of its own history: 1,171 commits across a governance platform and the dissertation describing it. Project closed.",
-      'Tudo desde o 6d212b6, o primeiro commit do repositório, lido a partir do próprio histórico: 1.171 commits entre uma plataforma de governação e a dissertação que a descreve. Projeto encerrado.',
+      "Everything since 6d212b6, the repository's first commit, read back out of its own history: 1,171 commits across a governance platform and the dissertation describing it. Submitted on the deadline. Project closed.",
+      'Tudo desde o 6d212b6, o primeiro commit do repositório, lido a partir do próprio histórico: 1.171 commits entre uma plataforma de governação e a dissertação que a descreve. Entregue no prazo. Projeto encerrado.',
     )}</p>
     <div class="btn-set head-links">
       <a class="btn btn--primary" href="/docs/apex-dissertation.pdf">{L('Read the dissertation (PDF)', 'Ler a dissertação (PDF)')}</a>
@@ -85,9 +85,10 @@ const description = L('The git history of the Apex app and the MSc dissertation,
     </div>
     <div class="head-spec">
       <SpecBlock rows={[
-        { k: L('Submitted', 'Entregue'), v: L('7 October 2026, on the deadline', '7 de outubro de 2026, no prazo'), mono: false },
-        { k: L('Defended', 'Defendida'), v: L('23 October 2026', '23 de outubro de 2026'), mono: false },
-        { k: L('Grade', 'Nota'), v: L('17/20 for the dissertation; final MSc grade pending', '17/20 na dissertação; nota final do mestrado por atribuir'), mono: false },
+        { k: L('Submitted', 'Entregue'), v: L('7 October 2026', '7 de outubro de 2026'), mono: true },
+        { k: L('Defended', 'Defendida'), v: L('23 October 2026', '23 de outubro de 2026'), mono: true },
+        { k: L('Dissertation grade', 'Nota da dissertação'), v: '17/20', mono: true },
+        { k: L('Final MSc grade', 'Nota final do mestrado'), v: L('Pending', 'Por atribuir') },
       ]} />
     </div>
     <dl class="stats stats--head">{totals.map((s) => <div><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
@@ -164,7 +165,7 @@ const description = L('The git history of the Apex app and the MSc dissertation,
       <p class="note">{L('All scaffolded on 4 Aug 2026 as \\todo stubs. The dates below are when real content landed.', 'Todos criados a 4 ago. 2026 como esboços \\todo. As datas abaixo indicam quando chegou conteúdo real.')}</p>
       <table class="tbl">
         <thead><tr><th scope="col">{L('Chapter', 'Capítulo')}</th><th scope="col">{L('First real content', 'Primeiro conteúdo real')}</th><th scope="col">Commits</th></tr></thead>
-        <tbody>{chapters.map((c) => <tr><th scope="row">{c.name[lang]}</th><td>{c.first[lang] || L('No date recorded', 'Sem data registada')}</td><td class="mono">{c.commits}</td></tr>)}</tbody>
+        <tbody>{chapters.map((c) => <tr><th scope="row">{c.name[lang]}</th><td class:list={{ mono: c.first[lang] }}>{c.first[lang] || L('No date recorded', 'Sem data registada')}</td><td class="mono">{c.commits}</td></tr>)}</tbody>
       </table>
     </section>
 
@@ -273,6 +274,9 @@ const description = L('The git history of the Apex app and the MSc dissertation,
   .bars .mono { color: var(--ink-2); }
   .bar { display: block; width: var(--w); min-width: 1px; height: 10px; background: var(--ink-2); border-radius: var(--radius); }
 
+  /* In the shared stylesheet .mono no longer switches family; here it marks data. */
+  .bars .mono, .tbl td.mono, .row-t.mono { font-family: var(--font-mono); }
+  .tbl td.mono { font-size: var(--t-14); }
   .tbl { width: 100%; border-collapse: collapse; font-size: var(--t-16); }
   .tbl th, .tbl td { padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
   .tbl thead th { font-size: var(--t-14); font-weight: 400; color: var(--muted); border-bottom-color: var(--rule-strong); }

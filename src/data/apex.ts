@@ -27,7 +27,7 @@ export const header: { k: L10n; v: L10n | string; href?: string; mono?: boolean 
   },
   { k: { en: 'Submitted', pt: 'Entregue' }, v: { en: '7 October 2026', pt: '7 de outubro de 2026' }, mono: true },
   { k: { en: 'Defended', pt: 'Defendida' }, v: { en: '23 October 2026', pt: '23 de outubro de 2026' }, mono: true },
-  { k: { en: 'Grade', pt: 'Nota' }, v: '17 / 20', mono: true },
+  { k: { en: 'Grade', pt: 'Nota' }, v: '17/20', mono: true },
   {
     k: { en: 'Method', pt: 'Método' },
     v: {

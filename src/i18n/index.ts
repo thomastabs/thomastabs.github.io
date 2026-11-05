@@ -37,5 +37,5 @@ export function formatDate(date: Date, lang: Locale, opts: Intl.DateTimeFormatOp
     year: 'numeric',
     timeZone: 'UTC',
     ...opts,
-  }).format(date);
+  }).format(date).replace('Sept', 'Sep'); // en-GB's four-letter September; every other date on the site says Sep
 }
