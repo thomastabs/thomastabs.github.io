@@ -247,7 +247,7 @@ const scholarlyLd = {
       </Figure>
 
       <h3 class="sub-h walk-h">{L('The demonstration, phase by phase', 'A demonstração, fase a fase')}</h3>
-      <p class="prose-p">{L('Screens from the dissertation’s demonstration chapter, captured while Apex governed the Outfolio build.', 'Ecrãs do capítulo de demonstração da dissertação, capturados enquanto o Apex governava a construção do Outfolio.')}</p>
+      <p class="prose-p prose-p--full">{L('Screens from the dissertation’s demonstration chapter, captured while Apex governed the Outfolio build.', 'Ecrãs do capítulo de demonstração da dissertação, capturados enquanto o Apex governava a construção do Outfolio.')}</p>
       <ul class="gallery gallery--3" role="list">
         {walkthrough.map((g) => (
           <li>
@@ -274,7 +274,7 @@ const scholarlyLd = {
     <section class="block" aria-labelledby="outfolio">
       <SectionHeading n={6} label={L('Demonstration', 'Demonstração')} id="outfolio" />
       <div>
-        <p class="prose-p">
+        <p class="prose-p prose-p--full">
           {L(
             'The framework was carried from Strategic Alignment to a deployed product over nine calendar days, growing from six pre-committed epics to nine epics and 54 stories, none abandoned, with all three loop-back routes exercised more than once.',
             'A framework foi levada do Alinhamento Estratégico a um produto implantado em nove dias de calendário, crescendo de seis épicos assumidos à partida para nove épicos e 54 histórias, nenhuma abandonada, com os três retornos governados usados mais de uma vez.',
@@ -313,7 +313,7 @@ const scholarlyLd = {
     <!-- ===== History ===== -->
     <section class="block" aria-labelledby="history">
       <SectionHeading n={8} label={L('History', 'Histórico')} id="history" />
-      <p class="prose-p">{L(
+      <p class="prose-p prose-p--full">{L(
         'Six months, one repository. The app and the dissertation share a git history, so the way the work was built can be read back out of it: when the stack changed, when the thesis started pulling commits away from the app, and which bugs were only found by writing about the tool.',
         'Seis meses, um repositório. A aplicação e a dissertação partilham o mesmo histórico git, por isso a forma como o trabalho foi feito pode ser lida a partir dele: quando a stack mudou, quando a tese começou a tirar commits à aplicação e que bugs só apareceram ao escrever sobre a ferramenta.')}</p>
       <ul class="stats" role="list">
@@ -508,7 +508,7 @@ const scholarlyLd = {
   .btn--pending:hover { color: var(--muted); }
   .pending-tag { font-style: italic; }
   .findings { display: grid; gap: 0; border-top: 1px solid var(--rule); }
-  .findings article { padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); max-width: var(--measure); }
+  .findings article { padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); }
   .findings h3 { font-size: var(--t-20); margin-bottom: var(--s-2); }
   .findings p { color: var(--ink-2); }
 
