@@ -31,7 +31,7 @@ const items: Item[] = [
     logo: e.logo, monogram: e.monogram,
   })),
   ...education.map((e) => ({
-    id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.location ? `${e.institution} · ${e.location[lang]}` : e.institution,
+    id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.location ? `${e.institution}, ${e.location[lang]}` : e.institution,
     summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined].filter(Boolean).join(' ') || undefined,
     extraHref: e.thesis ? { href: localePath('work', lang, 'apex'), label: t('education.caseStudy') } : undefined,
     logo: e.logo, monogram: e.monogram,

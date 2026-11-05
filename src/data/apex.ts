@@ -23,7 +23,7 @@ export const header: { k: L10n; v: L10n | string; href?: string; mono?: boolean 
   { k: { en: 'Supervisor', pt: 'Orientador' }, v: 'Prof. Miguel Mira da Silva' },
   {
     k: { en: 'Committee', pt: 'Júri' },
-    v: { en: 'Prof. Helena Galhardas (chair) · Prof. Ademar Aguiar (member)', pt: 'Prof.ª Helena Galhardas (presidente) · Prof. Ademar Aguiar (vogal)' },
+    v: { en: 'Prof. Helena Galhardas (chair), Prof. Ademar Aguiar (member)', pt: 'Prof.ª Helena Galhardas (presidente), Prof. Ademar Aguiar (vogal)' },
   },
   { k: { en: 'Submitted', pt: 'Entregue' }, v: { en: '7 October 2026', pt: '7 de outubro de 2026' }, mono: true },
   { k: { en: 'Defended', pt: 'Defendida' }, v: { en: '23 October 2026', pt: '23 de outubro de 2026' }, mono: true },
@@ -107,7 +107,7 @@ export const abstract: L10n = {
 
 export const problemFacts: { stat: L10n; text: L10n; ref: string }[] = [
   {
-    stat: { en: '84% use · 29% trust', pt: '84% usam · 29% confiam' },
+    stat: { en: '84% use, 29% trust', pt: '84% usam, 29% confiam' },
     text: {
       en: 'Developers using or planning to use AI tools rose to 84% (from 76%), while the share trusting the accuracy of that output fell from 40% to 29%. More respondents actively distrust AI output (46%) than trust it (33%).',
       pt: 'Os programadores que usam ou planeiam usar ferramentas de IA passaram a 84% (eram 76%), enquanto a parte que confia na exatidão do resultado caiu de 40% para 29%. Há mais inquiridos a desconfiar ativamente (46%) do que a confiar (33%).',
@@ -115,7 +115,7 @@ export const problemFacts: { stat: L10n; text: L10n; ref: string }[] = [
     ref: 'Stack Overflow, 2025 Developer Survey: AI',
   },
   {
-    stat: { en: '61% correct · 10.5% secure', pt: '61% corretas · 10,5% seguras' },
+    stat: { en: '61% correct, 10.5% secure', pt: '61% corretas, 10,5% seguras' },
     text: {
       en: 'Benchmarked on real-world tasks, a leading coding agent produced functionally correct solutions 61% of the time, but only 10.5% of them were secure.',
       pt: 'Em tarefas reais, um agente de programação de referência produziu soluções funcionalmente corretas em 61% dos casos, mas só 10,5% eram seguras.',
@@ -123,7 +123,7 @@ export const problemFacts: { stat: L10n; text: L10n; ref: string }[] = [
     ref: 'Zhao et al., 2025, “Is Vibe Coding Safe?” (preprint)',
   },
   {
-    stat: { en: '+98% PRs · +91% review time', pt: '+98% PRs · +91% tempo de revisão' },
+    stat: { en: '+98% PRs, +91% review time', pt: '+98% PRs, +91% tempo de revisão' },
     text: {
       en: 'Across 1,255 teams, high AI adoption came with 98% more pull requests merged but 91% longer review times, and no significant correlation with delivery outcomes.',
       pt: 'Em 1255 equipas, uma adoção elevada de IA trouxe mais 98% de pull requests integrados, mas revisões 91% mais longas e nenhuma correlação significativa com os resultados de entrega.',
@@ -263,10 +263,10 @@ export const stats = [
 ];
 
 export const stack: { k: L10n; v: string }[] = [
-  { k: { en: 'Backend', pt: 'Backend' }, v: 'Python 3.12 · FastAPI · Pydantic v2 · LangChain' },
-  { k: { en: 'Frontend', pt: 'Frontend' }, v: 'Next.js 15 · TypeScript · React Query · Zustand · Tailwind CSS' },
-  { k: { en: 'Platform', pt: 'Plataforma' }, v: 'Docker · GitHub Actions · Azure Container Apps · Redis' },
-  { k: { en: 'PM backend', pt: 'Gestão de projeto' }, v: 'Taiga · Plane' },
+  { k: { en: 'Backend', pt: 'Backend' }, v: 'Python 3.12, FastAPI, Pydantic v2, LangChain' },
+  { k: { en: 'Frontend', pt: 'Frontend' }, v: 'Next.js 15, TypeScript, React Query, Zustand, Tailwind CSS' },
+  { k: { en: 'Platform', pt: 'Plataforma' }, v: 'Docker, GitHub Actions, Azure Container Apps, Redis' },
+  { k: { en: 'PM backend', pt: 'Gestão de projeto' }, v: 'Taiga, Plane' },
 ];
 
 /* ---------- Demonstration + results ---------- */
@@ -300,8 +300,8 @@ export const results: { k: L10n; v: L10n }[] = [
   {
     k: { en: 'Demonstration (Outfolio)', pt: 'Demonstração (Outfolio)' },
     v: {
-      en: '9 days · 9 epics · 54 stories · CTR 92.6% · Spec conformance 98.65% · AI defect escape 1.85%',
-      pt: '9 dias · 9 épicos · 54 histórias · CTR 92,6% · Conformidade 98,65% · AI defect escape 1,85%',
+      en: '9 days, 9 epics, 54 stories, CTR 92.6%, Spec conformance 98.65%, AI defect escape 1.85%',
+      pt: '9 dias, 9 épicos, 54 histórias, CTR 92,6%, Conformidade 98,65%, AI defect escape 1,85%',
     },
   },
 ];

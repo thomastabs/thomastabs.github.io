@@ -16,12 +16,12 @@ export const getStaticPaths = (async () => {
     add(lang === 'en' ? 'index' : 'pt/index', { kicker: t('hero.kicker'), title: 'Tomás Taborda', description: t('hero.positioning') });
     add(localePath('journey', lang), { kicker: `${t('nav.journey')}`, title: t('journey.title'), description: t('journey.intro') });
     add(localePath('work', lang), { kicker: `${t('nav.work')}`, title: t('work.pageTitle'), description: t('work.intro') });
-    add(localePath('work', lang, 'apex'), { kicker: lang === 'pt' ? 'Tese de mestrado · 17/20' : 'MSc thesis · 17/20', title: 'Apex', description: apex.oneLiner[lang] });
+    add(localePath('work', lang, 'apex'), { kicker: lang === 'pt' ? 'Tese de mestrado, 17/20' : 'MSc thesis, 17/20', title: 'Apex', description: apex.oneLiner[lang] });
     add(localePath('notebook', lang), { kicker: `${t('notebook.title')}`, title: t('notebook.pageTitle'), description: t('notebook.intro') });
     add(localePath('contact', lang), { kicker: `${t('nav.contact')}`, title: t('contact.title'), description: t('contact.lead') });
     const posts = await getPosts(lang);
-    for (const p of posts) add(localePath('notebook', lang, slugOf(p)), { kicker: `${t('notebook.title')}${p.data.tags[0] ? ` · #${p.data.tags[0]}` : ''}`, title: p.data.title, description: p.data.description });
-    for (const { tag } of tagCounts(posts)) add(localePath('notebook', lang, 'tags', tag), { kicker: `${t('notebook.title')} · ${t('notebook.tagged')}`, title: `#${tag}`, description: t('notebook.intro') });
+    for (const p of posts) add(localePath('notebook', lang, slugOf(p)), { kicker: `${t('notebook.title')}${p.data.tags[0] ? `, #${p.data.tags[0]}` : ''}`, title: p.data.title, description: p.data.description });
+    for (const { tag } of tagCounts(posts)) add(localePath('notebook', lang, 'tags', tag), { kicker: `${t('notebook.title')}, ${t('notebook.tagged')}`, title: `#${tag}`, description: t('notebook.intro') });
     for (const s of new Set(posts.flatMap((p) => (p.data.series ? [p.data.series] : []))))
       add(localePath('notebook', lang, 'series', s), { kicker: `${t('notebook.series')}`, title: seriesLabel(s), description: t('notebook.intro') });
   }

@@ -380,3 +380,18 @@ main.has-dots { position: relative; isolation: isolate; }
 .filter-pill[aria-pressed='true'],
 .filter-pill[aria-current='page'] { color: var(--ink); background: var(--surface-2); border-color: var(--ink); }
 .filter-pill .count { color: var(--muted); }
+
+/* External-link and download marks: an icon, so they size and align with the text. */
+.ext {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.25em;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.5'%3E%3Cpath d='M2.5 9.5l7-7M4 2.5h5.5V8'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.5'%3E%3Cpath d='M2.5 9.5l7-7M4 2.5h5.5V8'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.ext--down {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.5'%3E%3Cpath d='M6 1.5v9M2.5 7L6 10.5 9.5 7'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.5'%3E%3Cpath d='M6 1.5v9M2.5 7L6 10.5 9.5 7'/%3E%3C/svg%3E");
+}

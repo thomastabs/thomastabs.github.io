@@ -45,7 +45,7 @@ export const milestones: { d: string; lane: 'app' | 'thesis'; label: L10n; major
   { d: '2026-08-04', lane: 'thesis', label: { en: 'dissertation scaffolded', pt: 'dissertação iniciada' }, major: true },
   { d: '2026-09-13', lane: 'thesis', label: { en: 'evaluation data complete', pt: 'dados de avaliação completos' } },
   { d: '2026-10-07', lane: 'thesis', label: { en: 'submitted', pt: 'entregue' }, major: true },
-  { d: '2026-10-23', lane: 'thesis', label: { en: 'defended · 17/20', pt: 'defendida · 17/20' }, major: true },
+  { d: '2026-10-23', lane: 'thesis', label: { en: 'defended, 17/20', pt: 'defendida, 17/20' }, major: true },
 ];
 
 export type EntryTag = 'app' | 'design' | 'thesis' | 'bug';

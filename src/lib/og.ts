@@ -14,7 +14,7 @@ const fonts = [
   { name: 'Plex Mono', data: font('@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff'), weight: 500 as const, style: 'normal' as const },
 ];
 
-const PAPER = '#f6f4ef', INK = '#16181d', INK2 = '#4a4f59', MUTED = '#62666f', PEN = '#d6003f';
+const PAPER = '#f4f5f7', INK = '#16181d', INK2 = '#4a4f59', MUTED = '#62666f', PEN = '#d6003f';
 
 const clip = (t: string, n: number) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)).replace(/[,;:.]$/, '') + '…');
 

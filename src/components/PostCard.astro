@@ -23,7 +23,7 @@ const { href, title, description, date, datetime, readingTime, tags = [], pinned
     </p>
   )}
   <p class="meta post-meta">
-    <time class="date" datetime={datetime}>{date}</time> · <span>{readingTime}</span>
+    <time class="date" datetime={datetime}>{date}</time>, <span>{readingTime}</span>
     {draft && <span class="draft">{draftLabel}</span>}
   </p>
   <h3 class="post-title"><a href={href} class="post-link">{title}</a></h3>

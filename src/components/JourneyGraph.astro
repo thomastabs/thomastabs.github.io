@@ -72,11 +72,11 @@ const href = (anchor: string) =>
     <desc id="jg-desc">{t('graph.desc')}</desc>
 
     <g class="edges" aria-hidden="true">
-      {traces.map(([a, b, bend]) => <path class="trace" d={curve(a, b, bend)} />)}
+      {traces.map(([a, b, bend]) => <path class="trace" data-a={a} data-b={b} d={curve(a, b, bend)} />)}
       {edges.map(([a, b, bend], i) => (
         <>
-          <path class="edge ghost" d={curve(a, b, bend + 3.5)} pathLength="1" style={`--i:${i}`} />
-          <path class:list={['edge', { future: byId[b].future }]} d={curve(a, b, bend)} pathLength="1" style={`--i:${i}`} />
+          <path class="edge ghost" data-a={a} data-b={b} d={curve(a, b, bend + 3.5)} pathLength="1" style={`--i:${i}`} />
+          <path class:list={['edge', { future: byId[b].future }]} data-a={a} data-b={b} d={curve(a, b, bend)} pathLength="1" style={`--i:${i}`} />
         </>
       ))}
     </g>
@@ -189,10 +189,10 @@ const href = (anchor: string) =>
     transform-origin: center;
     transform: rotate(-30deg);
   }
-  /* The graph renders at ~0.66x (420px of a 640 viewBox): 20 units ≈ 13px on screen. */
+  /* The graph renders at ~0.84x (540px of a 640 viewBox): 18 units ≈ 15px on screen. */
   .label {
     font-family: var(--font-body);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
     fill: var(--ink);
     paint-order: stroke;
@@ -223,11 +223,19 @@ const href = (anchor: string) =>
   }
   .anno line { stroke: var(--rule); }
   .anno text {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: 16px;
     fill: var(--ink);
   }
-  .anno .yrs { fill: var(--muted); }
+  .anno .yrs { fill: var(--muted); font-family: var(--font-mono); }
+
+  /* ---------- Tracing: pointing at a stop lights the path that led to it ---------- */
+  .edge, .trace, .dot, .ring, .label { transition: stroke var(--dur) var(--ease), fill var(--dur) var(--ease); }
+  .tracing .edge:not(.lit), .tracing .trace:not(.lit), .tracing .ring { stroke: var(--rule-strong); }
+  .tracing .node:not(.lit) .dot { fill: var(--rule-strong); }
+  .tracing .node:not(.lit) .label { fill: var(--muted); }
+  .edge.lit, .trace.lit { stroke: var(--pen); }
+  .node.lit .dot { fill: var(--pen); }
 
   /* ---------- Draw-in (once, motion OK only) ---------- */
   @media (prefers-reduced-motion: no-preference) {
@@ -310,9 +318,24 @@ const href = (anchor: string) =>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-journey]').forEach((root) => {
+    const paths = [...root.querySelectorAll<SVGPathElement>('path[data-a]')];
+    const graph = root.querySelector('.graph');
     const show = (id: string | undefined, on: boolean) => {
       if (!id) return;
       root.querySelector(`[data-anno="${id}"]`)?.classList.toggle('on', on);
+      graph?.classList.toggle('tracing', on);
+      root.querySelectorAll('.lit').forEach((el) => el.classList.remove('lit'));
+      if (!on) return;
+      // Walk back from this stop through every edge that leads to it.
+      const seen = new Set([id]);
+      for (const stop of seen) {
+        for (const p of paths) {
+          if (p.dataset.b !== stop) continue;
+          p.classList.add('lit');
+          seen.add(p.dataset.a!);
+        }
+      }
+      seen.forEach((n) => root.querySelector(`[data-node="${n}"]`)?.classList.add('lit'));
     };
     root.querySelectorAll<SVGAElement>('[data-node]').forEach((a) => {
       const id = a.dataset.node;

@@ -55,7 +55,7 @@ const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
             <path d={`M${a - 14} ${Y_MAIN} C ${a - 4} ${Y_MAIN}, ${a} ${y}, ${a + 8} ${y} H ${z - 8} C ${z} ${y}, ${z + 4} ${Y_MAIN}, ${z + 14} ${Y_MAIN}`} />
             <circle cx={a + 8} cy={y} r="3" /><circle cx={z - 8} cy={y} r="3" />
             <circle class="merge" cx={z + 14} cy={Y_MAIN} r="4.5" />
-            {(() => { const anchor = b.id === 'reflex' ? 'end' : b.id === 'jira' ? 'start' : 'middle'; const tx = anchor === 'end' ? z + 4 : anchor === 'start' ? a - 4 : (a + z) / 2; return <text x={tx} y={y - 8} text-anchor={anchor}>{b.name} · {b.commits}</text>; })()}
+            {(() => { const anchor = b.id === 'reflex' ? 'end' : b.id === 'jira' ? 'start' : 'middle'; const tx = anchor === 'end' ? z + 4 : anchor === 'start' ? a - 4 : (a + z) / 2; return <text x={tx} y={y - 8} text-anchor={anchor}>{b.name}, {b.commits}</text>; })()}
           </g>
         );
       })}

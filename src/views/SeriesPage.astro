@@ -14,9 +14,9 @@ const otherHas = (await seriesParts(series, other)).length > 0;
 const label = seriesLabel(series);
 ---
 
-<BaseLayout lang={lang} title={`${label} · ${t('notebook.series')}`} description={`${t('notebook.series')}: ${label}.`} altHref={otherHas ? seriesHref(series, other) : indexHref(other)}>
+<BaseLayout lang={lang} title={`${label} | ${t('notebook.series')}`} description={`${t('notebook.series')}: ${label}.`} altHref={otherHas ? seriesHref(series, other) : indexHref(other)}>
   <div class="container page-head">
-    <SectionHeading n="05" label={`${t('notebook.title')} · ${t('notebook.series')}`} title={label} level="h1">
+    <SectionHeading n="05" label={`${t('notebook.title')}, ${t('notebook.series')}`} title={label} level="h1">
       <p class="back"><a class="pen-link" href={indexHref(lang)}>← {t('notebook.backToIndex')}</a></p>
     </SectionHeading>
   </div>

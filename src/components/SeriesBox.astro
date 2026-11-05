@@ -1,5 +1,5 @@
 ---
-/* "Part 2 of 4 · Apex notes": every part of the series, current one marked, with prev/next. */
+/* "Part 2 of 4: Apex notes": every part of the series, current one marked, with prev/next. */
 import { useTranslations, type Locale } from '@/i18n';
 import { postHref, seriesHref, seriesLabel, type Post } from '@/lib/notebook';
 interface Props { parts: Post[]; current: Post; series: string; lang: Locale }
@@ -12,7 +12,7 @@ const heading = t('notebook.seriesPart').replace('{n}', String(i + 1)).replace('
 ---
 <aside class="series" aria-labelledby="series-h">
   <p class="kicker" id="series-h">
-    {heading} · <a class="pen-link" href={seriesHref(series, lang)}>{seriesLabel(series)}</a>
+    {heading}: <a class="pen-link" href={seriesHref(series, lang)}>{seriesLabel(series)}</a>
   </p>
   <ol>
     {parts.map((p) => (

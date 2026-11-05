@@ -22,21 +22,21 @@ const years = byYear(rest);
 const otherHasTag = tag ? (await getPosts(other)).some((p) => p.data.tags.includes(tag)) : true;
 const altHref = tag ? (otherHasTag ? tagHref(tag, other) : indexHref(other)) : indexHref(other);
 const title = tag ? `#${tag}` : t('notebook.pageTitle');
-const metaTitle = tag ? `#${tag} · ${t('notebook.title')}` : t('notebook.title');
+const metaTitle = tag ? `#${tag} | ${t('notebook.title')}` : t('notebook.title');
 const description = tag ? `${t('notebook.tagDescription')} #${tag}.` : t('notebook.description');
 const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
 ---
 
 <BaseLayout lang={lang} title={metaTitle} description={description} altHref={altHref}>
   <div class="container page-head">
-    <SectionHeading n="05" label={tag ? `${t('notebook.title')} · ${t('notebook.tagged')}` : t('notebook.title')} title={title} level="h1">
+    <SectionHeading n="05" label={tag ? `${t('notebook.title')}, ${t('notebook.tagged')}` : t('notebook.title')} title={title} level="h1">
       <p class="lead intro">{t('notebook.intro')}</p>
-      <p class="rss"><a class="pen-link" href={rss}>{t('notebook.rss')} ↗</a></p>
+      <p class="rss"><a class="pen-link" href={rss}>{t('notebook.rss')}<span class="ext" aria-hidden="true"></span></a></p>
     </SectionHeading>
   </div>
 
   <div class="container">
-    {tags.length > 0 && (
+    {tags.length > 0 && (tag || all.length >= 6) && (
       <nav class="filter-pills" aria-label={t('notebook.filter')}>
         <a class="filter-pill" href={indexHref(lang)} aria-current={!tag ? 'page' : undefined}>
           {t('notebook.all')} <span class="count">{all.length}</span>
@@ -52,14 +52,14 @@ const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
     {filtered.length === 0 ? (
       <div class="empty">
                 <p class="empty-text">{t('notebook.empty')}</p>
-        <p class="empty-rss"><a class="pen-link" href={rss}>{t('notebook.rss')} ↗</a></p>
+        <p class="empty-rss"><a class="pen-link" href={rss}>{t('notebook.rss')}<span class="ext" aria-hidden="true"></span></a></p>
       </div>
     ) : (
       <>
         {pinned && <div class="pinned-wrap"><PostCard pinned {...cardProps(pinned, t)} /></div>}
         {years.map(([year, posts]) => (
-          <section class="year" aria-labelledby={`y-${year}`}>
-            <h2 class="year-h date" id={`y-${year}`}>{year}</h2>
+          <section class:list={['year', { 'year--only': years.length === 1 }]} aria-labelledby={`y-${year}`}>
+            <h2 class:list={['year-h date', { 'sr-only': years.length === 1 }]} id={`y-${year}`}>{year}</h2>
             <div class="year-posts">
               {posts.map((p) => <PostCard {...cardProps(p, t)} />)}
             </div>
@@ -72,17 +72,19 @@ const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
 
 <style>
   .page-head { padding-top: var(--s-8); }
-  .intro { max-width: var(--measure); }
+  .intro { max-width: var(--measure); margin-top: var(--s-3); }
   .rss { margin-top: var(--s-3); font-size: var(--t-16); }
 
   .pinned-wrap { margin-bottom: var(--s-7); }
   .year { display: grid; grid-template-columns: 1fr; gap: var(--s-2); }
   .year + .year { margin-top: var(--s-7); }
+  .year--only { display: block; }
   .year-h { font-weight: 400; padding-bottom: var(--s-2); border-bottom: 1px solid var(--rule-strong); }
   @media (min-width: 900px) {
     .year { grid-template-columns: 8rem minmax(0, 1fr); gap: var(--s-6); }
     .year-h { border-bottom: 0; padding-top: var(--s-5); }
     .year-posts { border-top: 1px solid var(--rule-strong); }
+    .year--only { display: block; }
   }
 
   .empty {

@@ -23,7 +23,7 @@ export function getStaticPaths() {
 
 /* ---------- Colour tokens + measured contrast ---------- */
 const themes = {
-  light: { bg: '#f6f4ef', surface: '#fbfaf7', 'surface-2': '#efece5', ink: '#16181d', 'ink-2': '#4a4f59', muted: '#62666f', pen: '#d6003f' },
+  light: { bg: '#f4f5f7', surface: '#fbfcfd', 'surface-2': '#e9ebef', ink: '#16181d', 'ink-2': '#4a4f59', muted: '#62666f', pen: '#d6003f' },
   dark: { bg: '#0a0a0a', surface: '#111111', 'surface-2': '#151515', ink: '#e8e8e8', 'ink-2': '#a0a0a0', muted: '#858585', pen: '#ff004f' },
 } as const;
 const alphaTokens = ['rule', 'rule-strong', 'grid', 'pen-soft'];
@@ -297,7 +297,7 @@ export function traceabilityRate(artefacts: Artefact[]): number {
     <h3 class="cmp-title">Link-button set</h3>
     <div class="cmp btn-set">
       <a class="btn btn--primary" href="#components">Read the dissertation (PDF)</a>
-      <a class="btn" href="https://apex-bolt.com">Open the live app ↗</a>
+      <a class="btn" href="https://apex-bolt.com">Open the live app<span class="ext" aria-hidden="true"></span></a>
       <CopyButton value={profile.email} label="Copy email" copiedLabel="Copied" />
       <a class="btn btn--ghost pen-link pen-link--bare" href={profile.cv}>Download CV</a>
     </div>

@@ -1,16 +1,21 @@
 ---
 /* Figure with a plain caption. Pass an image via the slot.
    `n` and `taped` are accepted for compatibility and not rendered. */
-interface Props { n?: number | string; caption: string; taped?: boolean; class?: string }
-const { caption, class: cls } = Astro.props;
+interface Props { n?: number | string; caption: string; taped?: boolean; class?: string; /** Phones: keep a readable width and scroll sideways. */ pan?: boolean }
+const { caption, class: cls, pan = false } = Astro.props;
 ---
 <figure class:list={['fig', cls]}>
-  <div class="fig-media"><slot /></div>
+  <div class:list={['fig-media', { pan }]}><slot /></div>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 <style>
   .fig-media { position: relative; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--surface-2); }
   .fig-media :global(img) { width: 100%; }
+  @media (max-width: 560px) {
+    .pan { overflow-x: auto; }
+    .pan :global(a) { display: block; width: 720px; }
+    .pan :global(img) { width: 720px; max-width: none; }
+  }
   figcaption {
     margin-top: var(--s-2);
     font-size: var(--t-14);

@@ -54,10 +54,10 @@ const [lead, ...rest] = featured;
                 <span class="sm-line">{loc(e.data.summary, lang)}</span>
               </th>
               <td class="hide-sm line">{loc(e.data.summary, lang)}</td>
-              <td class="hide-sm stack">{e.data.stack.join(' · ')}</td>
+              <td class="hide-sm stack">{e.data.stack.join(', ')}</td>
               <td class="link">
                 {e.data.links.repo && (
-                  <a class="pen-link" href={e.data.links.repo} aria-label={`${t('work.repo')}: ${loc(e.data.title, lang)}`}>{t('work.repo')} ↗</a>
+                  <a class="pen-link" href={e.data.links.repo} aria-label={`${t('work.repo')}: ${loc(e.data.title, lang)}`}>{t('work.repo')}<span class="ext" aria-hidden="true"></span></a>
                 )}
               </td>
             </tr>
@@ -65,7 +65,7 @@ const [lead, ...rest] = featured;
         </tbody>
       </table>
     </div>
-    <a class="pen-link more" href={profile.github}>{t('cta.moreOnGithub')} ↗</a>
+    <a class="pen-link more" href={profile.github}>{t('cta.moreOnGithub')}<span class="ext" aria-hidden="true"></span></a>
   </section>
 </BaseLayout>
 

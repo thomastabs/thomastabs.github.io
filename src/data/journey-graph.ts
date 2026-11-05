@@ -24,38 +24,38 @@ export const nodes: GraphNode[] = [
   {
     id: 'mem-martins', kind: 'study', x: 64, y: 392, side: 'right', anchor: 'edu-secondary',
     label: { en: 'Mem Martins', pt: 'Mem Martins' },
-    role: { en: 'Secondary · Science & Technology', pt: 'Secundário · Ciências e Tecnologias' },
+    role: { en: 'Secondary, Science & Technology', pt: 'Secundário, Ciências e Tecnologias' },
     years: { en: '2018 – 2021', pt: '2018 – 2021' },
   },
   {
     id: 'ist-bsc', kind: 'study', x: 178, y: 292, side: 'right', anchor: 'edu-bsc',
-    label: { en: 'IST · BSc', pt: 'IST · Licenciatura' },
+    label: { en: 'IST BSc', pt: 'IST Licenciatura' },
     role: { en: 'BSc Telecom. & Informatics Eng.', pt: 'Lic. Eng. Telecom. e Informática' },
     years: { en: '2021 – 2024', pt: '2021 – 2024' },
   },
   {
     id: 'community', kind: 'community', x: 92, y: 132, side: 'right', anchor: 'exp-neeti',
-    label: { en: 'NEETI · Mentoring', pt: 'NEETI · Mentoria' },
-    role: { en: 'Events coordinator · First-year mentor', pt: 'Coord. de eventos · Mentor do 1.º ano' },
+    label: { en: 'NEETI mentoring', pt: 'NEETI mentoria' },
+    role: { en: 'Events coordinator, First-year mentor', pt: 'Coord. de eventos, Mentor do 1.º ano' },
     years: { en: '2022 – 2025', pt: '2022 – 2025' },
   },
   {
     id: 'ist-msc', kind: 'study', x: 300, y: 352, side: 'below', anchor: 'edu-msc',
-    label: { en: 'IST · MSc', pt: 'IST · Mestrado' },
+    label: { en: 'IST MSc', pt: 'IST Mestrado' },
     role: { en: 'MSc Computer Science & Eng. (MEIC)', pt: 'Mestrado em Eng. Informática (MEIC)' },
     years: { en: '2024 – 2026', pt: '2024 – 2026' },
   },
   {
     id: 'wondercom', kind: 'work', x: 318, y: 206, side: 'above', anchor: 'exp-wondercom',
     label: { en: 'Wondercom', pt: 'Wondercom' },
-    role: { en: 'Technical support · Vodafone', pt: 'Apoio técnico · Vodafone' },
+    role: { en: 'Technical support, Vodafone', pt: 'Apoio técnico, Vodafone' },
     years: { en: 'Aug 2024 – Feb 2025', pt: 'ago. 2024 – fev. 2025' },
   },
   {
     id: 'tecnico-plus', kind: 'teaching', x: 440, y: 268, side: 'below', anchor: 'exp-tecnico-plus',
     label: { en: 'Técnico+', pt: 'Técnico+' },
-    role: { en: 'TA · AI Agents Bootcamp', pt: 'Assistente · Bootcamp de Agentes de IA' },
-    years: { en: 'May – Jun · Oct – Nov 2026', pt: 'mai. – jun. · out. – nov. 2026' },
+    role: { en: 'TA, AI Agents Bootcamp', pt: 'Assistente, Bootcamp de Agentes de IA' },
+    years: { en: 'May – Jun, Oct – Nov 2026', pt: 'mai. – jun., out. – nov. 2026' },
   },
   {
     id: 'caixa-magica', kind: 'work', x: 470, y: 128, side: 'left', anchor: 'exp-caixa-magica',
@@ -65,8 +65,8 @@ export const nodes: GraphNode[] = [
   },
   {
     id: 'apex', kind: 'milestone', x: 572, y: 236, side: 'below', anchor: 'edu-msc',
-    label: { en: 'Apex · thesis', pt: 'Apex · tese' },
-    role: { en: 'MSc thesis defended · 17/20', pt: 'Tese defendida · 17/20' },
+    label: { en: 'Apex thesis', pt: 'Tese Apex' },
+    role: { en: 'MSc thesis defended, 17/20', pt: 'Tese defendida, 17/20' },
     years: { en: '23 Oct 2026', pt: '23 out. 2026' },
   },
   {

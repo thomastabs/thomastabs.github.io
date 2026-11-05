@@ -21,7 +21,9 @@ export const indexHref = (lang: Locale) => localePath('notebook', lang) + '/';
 /** All visible posts, newest first. Pass a lang to filter. */
 export async function getPosts(lang?: Locale): Promise<Post[]> {
   const all = await getCollection('notebook', (p) => (showDrafts || !p.data.draft) && (!lang || p.data.lang === lang));
-  return all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  // Same-date posts sort on the shared translation key, so EN and PT list them in the same order.
+  return all.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+    || (a.data.translationKey ?? a.id).localeCompare(b.data.translationKey ?? b.id));
 }
 
 /** Reading time in minutes from the raw MDX body (code, imports and JSX tags stripped). */

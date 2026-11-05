@@ -36,8 +36,8 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
             <p class="email">{profile.email}</p>
             <div class="btn-set">
               <CopyButton value={profile.email} label={t('cta.copyEmail')} copiedLabel={t('cta.copied')} />
-              <a class="btn" href={profile.linkedin} rel="me">LinkedIn ↗</a>
-              <a class="btn" href={profile.github} rel="me">GitHub ↗</a>
+              <a class="btn" href={profile.linkedin} rel="me">LinkedIn<span class="ext" aria-hidden="true"></span></a>
+              <a class="btn" href={profile.github} rel="me">GitHub<span class="ext" aria-hidden="true"></span></a>
               <a class="btn" href={profile.cv} download>{t('cta.downloadCv')}</a>
             </div>
           </div>

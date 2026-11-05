@@ -37,7 +37,7 @@ export async function feed(lang: Locale, site: URL) {
   );
 
   return rss({
-    title: `${t('notebook.title')} · ${t('site.name')}`,
+    title: `${t('notebook.title')} | ${t('site.name')}`,
     description: t('notebook.description'),
     site: new URL(indexHref(lang), site),
     items,

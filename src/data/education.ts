@@ -25,7 +25,7 @@ export const education: Education[] = [
     degree: { en: 'MSc in Computer Science and Engineering (MEIC)', pt: 'Mestrado em Engenharia Informática e de Computadores (MEIC)' },
     short: { en: 'MSc', pt: 'Mestrado' },
     institution: 'Instituto Superior Técnico',
-    location: { en: 'Lisbon · Oeiras', pt: 'Lisboa · Oeiras' },
+    location: { en: 'Lisbon and Oeiras', pt: 'Lisboa e Oeiras' },
     details: {
       en: 'Specialisations: Software Engineering, Cybersecurity. Coursework average 16/20; final MSc grade not yet awarded.',
       pt: 'Especializações: Engenharia de Software, Cibersegurança. Média da componente curricular 16/20; nota final do mestrado ainda por atribuir.',
@@ -58,7 +58,7 @@ export const education: Education[] = [
     degree: { en: 'BSc in Telecommunications and Informatics Engineering (LETI)', pt: 'Licenciatura em Engenharia de Telecomunicações e Informática (LETI)' },
     short: { en: 'BSc', pt: 'Licenciatura' },
     institution: 'Instituto Superior Técnico',
-    location: { en: 'Lisbon · Oeiras', pt: 'Lisboa · Oeiras' },
+    location: { en: 'Lisbon and Oeiras', pt: 'Lisboa e Oeiras' },
     coursework: [
       { en: 'Introduction to Algorithms and Data Structures', pt: 'Introdução aos Algoritmos e Estruturas de Dados' },
       { en: 'Programming Fundamentals', pt: 'Fundamentos da Programação' },

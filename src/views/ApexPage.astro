@@ -14,6 +14,7 @@ import { localePath } from '@/i18n/routes';
 import { loc } from '@/data/types';
 import * as apex from '@/data/apex';
 import architecture from '@/assets/apex/architecture.png';
+import architectureEgress from '@/assets/apex/architecture-egress.png';
 import outfolioDash from '@/assets/apex/outfolio-dashboard.png';
 import gate from '@/assets/apex/deployment-gate.png';
 import appHome from '@/assets/apex/app-home.png';
@@ -66,17 +67,17 @@ const sections = [
 
 const gallery = [
   { src: appHome, n: '02a', cap: L('Apex home: the six SDLC phases and their status', 'Início do Apex: as seis fases e o seu estado'), alt: L('Apex dashboard listing the six SDLC phase cards with status badges and a sidebar of project context.', 'Painel do Apex com os cartões das seis fases e respetivos estados, e uma barra lateral com o contexto do projeto.') },
-  { src: appDesign, n: '02b', cap: L('Phase 2 · Design: UX brief and generated screen flow', 'Fase 2 · Design: brief de UX e fluxo de ecrãs gerado'), alt: L('Phase 2 design screen with a generated UX brief and a screen-flow diagram.', 'Ecrã da fase 2 com um brief de UX gerado e um diagrama de fluxo de ecrãs.') },
-  { src: appImpl, n: '02c', cap: L('Phase 3 · Implementation: developer packs per task', 'Fase 3 · Implementação: pacotes de programação por tarefa'), alt: L('Phase 3 screen showing a task list and a generated developer pack with implementation steps.', 'Ecrã da fase 3 com a lista de tarefas e um pacote de programação gerado com os passos de implementação.') },
-  { src: appTesting, n: '02d', cap: L('Phase 4 · Testing: QA test plan bounded to the Gherkin', 'Fase 4 · Testes: plano de QA limitado ao Gherkin'), alt: L('Phase 4 screen with a QA test plan editor and its rendered preview.', 'Ecrã da fase 4 com o editor do plano de testes de QA e a pré-visualização.') },
+  { src: appDesign, n: '02b', cap: L('Phase 2 (Design): UX brief and generated screen flow', 'Fase 2 (Design): brief de UX e fluxo de ecrãs gerado'), alt: L('Phase 2 design screen with a generated UX brief and a screen-flow diagram.', 'Ecrã da fase 2 com um brief de UX gerado e um diagrama de fluxo de ecrãs.') },
+  { src: appImpl, n: '02c', cap: L('Phase 3 (Implementation): developer packs per task', 'Fase 3 (Implementação): pacotes de programação por tarefa'), alt: L('Phase 3 screen showing a task list and a generated developer pack with implementation steps.', 'Ecrã da fase 3 com a lista de tarefas e um pacote de programação gerado com os passos de implementação.') },
+  { src: appTesting, n: '02d', cap: L('Phase 4 (Testing): QA test plan bounded to the Gherkin', 'Fase 4 (Testes): plano de QA limitado ao Gherkin'), alt: L('Phase 4 screen with a QA test plan editor and its rendered preview.', 'Ecrã da fase 4 com o editor do plano de testes de QA e a pré-visualização.') },
 ];
 
 const walkthrough = [
-  { src: walk1, n: '02f', cap: L('Phase 1 · Requirements: stories compiled from a natural-language epic', 'Fase 1 · Requisitos: histórias compiladas a partir de um épico em linguagem natural'), alt: L('Phase 1 requirements screen in dark mode with a stepper, an epic and its generated stories.', 'Ecrã de requisitos da fase 1, em modo escuro, com um assistente por passos, um épico e as histórias geradas.') },
-  { src: walk2, n: '02g', cap: L('Phase 1 · Review Draft: the human edits before anything is locked', 'Fase 1 · Rever rascunho: a pessoa edita antes de algo ficar bloqueado'), alt: L('Review Draft step listing draft stories with Gherkin scenarios and a context panel.', 'Passo de revisão do rascunho com histórias em Gherkin e um painel de contexto.') },
-  { src: walk3, n: '02h', cap: L('Phase 3 · the task dependency graph for one story', 'Fase 3 · o grafo de dependências das tarefas de uma história'), alt: L('Phase 3 screen with a list of implementation tasks and a small task dependency graph.', 'Ecrã da fase 3 com a lista de tarefas de implementação e um pequeno grafo de dependências.') },
-  { src: walk4, n: '02i', cap: L('Phase 4 · Testing: a failed scenario blocks the gate', 'Fase 4 · Testes: um cenário falhado bloqueia o portão'), alt: L('Execute Tests screen with scenario results, including a failed one marked in red.', 'Ecrã de execução de testes com resultados por cenário, incluindo um falhado a vermelho.') },
-  { src: walk5, n: '02j', cap: L('Phase 6 · Maintenance: a signal routed to its loop-back', 'Fase 6 · Manutenção: um sinal encaminhado para o seu retorno'), alt: L('Maintenance screen with feedback routing that classifies a signal and sends it back to an earlier phase.', 'Ecrã de manutenção com o encaminhamento de feedback, que classifica um sinal e o devolve a uma fase anterior.') },
+  { src: walk1, n: '02f', cap: L('Phase 1 (Requirements): stories compiled from a natural-language epic', 'Fase 1 (Requisitos): histórias compiladas a partir de um épico em linguagem natural'), alt: L('Phase 1 requirements screen in dark mode with a stepper, an epic and its generated stories.', 'Ecrã de requisitos da fase 1, em modo escuro, com um assistente por passos, um épico e as histórias geradas.') },
+  { src: walk2, n: '02g', cap: L('Phase 1 (Review Draft): the human edits before anything is locked', 'Fase 1 (Rever rascunho): a pessoa edita antes de algo ficar bloqueado'), alt: L('Review Draft step listing draft stories with Gherkin scenarios and a context panel.', 'Passo de revisão do rascunho com histórias em Gherkin e um painel de contexto.') },
+  { src: walk3, n: '02h', cap: L('Phase 3: the task dependency graph for one story', 'Fase 3: o grafo de dependências das tarefas de uma história'), alt: L('Phase 3 screen with a list of implementation tasks and a small task dependency graph.', 'Ecrã da fase 3 com a lista de tarefas de implementação e um pequeno grafo de dependências.') },
+  { src: walk4, n: '02i', cap: L('Phase 4 (Testing): a failed scenario blocks the gate', 'Fase 4 (Testes): um cenário falhado bloqueia o portão'), alt: L('Execute Tests screen with scenario results, including a failed one marked in red.', 'Ecrã de execução de testes com resultados por cenário, incluindo um falhado a vermelho.') },
+  { src: walk5, n: '02j', cap: L('Phase 6 (Maintenance): a signal routed to its loop-back', 'Fase 6 (Manutenção): um sinal encaminhado para o seu retorno'), alt: L('Maintenance screen with feedback routing that classifies a signal and sends it back to an earlier phase.', 'Ecrã de manutenção com o encaminhamento de feedback, que classifica um sinal e o devolve a uma fase anterior.') },
   { src: walk6, n: '02k', cap: L('Fix Bolt dashboard: bug reports and the fix log', 'Painel de Fix Bolts: relatórios de bugs e registo de correções'), alt: L('Fix Bolt dashboard listing bug reports with statuses and a fix log below.', 'Painel de Fix Bolts com a lista de relatórios de bugs e respetivos estados, e o registo de correções.') },
 ];
 const tagLabel = { app: L('App', 'Aplicação'), design: L('Design', 'Design'), thesis: L('Thesis', 'Tese'), bug: L('Found by writing', 'Encontrado ao escrever') } as const;
@@ -112,7 +113,7 @@ const scholarlyLd = {
       <p class="lead oneliner">{apex.oneLiner[lang]}</p>
       <div class="links-top">
         {topLinks.map((l) => (
-          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : ''}</a>
+          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? <span class="ext" aria-hidden="true"></span> : ''}</a>
         ))}
       </div>
       <div class="head-spec">
@@ -138,7 +139,7 @@ const scholarlyLd = {
                   .map((l) => (
                     <li>
                       <a class="pen-link" href={l.href!}>
-                        {l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : l.href!.endsWith('.pptx') ? ' ↓' : ''}
+                        {l.label[lang]}{l.href!.startsWith('http') ? <span class="ext" aria-hidden="true"></span> : l.href!.endsWith('.pptx') ? <span class="ext ext--down" aria-hidden="true"></span> : ''}
                       </a>
                     </li>
                   ))}
@@ -266,16 +267,20 @@ const scholarlyLd = {
         ))}
       </ul>
 
-      <Figure n={2} caption={L('Apex architecture: internal request path and the specification store', 'Arquitetura do Apex: caminho interno dos pedidos e o repositório de especificações')}>
+      <Figure n={2} class="diagram" caption={L('Apex architecture, part 1 of 2: internal request path and the specification store', 'Arquitetura do Apex, parte 1 de 2: caminho interno dos pedidos e o repositório de especificações')}>
         <Image src={architecture} alt={L('Component diagram: Next.js frontend with React Query, Zustand and a PM adapter calls a FastAPI backend whose phase routers reach a ContextService and a guarded egress layer; specs are stored as Markdown plus a story index on local disk or Azure File Share.', 'Diagrama de componentes: o frontend Next.js, com React Query, Zustand e um adaptador de gestão de projetos, chama um backend FastAPI cujos routers de fase acedem a um ContextService e a uma camada de saída protegida; as especificações ficam em Markdown e num índice de histórias, em disco local ou Azure File Share.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" />
+      </Figure>
+
+      <Figure n="2b" class="diagram" caption={L('Apex architecture, part 2 of 2: the guarded egress boundary and the external services it reaches', 'Arquitetura do Apex, parte 2 de 2: a fronteira de saída protegida e os serviços externos a que chega')}>
+        <Image src={architectureEgress} alt={L('Component diagram: the phase routers and PM adapter call a FastAPI egress layer of Taiga and Plane proxies, ai_engine provider routing, a Figma proxy and GitHub fetch, actions and webhook handlers. These reach Taiga through a Cloudflare relay, Plane, Anthropic Claude, OpenAI, Google Gemini, the Figma REST API and the GitHub REST API. github-browser.ts calls GitHub directly from the browser.', 'Diagrama de componentes: os routers de fase e o adaptador de gestão de projeto chamam uma camada de saída FastAPI com proxies de Taiga e Plane, encaminhamento de fornecedores no ai_engine, um proxy de Figma e handlers de fetch, actions e webhook do GitHub. Estes chegam ao Taiga através de um relay Cloudflare, ao Plane, ao Anthropic Claude, ao OpenAI, ao Google Gemini, à API REST do Figma e à API REST do GitHub. O github-browser.ts chama o GitHub diretamente a partir do browser.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" />
       </Figure>
 
       <ul class="gallery" role="list">
         {gallery.map((g) => (
           <li>
-            <Figure n={g.n} caption={g.cap}>
+            <Figure n={g.n} caption={g.cap} pan>
               <a href={g.src.src} class="zoom" aria-label={`${L('Open full size', 'Abrir em tamanho real')}: ${g.cap}`}>
-                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" />
+                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, (min-width: 561px) 100vw, 720px" />
               </a>
             </Figure>
           </li>
@@ -291,9 +296,9 @@ const scholarlyLd = {
       <ul class="gallery gallery--3" role="list">
         {walkthrough.map((g) => (
           <li>
-            <Figure n={g.n} caption={g.cap}>
+            <Figure n={g.n} caption={g.cap} pan>
               <a href={g.src.src} class="zoom" aria-label={`${L('Open full size', 'Abrir em tamanho real')}: ${g.cap}`}>
-                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 1100px) 360px, (min-width: 700px) 50vw, 100vw" />
+                <Image src={g.src} alt={g.alt} widths={[480, 800, 1200]} sizes="(min-width: 1100px) 360px, (min-width: 700px) 50vw, (min-width: 561px) 100vw, 720px" />
               </a>
             </Figure>
           </li>
@@ -307,7 +312,7 @@ const scholarlyLd = {
       <ul class="stats" role="list">
         {apex.stats.map((s) => <li><span class="stat-v">{s.v}</span><span class="stat-l">{s.l[lang]}</span></li>)}
       </ul>
-      <SpecBlock title="Stack" rows={apex.stack.map((s) => ({ k: s.k[lang], v: s.v, mono: true }))} />
+      <SpecBlock title="Stack" rows={apex.stack.map((s) => ({ k: s.k[lang], v: s.v }))} />
     </section>
 
     <!-- ===== Demonstration ===== -->
@@ -325,8 +330,8 @@ const scholarlyLd = {
         {apex.outfolio.exports.map((e) => <div><dt>{loc(e.k, lang)}</dt><dd>{e.v}</dd></div>)}
       </dl>
       <div class="btn-set">
-        <a class="btn" href="https://outfolio-v1.vercel.app/">{L('Live product', 'Produto online')} ↗</a>
-        <a class="btn" href="https://github.com/thomastabs/OutfolioV1">{L('Source', 'Código')} ↗</a>
+        <a class="btn" href="https://outfolio-v1.vercel.app/">{L('Live product', 'Produto online')}<span class="ext" aria-hidden="true"></span></a>
+        <a class="btn" href="https://github.com/thomastabs/OutfolioV1">{L('Source', 'Código')}<span class="ext" aria-hidden="true"></span></a>
       </div>
       <Figure n={3} caption={L('Outfolio dashboard: the product built for the lifecycle demonstration', 'Painel do Outfolio: o produto construído para a demonstração do ciclo de vida')}>
         <Image src={outfolioDash} alt={L('Outfolio home page with the product title, account actions and a row of published project highlights.', 'Página inicial do Outfolio com o título do produto, ações da conta e uma fila de projetos publicados em destaque.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" />
@@ -399,27 +404,27 @@ const scholarlyLd = {
       <h3 class="sub-h">{L('Diagrams, then and now', 'Diagramas, antes e depois')}</h3>
       <ul class="gallery compare" role="list">
         <li>
-          <Figure n="04a" caption={L('Architecture, 17 Jun 2026: one diagram for everything', 'Arquitetura, 17 jun. 2026: um só diagrama para tudo')}>
+          <Figure n="04a" class="diagram" caption={L('Architecture, 17 Jun 2026: one diagram for everything', 'Arquitetura, 17 jun. 2026: um só diagrama para tudo')}>
             <a href={archJun.src} class="zoom" aria-label={L('Open full size: architecture, June', 'Abrir em tamanho real: arquitetura, junho')}><Image src={archJun} alt={L('June architecture diagram with frontend, backend, external services and the spec store in a single component view.', 'Diagrama de arquitetura de junho com frontend, backend, serviços externos e o repositório de especificações numa só vista.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
           </Figure>
         </li>
         <li>
-          <Figure n="04b" caption={L('Architecture, 13 Sep 2026: split into request path and guarded egress (fig. 02)', 'Arquitetura, 13 set. 2026: dividida em caminho dos pedidos e saída protegida (fig. 02)')}>
+          <Figure n="04b" class="diagram" caption={L('Architecture, 13 Sep 2026: split into request path and guarded egress (fig. 02)', 'Arquitetura, 13 set. 2026: dividida em caminho dos pedidos e saída protegida (fig. 02)')}>
             <a href={architecture.src} class="zoom" aria-label={L('Open full size: architecture, September', 'Abrir em tamanho real: arquitetura, setembro')}><Image src={architecture} alt={L('September architecture diagram, part 1 of 2, showing the internal request path and the spec store.', 'Diagrama de arquitetura de setembro, parte 1 de 2, com o caminho interno dos pedidos e o repositório de especificações.')} widths={[480, 800, 1200]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light" /></a>
           </Figure>
         </li>
         <li>
-          <Figure n="04c" caption={L('User flow, 17 Jun 2026', 'Fluxo do utilizador, 17 jun. 2026')}>
+          <Figure n="04c" class="diagram" caption={L('User flow, 17 Jun 2026', 'Fluxo do utilizador, 17 jun. 2026')}>
             <a href={flowJun.src} class="zoom" aria-label={L('Open full size: user flow, June', 'Abrir em tamanho real: fluxo do utilizador, junho')}><Image src={flowJun} alt={L('June user-flow diagram: a long vertical sequence through the six phases.', 'Diagrama de fluxo do utilizador de junho: uma longa sequência vertical pelas seis fases.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
           </Figure>
         </li>
         <li>
-          <Figure n="04d" caption={L('User flow, 21 Aug 2026: redrawn for the dissertation', 'Fluxo do utilizador, 21 ago. 2026: redesenhado para a dissertação')}>
+          <Figure n="04d" class="diagram" caption={L('User flow, 21 Aug 2026: redrawn for the dissertation', 'Fluxo do utilizador, 21 ago. 2026: redesenhado para a dissertação')}>
             <a href={flowAug.src} class="zoom" aria-label={L('Open full size: user flow, August', 'Abrir em tamanho real: fluxo do utilizador, agosto')}><Image src={flowAug} alt={L('August user-flow diagram, redrawn with swimlanes for the dissertation.', 'Diagrama de fluxo do utilizador de agosto, redesenhado com raias para a dissertação.')} widths={[480, 800]} sizes="(min-width: 900px) 540px, 100vw" class="fig-light fig-tall" /></a>
           </Figure>
         </li>
       </ul>
-      <Figure n="04e" caption={L('The framework’s big picture, 20 Jul 2026: phases, inputs, outputs and literature grounding', 'A visão geral da framework, 20 jul. 2026: fases, entradas, saídas e fundamentação na literatura')}>
+      <Figure n="04e" class="diagram" caption={L('The framework’s big picture, 20 Jul 2026: phases, inputs, outputs and literature grounding', 'A visão geral da framework, 20 jul. 2026: fases, entradas, saídas e fundamentação na literatura')}>
         <a href={bigPicture.src} class="zoom" aria-label={L('Open full size: framework big picture', 'Abrir em tamanho real: visão geral da framework')}><Image src={bigPicture} alt={L('Framework big-picture diagram: Strategic Alignment followed by the six phases, each with its inputs, outputs and supporting literature.', 'Diagrama geral da framework: Alinhamento Estratégico seguido das seis fases, cada uma com entradas, saídas e literatura de suporte.')} widths={[720, 1200, 1780]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" /></a>
       </Figure>
 
@@ -453,7 +458,7 @@ const scholarlyLd = {
       <section class="block" aria-labelledby="related">
         <h2 id="related" class="related-h">{t('notebook.related')}</h2>
         <div>{related.map((p) => <PostCard {...postCardProps(p, t)} />)}</div>
-        <a class="pen-link" href={tagHref(thesisTag, lang)}>#{thesisTag}</a>
+        {related.length > 1 && <a class="pen-link" href={tagHref(thesisTag, lang)}>#{thesisTag}</a>}
       </section>
     )}
 
@@ -549,6 +554,9 @@ const scholarlyLd = {
 
   .gallery { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr)); padding: 0; list-style: none; }
   .zoom { display: block; }
+  /* PlantUML line art: invert in dark mode rather than glare white; hue-rotate keeps its tints. */
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light']) .diagram img) { filter: invert(0.88) hue-rotate(180deg); } }
+  :global(:root[data-theme='dark'] .diagram img) { filter: invert(0.88) hue-rotate(180deg); }
   section > :global(.fig), section > .gallery, section > .caps { margin-top: var(--s-7); }
   section :global(figcaption) { margin-inline: auto; text-align: center; }
   .stats + :global(*) { margin-top: var(--s-6); }
