@@ -356,10 +356,10 @@ const scholarlyLd = {
           <tbody>{apex.results.map((r) => <tr><th scope="row">{r.k[lang]}</th><td class="mono-sm">{r.v[lang]}</td></tr>)}</tbody>
         </table>
       </div>
-      <p class="prose-p muted-note">{L('Limitations found in the evaluation:', 'Limitações encontradas na avaliação:')}</p>
+      <h3 class="sub-h limits-h">{L('Limitations found in the evaluation', 'Limitações encontradas na avaliação')}</h3>
       <div class="findings">
         {apex.findings.map((f) => (
-          <article><h3>{f.title[lang]}</h3><p>{f.text[lang]}</p></article>
+          <article><h4>{f.title[lang]}</h4><p>{f.text[lang]}</p></article>
         ))}
       </div>
     </section>
@@ -594,9 +594,10 @@ const scholarlyLd = {
   .btn--pending { display: inline-block; white-space: nowrap; color: var(--muted); cursor: default; text-decoration: none; }
   .btn--pending:hover { color: var(--muted); }
   .pending-tag { font-style: italic; }
-  .findings { display: grid; gap: 0; border-top: 1px solid var(--rule); }
-  .findings article { padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); max-width: var(--measure); }
-  .findings h3 { font-size: var(--t-20); margin-bottom: var(--s-2); }
+  .limits-h { margin-top: var(--s-7); }
+  .findings { display: grid; gap: 0; max-width: var(--measure); border-top: 1px solid var(--rule); }
+  .findings article { padding: var(--s-3) 0; border-bottom: 1px solid var(--rule); }
+  .findings h4 { margin-bottom: var(--s-2); }
   .findings p { color: var(--ink-2); }
 
   .ledger-card { display: block; margin-top: var(--s-7); padding: var(--s-6); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); text-decoration: none; transition: border-color var(--dur) var(--ease); }
