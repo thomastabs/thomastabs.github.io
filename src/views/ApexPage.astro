@@ -48,6 +48,22 @@ const groups = [
   { id: 'explore', label: L('Explore', 'Explorar') },
 ] as const;
 
+const topHrefs = ['/docs/apex-dissertation.pdf', 'https://apex-bolt.com', 'https://github.com/thomastabs/apex'];
+const topLinks = topHrefs.map((href) => apex.publishedLinks.find((l) => l.href === href)!);
+
+const sections = [
+  { id: 'abstract', label: L('Abstract', 'Resumo') },
+  { id: 'problem', label: L('Problem', 'Problema') },
+  { id: 'framework', label: L('Framework', 'Framework') },
+  { id: 'app', label: L('Implementation', 'Implementação') },
+  { id: 'standards', label: L('Engineering', 'Engenharia') },
+  { id: 'outfolio', label: L('Demonstration', 'Demonstração') },
+  { id: 'evaluation', label: L('Evaluation', 'Avaliação') },
+  { id: 'history', label: L('History', 'Histórico') },
+  { id: 'learned', label: L('Learned', 'Aprendizagens') },
+  { id: 'cite', label: L('Cite', 'Citar') },
+];
+
 const gallery = [
   { src: appHome, n: '02a', cap: L('Apex home: the six SDLC phases and their status', 'Início do Apex: as seis fases e o seu estado'), alt: L('Apex dashboard listing the six SDLC phase cards with status badges and a sidebar of project context.', 'Painel do Apex com os cartões das seis fases e respetivos estados, e uma barra lateral com o contexto do projeto.') },
   { src: appDesign, n: '02b', cap: L('Phase 2 · Design: UX brief and generated screen flow', 'Fase 2 · Design: brief de UX e fluxo de ecrãs gerado'), alt: L('Phase 2 design screen with a generated UX brief and a screen-flow diagram.', 'Ecrã da fase 2 com um brief de UX gerado e um diagrama de fluxo de ecrãs.') },
@@ -92,39 +108,56 @@ const scholarlyLd = {
       <nav class="crumbs meta" aria-label={L('Breadcrumb', 'Navegação estrutural')}>
         <a class="pen-link pen-link--bare" href={localePath('work', lang)}>{t('nav.work')}</a> / <span aria-current="page">Apex</span>
       </nav>
-      <p class="kicker">{L('MSc thesis · case study', 'Tese de mestrado · caso de estudo')}</p>
       <h1 class="apex-title">Apex</h1>
       <p class="lead oneliner">{apex.oneLiner[lang]}</p>
       <div class="head-spec">
-        <SpecBlock rows={apex.header.map((r) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono }))} />
+        <SpecBlock rows={apex.header.filter((r) => !r.href).map((r) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono }))} />
       </div>
     </div>
   </header>
 
   <!-- ===== Links bar ===== -->
   <nav class="links-bar" aria-label={L('Thesis artefacts', 'Artefactos da tese')}>
-    <div class="container links-inner">
-      {groups.map((g) => (
-        <div class="lgroup">
-          <p class="kicker lg-label">{g.label}</p>
-          <ul role="list">
-            {apex.publishedLinks
-              .filter((l) => l.group === g.id)
-              .flatMap((l) => [{ label: l.label, href: l.href, primary: !!l.primary }, ...(l.extra ?? []).map((e) => ({ ...e, primary: false }))])
-              .map((l) => (
-                <li>
-                  <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href}>
-                    {l.label[lang]}{l.href.startsWith('http') ? ' ↗' : l.href.endsWith('.pptx') ? ' ↓' : l.href.startsWith('/docs/') ? '' : ' →'}
-                  </a>
-                </li>
-              ))}
-            {apex.pendingLinks.filter((l) => l.group === g.id).map((l) => (
-              <li><span class="btn btn--pending" aria-disabled="true">{l.label[lang]} <span class="pending-tag">· {l.pending![lang]}</span></span></li>
-            ))}
-          </ul>
+    <div class="container">
+      <div class="links-top">
+        {topLinks.map((l) => (
+          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : ''}</a>
+        ))}
+      </div>
+      <details class="links-more">
+        <summary>{L('All thesis files and links', 'Todos os ficheiros e ligações da tese')}</summary>
+        <div class="links-inner">
+          {groups.map((g) => (
+            <div class="lgroup">
+              <h2 class="lg-label">{g.label}</h2>
+              <ul role="list">
+                {apex.publishedLinks
+                  .filter((l) => l.group === g.id)
+                  .flatMap((l) => [{ label: l.label, href: l.href }, ...(l.extra ?? [])])
+                  .filter((l) => !topHrefs.includes(l.href!))
+                  .map((l) => (
+                    <li>
+                      <a class="pen-link" href={l.href!}>
+                        {l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : l.href!.endsWith('.pptx') ? ' ↓' : ''}
+                      </a>
+                    </li>
+                  ))}
+                {apex.pendingLinks.filter((l) => l.group === g.id).map((l) => (
+                  <li class="pending">{l.label[lang]}: {l.pending![lang]}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-      ))}
+      </details>
     </div>
+  </nav>
+
+  <!-- ===== Section bar ===== -->
+  <nav class="section-bar" aria-label={L('Sections on this page', 'Secções desta página')}>
+    <ol class="container" role="list" data-section-bar>
+      {sections.map((sec) => <li><a href={`#${sec.id}`}>{sec.label}</a></li>)}
+    </ol>
   </nav>
 
   <div class="container apex-body">
@@ -429,11 +462,27 @@ const scholarlyLd = {
   .head-spec { margin-top: var(--s-6) !important; }
 
   .links-bar { border-bottom: 1px solid var(--rule); background: var(--surface); }
-  .links-inner { display: grid; gap: var(--s-5) var(--s-7); padding-block: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
-  .lg-label { color: var(--muted); margin-bottom: var(--s-2); }
-  .lgroup ul { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-2); padding: 0; list-style: none; }
-  .lgroup li { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-1); }
-  .lgroup .btn { white-space: normal; text-align: left; }
+  .links-top { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); padding-top: var(--s-5); }
+  .links-more summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--s-2); margin-block: var(--s-2); font-size: var(--t-16); list-style: none; }
+  .links-more summary::-webkit-details-marker { display: none; }
+  .links-more summary::before { content: '+'; color: var(--muted); width: 1ch; }
+  .links-more[open] summary::before { content: '−'; }
+  .links-inner { display: grid; gap: var(--s-5) var(--s-7); padding-block: var(--s-2) var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+  .lg-label { font-family: var(--font-body); font-size: var(--t-16); font-weight: 500; letter-spacing: 0; margin-bottom: var(--s-2); }
+  .lgroup ul { display: grid; gap: var(--s-2); padding: 0; list-style: none; font-size: var(--t-16); }
+  .pending { color: var(--muted); }
+
+  /* Sticky jump bar. A side contents list would collide with the page's full-width figures. */
+  .section-bar { position: sticky; top: var(--header-h); z-index: 10; background: var(--bg); border-bottom: 1px solid var(--rule); }
+  .section-bar ol { display: flex; gap: var(--s-5); margin-block: 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
+  .section-bar ol::-webkit-scrollbar { display: none; }
+  .section-bar a { display: flex; align-items: center; min-height: 44px; font-size: var(--t-14); white-space: nowrap; color: var(--ink-2); text-decoration: none; border-bottom: 2px solid transparent; }
+  .section-bar a:hover { color: var(--ink); }
+  .section-bar a[aria-current='true'] { color: var(--ink); border-bottom-color: var(--ink); }
+  @media (max-width: 1120px) {
+    .section-bar { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent); }
+  }
+  .apex-body :global(h2[id]) { scroll-margin-top: 3.5rem; }
 
   .apex-body { padding-top: var(--s-6); }
   .block { padding-top: var(--s-9); }
@@ -560,5 +609,29 @@ const scholarlyLd = {
       bar.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       list.querySelectorAll<HTMLElement>('li').forEach((li) => { li.hidden = f !== 'all' && li.dataset.tag !== f; });
     });
+  }
+</script>
+
+<script>
+  /* Mark the section in view. The bar works as plain links without this. */
+  const bar = document.querySelector<HTMLElement>('[data-section-bar]');
+  if (bar && 'IntersectionObserver' in window) {
+    const links = [...bar.querySelectorAll<HTMLAnchorElement>('a')];
+    const byId = new Map(links.map((a) => [a.hash.slice(1), a]));
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const id = e.target.querySelector('h2[id]')?.id;
+          const link = id ? byId.get(id) : undefined;
+          if (!link) continue;
+          links.forEach((a) => a.removeAttribute('aria-current'));
+          link.setAttribute('aria-current', 'true');
+          bar.scrollLeft = link.offsetLeft - bar.offsetLeft - 16;
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+    byId.forEach((_, id) => { const sec = document.getElementById(id)?.closest('section'); if (sec) io.observe(sec); });
   }
 </script>

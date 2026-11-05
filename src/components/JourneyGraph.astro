@@ -119,7 +119,7 @@ const href = (anchor: string) =>
   </svg>
 
   <ol class="strip" role="list" aria-label={t('graph.title')}>
-    {nodes.map((n) => (
+    {[...nodes].reverse().map((n) => (
       <li data-kind={n.kind} data-future={n.future ? '' : undefined}>
         <a href={href(n.anchor)}>
           <span class="s-dot" aria-hidden="true"></span>
@@ -285,7 +285,7 @@ const href = (anchor: string) =>
       border-top: 1.5px solid var(--ink-2);
     }
     .strip li:last-child::before { display: none; }
-    .strip li:nth-last-child(2)::before { border-top-style: dashed; }
+    .strip li:first-child::before { border-top-style: dashed; }
     .strip a {
       display: grid;
       gap: var(--s-1);

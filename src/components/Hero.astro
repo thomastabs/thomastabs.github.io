@@ -2,6 +2,7 @@
 import JourneyGraph from './JourneyGraph.astro';
 import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
+import { profile } from '@/data/links';
 
 interface Props { lang: Locale; headingLevel?: 'h1' | 'p'; localAnchors?: string[] }
 const { lang, headingLevel = 'h1', localAnchors } = Astro.props;
@@ -11,16 +12,15 @@ const Name = headingLevel;
 <section class="hero dot-grid" aria-labelledby="hero-name">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <p class="kicker">{t('hero.kicker')}</p>
       <Name id="hero-name" class="hero-name">
         Tomás Taborda
       </Name>
-      <p class="positioning">{t('hero.positioning')}</p>
       <p class="status">{t('hero.status')}</p>
+      <p class="positioning">{t('hero.positioning')}</p>
       <div class="btn-set">
         <a class="btn btn--primary" href={localePath('work', lang)}>{t('cta.viewWork')}</a>
-        <a class="btn" href={localePath('work', lang, 'apex')}>{t('cta.readThesis')} →</a>
-
+        <a class="btn" href={localePath('work', lang, 'apex')}>{t('cta.readThesis')}</a>
+        <a class="btn hero-cv" href={profile.cv} download>{t('nav.cv')}</a>
       </div>
     </div>
     <div class="hero-graph">
@@ -67,7 +67,9 @@ const Name = headingLevel;
   }
   .hero-graph { width: 100%; max-width: 420px; }
   .hero-copy > * + * { margin-top: var(--s-3); }
-  .kicker { color: var(--ink-2); font-size: var(--t-16); }
+  /* The header holds the CV link on wide screens; the phone menu hides it. */
+  .hero-cv { display: none; }
+  @media (max-width: 760px) { .hero-cv { display: inline-flex; } }
   .hero-name {
     margin-top: var(--s-2);
     font-family: var(--font-display);
