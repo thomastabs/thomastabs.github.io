@@ -8,12 +8,12 @@ const t = useTranslations(lang);
 ---
 {(prev || next) && (
   <nav class="post-nav" aria-label={`${t('post.prev')} / ${t('post.next')}`}>
-    {prev ? (
+    {prev && (
       <a href={postHref(prev)} rel="prev" class="pn pn--prev">
         <span class="kicker">← {t('post.prev')}</span>
         <span class="pn-title">{prev.data.title}</span>
       </a>
-    ) : <span />}
+    )}
     {next && (
       <a href={postHref(next)} rel="next" class="pn pn--next">
         <span class="kicker">{t('post.next')} →</span>
