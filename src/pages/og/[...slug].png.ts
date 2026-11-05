@@ -17,6 +17,7 @@ export const getStaticPaths = (async () => {
     add(localePath('journey', lang), { kicker: `${t('nav.journey')}`, title: t('journey.title'), description: t('journey.intro') });
     add(localePath('work', lang), { kicker: `${t('nav.work')}`, title: t('work.pageTitle'), description: t('work.intro') });
     add(localePath('work', lang, 'apex'), { kicker: lang === 'pt' ? 'Tese de mestrado, 17/20' : 'MSc thesis, 17/20', title: 'Apex', description: apex.oneLiner[lang] });
+    add(localePath('work', lang, 'apex', 'ledger'), { kicker: lang === 'pt' ? 'Histórico git' : 'Git history', title: lang === 'pt' ? 'Diário do Apex e da tese' : 'Apex and thesis ledger', description: lang === 'pt' ? 'O histórico git da aplicação Apex e da dissertação, do primeiro commit à defesa.' : 'The git history of the Apex app and the MSc dissertation, from first commit to defence.' });
     add(localePath('notebook', lang), { kicker: `${t('notebook.title')}`, title: t('notebook.pageTitle'), description: t('notebook.intro') });
     add(localePath('contact', lang), { kicker: `${t('nav.contact')}`, title: t('contact.title'), description: t('contact.lead') });
     const posts = await getPosts(lang);

@@ -1,0 +1,314 @@
+---
+/* Apex and thesis ledger: the full record behind the case study's history section. */
+import { Image } from 'astro:assets';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import SectionHeading from '@/components/SectionHeading.astro';
+import SpecBlock from '@/components/SpecBlock.astro';
+import CommitHeatmap from '@/components/CommitHeatmap.astro';
+import { formatDate, useTranslations, type Locale } from '@/i18n';
+import { localePath } from '@/i18n/routes';
+import { taxonomy } from '@/data/apex-history';
+import { entries, foundBugs, pageCounts, backlog, thesisWeeks, chapters, type LedgerTag } from '@/data/apex-ledger';
+import thesisCover from '@/assets/apex/thesis-cover.png';
+import abstractCover from '@/assets/apex/extended-abstract-cover.png';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
+const date = (d: string) => formatDate(new Date(d), lang);
+const VISIBLE = 12;
+
+const tagLabel: Record<LedgerTag, string> = { app: L('App', 'Aplicação'), thesis: L('Thesis', 'Tese'), bug: L('Bug found in use', 'Erro encontrado em uso') };
+const tagCount = (k: LedgerTag) => entries.filter((e) => e.tag === k).length;
+const stat = (v: string, en: string, pt: string, vPt?: string) => ({ v: lang === 'pt' ? (vPt ?? v) : v, l: L(en, pt) });
+
+const totals = [
+  stat('186', 'days, first to last commit', 'dias, do primeiro ao último commit'),
+  stat('1,171', 'total commits', 'commits no total', '1.171'),
+  stat('83', 'days writing the thesis', 'dias a escrever a tese'),
+  stat('199', 'commits touching docs/thesis', 'commits em docs/thesis'),
+  stat('99/100', 'final page count', 'páginas na versão final'),
+  stat('13/12', 'evaluation participants', 'participantes na avaliação'),
+];
+const results = [
+  stat('56.73', 'SUS mean, grade D', 'média SUS, nota D', '56,73'),
+  stat('21.5/100', 'NASA-TLX workload, low', 'carga NASA-TLX, baixa', '21,5/100'),
+  stat('92.6%', 'Context Traceability Rate', 'Context Traceability Rate', '92,6%'),
+  stat('98.65%', 'Spec Conformance', 'Conformidade com a especificação', '98,65%'),
+  stat('1.85%', 'AI Defect Escape Rate', 'AI Defect Escape Rate', '1,85%'),
+  stat('0.22h', 'Bolt Cycle Time, median', 'Bolt Cycle Time, mediana', '0,22 h'),
+  stat('9 / 54', 'Outfolio epics / stories', 'épicos / histórias do Outfolio'),
+  stat('9', 'calendar days, demonstration', 'dias de calendário, demonstração'),
+  stat('123', 'Outfolio commits', 'commits do Outfolio'),
+  stat('3 / 3', 'loop-back routes exercised', 'retornos exercitados'),
+];
+const scale = [
+  stat('48.9k', 'frontend lines, .ts/.tsx', 'linhas de frontend, .ts/.tsx', '48,9 mil'),
+  stat('26.8k', 'backend lines, .py', 'linhas de backend, .py', '26,8 mil'),
+  stat('22.6k', 'backend test lines', 'linhas de testes de backend', '22,6 mil'),
+  stat('252.8k', 'total insertions, all history', 'inserções, todo o histórico', '252,8 mil'),
+  stat('61.7k', 'total deletions, all history', 'remoções, todo o histórico', '61,7 mil'),
+  stat('47', 'busiest day, commits (18 Jul)', 'dia mais ativo, commits (18 jul.)'),
+  stat('11', 'Overleaf review rounds synced', 'rondas de revisão do Overleaf sincronizadas'),
+];
+const finalStatus = [
+  stat('99/100', 'whole document, final PDF', 'documento completo, PDF final'),
+  stat('71/80', 'main text, last audit 27 Sep 2026', 'texto principal, última auditoria a 27 set. 2026'),
+  stat('8/10', 'extended abstract, final PDF in English', 'resumo alargado, PDF final em inglês'),
+  stat('17/20', 'defended 23 Oct 2026', 'defendida a 23 out. 2026'),
+  stat('13/12', 'participants, none withdrew', 'participantes, nenhum desistiu'),
+];
+const docs = [
+  { href: '/docs/apex-dissertation.pdf', cover: thesisCover, alt: L('Cover of the dissertation', 'Capa da dissertação'), t: L('Dissertation', 'Dissertação'), d: L('99 pages, 10 chapters and 2 appendices. Final post-defence version, with the examination committee on the cover.', '99 páginas, 10 capítulos e 2 apêndices. Versão final pós-defesa, com o júri na capa.') },
+  { href: '/docs/apex-extended-abstract.pdf', cover: abstractCover, alt: L('First page of the extended abstract', 'Primeira página do resumo alargado'), t: L('Extended abstract', 'Resumo alargado'), d: L('8 of 10 pages, in English. The whole dissertation condensed: motivation, framework, Apex, evaluation.', '8 de 10 páginas, em inglês. Toda a dissertação condensada: motivação, framework, Apex e avaliação.') },
+];
+const maxWeek = Math.max(...thesisWeeks.map((w) => w.n));
+const description = L('The git history of the Apex app and the MSc dissertation, from first commit to defence.', 'O histórico git da aplicação Apex e da dissertação, do primeiro commit à defesa.');
+---
+<BaseLayout lang={lang} title={L('Apex and thesis ledger', 'Diário do Apex e da tese')} description={description}>
+  <header class="container led-head">
+    <nav class="meta crumbs" aria-label={L('Breadcrumb', 'Navegação estrutural')}>
+      <a class="pen-link pen-link--bare" href={localePath('work', lang)}>{t('nav.work')}</a>{' / '}
+      <a class="pen-link pen-link--bare" href={localePath('work', lang, 'apex')}>Apex</a>{' / '}
+      <span aria-current="page">{L('Ledger', 'Diário')}</span>
+    </nav>
+    <h1>{L('Apex and thesis ledger', 'Diário do Apex e da tese')}</h1>
+    <p class="lead">{L(
+      "Everything since 6d212b6, the repository's first commit, read back out of its own history: 1,171 commits across a governance platform and the dissertation describing it. Project closed.",
+      'Tudo desde o 6d212b6, o primeiro commit do repositório, lido a partir do próprio histórico: 1.171 commits entre uma plataforma de governação e a dissertação que a descreve. Projeto encerrado.',
+    )}</p>
+    <div class="btn-set head-links">
+      <a class="btn btn--primary" href="/docs/apex-dissertation.pdf">{L('Read the dissertation (PDF)', 'Ler a dissertação (PDF)')}</a>
+      <a class="btn" href="/docs/apex-defence-slides.pdf">{L('Defence slides (PDF)', 'Diapositivos da defesa (PDF)')}</a>
+      <a class="btn" href={localePath('work', lang, 'apex')}>{L('Case study', 'Caso de estudo')}</a>
+    </div>
+    <div class="head-spec">
+      <SpecBlock rows={[
+        { k: L('Submitted', 'Entregue'), v: L('7 October 2026, on the deadline', '7 de outubro de 2026, no prazo'), mono: false },
+        { k: L('Defended', 'Defendida'), v: L('23 October 2026', '23 de outubro de 2026'), mono: false },
+        { k: L('Grade', 'Nota'), v: L('17/20 for the dissertation; final MSc grade pending', '17/20 na dissertação; nota final do mestrado por atribuir'), mono: false },
+      ]} />
+    </div>
+    <dl class="stats stats--head">{totals.map((s) => <div><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
+    <ul class="ext-links" role="list">
+      <li><a class="pen-link" href="https://github.com/thomastabs/apex">{L('Apex repository', 'Repositório do Apex')}</a></li>
+      <li><a class="pen-link" href="https://apex-bolt.com">{L('Apex, live', 'Apex, em produção')}</a></li>
+      <li><a class="pen-link" href="https://github.com/thomastabs/OutfolioV1">{L('Outfolio repository', 'Repositório do Outfolio')}</a></li>
+      <li><a class="pen-link" href="https://outfolio-v1.vercel.app/">{L('Outfolio, live', 'Outfolio, em produção')}</a></li>
+    </ul>
+  </header>
+
+  <div class="container led-body">
+    <section class="block" aria-labelledby="ctx">
+      <SectionHeading label={L('Context', 'Contexto')} id="ctx" />
+      <p class="ctx-title">Governed Human-AI Collaboration Across the Software Development Lifecycle: A Process Framework and Its Reference Implementation</p>
+      <h3>{L('Introduction', 'Introdução')}</h3>
+      <p>{L('An MSc dissertation in Computer Science and Engineering (MEIC-T) at IST, run under the Design Science Research Methodology: identify a problem, design an artefact that addresses it, demonstrate it in a real setting, then evaluate it. The work has two halves, kept separate on purpose: a framework (the method) and Apex (one working instantiation of it).', 'Uma dissertação de mestrado em Engenharia Informática e de Computadores (MEIC-T) no IST, seguindo a Design Science Research Methodology: identificar um problema, desenhar um artefacto que o resolva, demonstrá-lo num contexto real e avaliá-lo. O trabalho tem duas metades, separadas de propósito: uma framework (o método) e o Apex (uma instanciação funcional dela).')}</p>
+      <h3>{L('Context', 'Contexto')}</h3>
+      <p>{L('Generative AI and Large Language Models moved from autocomplete to active contributors across the whole lifecycle. Practitioners now state requirements in natural language and supervise what the model produces. Adoption has outpaced method: teams use these tools daily without an agreed process for where AI participates and where it stops.', 'A IA generativa e os grandes modelos de linguagem passaram do preenchimento automático a contribuidores ativos em todo o ciclo de vida. Os profissionais descrevem agora requisitos em linguagem natural e supervisionam o que o modelo produz. A adoção ultrapassou o método: as equipas usam estas ferramentas todos os dias sem um processo acordado sobre onde a IA participa e onde para.')}</p>
+      <h3>{L('Problem', 'Problema')}</h3>
+      <p>{L('A Systematic Literature Review over 646 articles found real benefits alongside recurring risks in reliability, security, traceability and accountability. The central unresolved gap: no structured, repeatable guidance for integrating AI into professional workflows. Its value depends on the process around the model as well as on the model.', 'Uma revisão sistemática da literatura de 646 artigos encontrou benefícios reais a par de riscos recorrentes em fiabilidade, segurança, rastreabilidade e responsabilização. A principal lacuna por resolver: não existe orientação estruturada e repetível para integrar a IA em fluxos de trabalho profissionais. O seu valor depende tanto do processo à volta do modelo como do próprio modelo.')}</p>
+      <h3>{L('Solution', 'Solução')}</h3>
+      <p>{L('A process framework treating AI as a first-class collaborator whose output must be bounded, validated and traced: six phases (Discovery, Design, Implementation, Testing, Deployment, Maintenance), five quality gates, responsibilities assigned to hats, Bolts in place of sprints, and three governance metrics. Everything is anchored to a persistent, versioned specification linking each generated artefact to its requirement. Apex runs it end to end against real Taiga/Plane, GitHub and Figma backends, evaluated on the Outfolio project and with 13 participants.', 'Uma framework de processo que trata a IA como colaboradora de primeira classe, cujo resultado tem de ser delimitado, validado e rastreado: seis fases (Descoberta, Design, Implementação, Testes, Implantação, Manutenção), cinco portões de qualidade, responsabilidades atribuídas a chapéus, Bolts em vez de sprints e três métricas de governação. Tudo assenta numa especificação persistente e versionada que liga cada artefacto gerado ao seu requisito. O Apex executa-a de ponta a ponta com backends reais de Taiga/Plane, GitHub e Figma, e foi avaliado no projeto Outfolio e com 13 participantes.')}</p>
+    </section>
+
+    <section class="block" aria-labelledby="docs">
+      <SectionHeading label={L('Documents', 'Documentos')} id="docs" />
+      <ul class="docs" role="list">
+        {docs.map((d) => (
+          <li><a class="doc" href={d.href}>
+            <Image src={d.cover} alt={d.alt} widths={[200, 400]} sizes="132px" />
+            <span class="doc-text"><span class="doc-t">{d.t}</span><span class="doc-d">{d.d}</span></span>
+          </a></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="block" aria-labelledby="contrib">
+      <SectionHeading label={L('Contributions', 'Contribuições')} id="contrib" />
+      <p class="note">{L('Commits per day across the repository. 11 Overleaf review rounds were synced into this history too.', 'Commits por dia em todo o repositório. 11 rondas de revisão do Overleaf foram também sincronizadas neste histórico.')}</p>
+      <CommitHeatmap lang={lang} />
+    </section>
+
+    <section class="block" aria-labelledby="timeline">
+      <SectionHeading label={L('Timeline', 'Linha do tempo')} id="timeline" />
+      <div class="filter-pills lg-filters" data-lg-filters hidden role="group" aria-label={L('Filter the timeline', 'Filtrar a linha do tempo')}>
+        <button type="button" class="filter-pill" data-f="all" aria-pressed="true">{L('All', 'Tudo')} <span class="count">{entries.length}</span></button>
+        {(['app', 'thesis', 'bug'] as const).map((k) => (
+          <button type="button" class="filter-pill" data-f={k} aria-pressed="false">{tagLabel[k]} <span class="count">{tagCount(k)}</span></button>
+        ))}
+      </div>
+      <ol class="rows" role="list" data-lg-list data-visible={VISIBLE}>
+        {entries.map((e) => (
+          <li data-tag={e.tag}>
+            <time class="date" datetime={e.d}>{date(e.d)}</time>
+            <div><p class="row-t">{e.t[lang]}</p><p class="row-x">{e.x[lang]}</p><p class="meta">{tagLabel[e.tag]}</p></div>
+          </li>
+        ))}
+      </ol>
+      <button type="button" class="btn lg-more" data-lg-more hidden>{L('Show all entries', 'Mostrar todas as entradas')}</button>
+      <p class="sr-only" aria-live="polite" data-lg-status data-template={t('journey.shown')}></p>
+    </section>
+
+    <section class="block" aria-labelledby="tax">
+      <SectionHeading label={L('Commit taxonomy', 'Taxonomia de commits')} id="tax" />
+      <p class="note">{L('Whole repository, by conventional-commit prefix.', 'Todo o repositório, por prefixo de conventional commit.')}</p>
+      <dl class="bars">
+        {taxonomy.map((b) => <div><dt class="mono">{b.k}</dt><dd><span class="bar" style={`--w:${(b.v / taxonomy[0].v) * 100}%`}></span><span class="mono">{b.v}</span></dd></div>)}
+      </dl>
+    </section>
+
+    <section class="block" aria-labelledby="chapters">
+      <SectionHeading label={L('Chapters', 'Capítulos')} id="chapters" />
+      <p class="note">{L('All scaffolded on 4 Aug 2026 as \\todo stubs. The dates below are when real content landed.', 'Todos criados a 4 ago. 2026 como esboços \\todo. As datas abaixo indicam quando chegou conteúdo real.')}</p>
+      <table class="tbl">
+        <thead><tr><th scope="col">{L('Chapter', 'Capítulo')}</th><th scope="col">{L('First real content', 'Primeiro conteúdo real')}</th><th scope="col">Commits</th></tr></thead>
+        <tbody>{chapters.map((c) => <tr><th scope="row">{c.name[lang]}</th><td>{c.first[lang] || L('No date recorded', 'Sem data registada')}</td><td class="mono">{c.commits}</td></tr>)}</tbody>
+      </table>
+    </section>
+
+    <section class="block" aria-labelledby="found">
+      <SectionHeading label={L('Found by writing about it', 'Encontrado ao escrever sobre o assunto')} id="found" />
+      <p class="note">{L('Real Apex bugs that the thesis and demonstration work surfaced.', 'Erros reais do Apex revelados pelo trabalho da tese e da demonstração.')}</p>
+      <ol class="rows" role="list">
+        {foundBugs.map((e) => <li><time class="date" datetime={e.d}>{date(e.d)}</time><div><p class="row-t">{e.t[lang]}</p><p class="row-x">{e.x[lang]}</p></div></li>)}
+      </ol>
+    </section>
+
+    <section class="block" aria-labelledby="pages">
+      <SectionHeading label={L('Page count', 'Número de páginas')} id="pages" />
+      <p class="note">{L('IST limits: main text up to 80 pages, whole document up to 100.', 'Limites do IST: texto principal até 80 páginas, documento completo até 100.')}</p>
+      <ol class="rows" role="list">
+        {pageCounts.map((p) => <li><time class="date" datetime={p.d}>{date(p.d)}</time><div><p class="row-t mono">{p.c}</p><p class="row-x">{p.n[lang]}</p></div></li>)}
+      </ol>
+    </section>
+
+    <section class="block" aria-labelledby="evaluation">
+      <SectionHeading label={L('What the evaluation found', 'O que a avaliação encontrou')} id="evaluation" />
+      <p class="prose-p">{L('Chapter 9: 13 unmoderated task-based sessions, plus the demonstration on Outfolio. Of 12 governance constructs mapped (Table 7.1), 10 were realised, 1 used a proxy and 1 was partial. Bolt Cycle Time was first measured through the wrong proxy, caught by comparing the implementation against its own written definition. Spec-drift detection stayed partial for the technical specification.', 'Capítulo 9: 13 sessões não moderadas baseadas em tarefas, mais a demonstração no Outfolio. Dos 12 construtos de governação mapeados (Tabela 7.1), 10 ficaram realizados, 1 usou um indicador indireto e 1 ficou parcial. O Bolt Cycle Time foi inicialmente medido com o indicador errado, o que se detetou ao comparar a implementação com a sua própria definição escrita. A deteção de desvios da especificação ficou parcial para a especificação técnica.')}</p>
+      <dl class="stats">{results.map((s) => <div><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
+    </section>
+
+    <section class="block" aria-labelledby="scale">
+      <SectionHeading label={L('Scale', 'Escala')} id="scale" />
+      <p class="note">{L('Final working tree, plus diff totals across the whole history.', 'Árvore de trabalho final, mais os totais de diff de todo o histórico.')}</p>
+      <dl class="stats">{scale.map((s) => <div><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
+    </section>
+
+    <section class="block" aria-labelledby="weeks">
+      <SectionHeading label={L('Thesis commits, final 8 weeks', 'Commits da tese, últimas 8 semanas')} id="weeks" />
+      <p class="note">{L('docs/thesis only, by the date each ISO week starts.', 'Só docs/thesis, pela data de início de cada semana ISO.')}</p>
+      <dl class="bars bars--dates">
+        {thesisWeeks.map((w) => <div><dt class="mono">{formatDate(new Date(w.d), lang, { year: undefined })}</dt><dd><span class="bar" style={`--w:${(w.n / maxWeek) * 100}%`}></span><span class="mono">{w.n}</span></dd></div>)}
+      </dl>
+    </section>
+
+    <section class="block" aria-labelledby="status">
+      <SectionHeading label={L('Final status', 'Estado final')} id="status" />
+      <dl class="stats">{finalStatus.map((s) => <div><dt>{s.l}</dt><dd>{s.v}</dd></div>)}</dl>
+    </section>
+
+    <section class="block" aria-labelledby="backlog">
+      <SectionHeading label={L('Backlog, closed on 5 Oct 2026', 'Pendentes, encerrados a 5 out. 2026')} id="backlog" />
+      <ul class="rows rows--plain" role="list">
+        {backlog.map((b) => <li><div><p class="row-t">{b.t[lang]}</p><p class="row-x">{b.d[lang]}</p></div></li>)}
+      </ul>
+      <p class="note snapshot">{L('Generated from the local git log and docs/thesis/REGULATIONS.md. Final snapshot, 27 Oct 2026, after the defence. Last commit 26 Oct 2026.', 'Gerado a partir do git log local e do docs/thesis/REGULATIONS.md. Última atualização a 27 out. 2026, depois da defesa. Último commit a 26 out. 2026.')}</p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .led-head { padding-top: var(--s-8); }
+  .led-head > * + * { margin-top: var(--s-3); }
+  .crumbs { color: var(--muted); }
+  .led-head .lead { max-width: var(--measure); }
+  .led-head .head-links { margin-top: var(--s-5); }
+  .led-head .head-spec { margin-top: var(--s-6); }
+  .led-body { padding-bottom: var(--section-gap); }
+  .block { padding-top: var(--s-9); }
+  .block > :global(.section-heading) { margin-bottom: var(--s-5); }
+  .block p, .block h3 { max-width: var(--measure); }
+  .block h3 { margin-top: var(--s-5); margin-bottom: var(--s-2); font-size: var(--t-20); }
+  .ctx-title { font-weight: 500; }
+  .note { margin-bottom: var(--s-5); color: var(--ink-2); }
+  .prose-p { margin-bottom: var(--s-5); }
+  .snapshot { margin-top: var(--s-6); margin-bottom: 0; font-size: var(--t-14); color: var(--muted); }
+  .led-head .stats { margin-top: var(--s-6); }
+
+  .ext-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); margin: var(--s-5) 0 0; padding: 0; list-style: none; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 9.5rem), 1fr)); gap: var(--s-5) var(--s-6); margin: 0; }
+  @media (min-width: 761px) { .stats--head { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  .stats > div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: var(--s-1); padding-top: var(--s-3); border-top: 1px solid var(--rule-strong); }
+  .stats dt { font-size: var(--t-14); color: var(--ink-2); line-height: 1.4; }
+  .stats dd { margin: 0; font-family: var(--font-mono); font-size: var(--t-28); line-height: 1.2; color: var(--ink); }
+
+  .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--s-5); padding: 0; list-style: none; }
+  .doc { display: flex; gap: var(--s-5); align-items: flex-start; height: 100%; padding: var(--s-5); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); color: inherit; text-decoration: none; transition: border-color var(--dur) var(--ease); }
+  .doc:hover { border-color: var(--ink); }
+  .doc :global(img) { flex: none; width: 96px; height: auto; border: 1px solid var(--rule); background: #fff; }
+  .doc-text { display: grid; gap: var(--s-2); }
+  .doc-t { font-family: var(--font-display); font-size: var(--t-20); font-weight: 500; line-height: 1.15; }
+  .doc-d { font-size: var(--t-16); color: var(--ink-2); }
+
+  .lg-filters { margin-bottom: var(--s-5); }
+  :global(.js) .lg-filters[hidden] { display: flex; }
+  .rows { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--rule-strong); }
+  .rows > li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: var(--s-1) var(--s-5); padding-block: var(--s-3); border-bottom: 1px solid var(--rule); }
+  .rows > li[hidden] { display: none; }
+  .rows--plain > li { grid-template-columns: minmax(0, 1fr); }
+  .rows .date { font-family: var(--font-mono); font-size: var(--t-14); line-height: 1.7; color: var(--muted); white-space: nowrap; }
+  .row-t { font-weight: 500; }
+  .row-x { margin-top: var(--s-1); color: var(--ink-2); }
+  .rows .meta { margin-top: var(--s-1); }
+  .lg-more { margin-top: var(--s-3); cursor: pointer; }
+  .lg-more[hidden] { display: none; }
+  @media (max-width: 560px) { .rows > li { grid-template-columns: minmax(0, 1fr); } }
+
+  .bars { display: grid; gap: var(--s-2); margin: 0; max-width: 44rem; }
+  .bars > div { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: var(--s-3); align-items: center; }
+  .bars dt, .bars dd { font-size: var(--t-14); }
+  .bars dd { display: flex; align-items: center; gap: var(--s-2); margin: 0; }
+  .bars .mono { color: var(--ink-2); }
+  .bar { display: block; width: var(--w); min-width: 1px; height: 10px; background: var(--ink-2); border-radius: 2px; }
+
+  .tbl { width: 100%; border-collapse: collapse; font-size: var(--t-16); }
+  .tbl th, .tbl td { padding: var(--s-2) var(--s-3) var(--s-2) 0; border-bottom: 1px solid var(--rule); text-align: left; vertical-align: top; }
+  .tbl thead th { font-size: var(--t-14); font-weight: 400; color: var(--muted); border-bottom-color: var(--rule-strong); }
+  .tbl tbody th { font-weight: 500; }
+  .tbl td { color: var(--ink-2); }
+  .tbl td.mono { font-size: var(--t-14); padding-right: 0; }
+</style>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-lg-list]');
+  const bar = document.querySelector<HTMLElement>('[data-lg-filters]');
+  const more = document.querySelector<HTMLButtonElement>('[data-lg-more]');
+  const status = document.querySelector<HTMLElement>('[data-lg-status]');
+  if (list && bar && more) {
+    const rows = [...list.querySelectorAll<HTMLElement>('li')];
+    const limit = Number(list.dataset.visible);
+    let filter = 'all';
+    let expanded = false;
+    const render = () => {
+      const match = rows.filter((r) => filter === 'all' || r.dataset.tag === filter);
+      rows.forEach((r) => { r.hidden = true; });
+      const shown = expanded ? match : match.slice(0, limit);
+      shown.forEach((r) => { r.hidden = false; });
+      more.hidden = shown.length === match.length;
+      if (status) status.textContent = (status.dataset.template ?? '').replace('{n}', String(shown.length));
+    };
+    bar.hidden = false;
+    bar.querySelectorAll<HTMLButtonElement>('button').forEach((b) => {
+      b.addEventListener('click', () => {
+        bar.querySelectorAll('button').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+        filter = b.dataset.f ?? 'all';
+        expanded = false;
+        render();
+      });
+    });
+    more.addEventListener('click', () => { expanded = true; render(); });
+    render();
+  }
+</script>

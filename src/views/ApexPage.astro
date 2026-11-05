@@ -138,7 +138,7 @@ const scholarlyLd = {
                   .filter((l) => !topHrefs.includes(l.href!))
                   .map((l) => (
                     <li>
-                      <a class="pen-link" href={l.href!}>
+                      <a class="pen-link" href={l.href === '/work/apex/ledger/' ? localePath('work', lang, 'apex', 'ledger') : l.href!}>
                         {l.label[lang]}
                       </a>
                     </li>
@@ -428,7 +428,7 @@ const scholarlyLd = {
         <a href={bigPicture.src} class="zoom" aria-label={L('Open full size: framework big picture', 'Abrir em tamanho real: visão geral da framework')}><Image src={bigPicture} alt={L('Framework big-picture diagram: Strategic Alignment followed by the six phases, each with its inputs, outputs and supporting literature.', 'Diagrama geral da framework: Alinhamento Estratégico seguido das seis fases, cada uma com entradas, saídas e literatura de suporte.')} widths={[720, 1200, 1780]} sizes="(min-width: 1200px) 1100px, 100vw" class="fig-light" /></a>
       </Figure>
 
-      <a class="ledger-card" href="/work/apex/ledger/">
+      <a class="ledger-card" href={localePath('work', lang, 'apex', 'ledger')}>
         <h3>Apex &amp; Thesis Ledger</h3>
         <p>{L('The original dashboard this section draws on: every timeline entry, chapter write dates, page budgets and the backlog close-out.', 'O painel original em que esta secção se baseia: todas as entradas da linha do tempo, datas de escrita dos capítulos, limites de páginas e o fecho do backlog.')}</p>
         <span class="ledger-go">{L('Open the ledger', 'Abrir o diário')}</span>
