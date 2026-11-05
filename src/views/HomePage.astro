@@ -49,7 +49,7 @@ const personLd = {
   <Hero lang={lang} localAnchors={localAnchors} />
 
   <section class="container section" id="about" aria-labelledby="about-title">
-    <SectionHeading n={1} label={t('section.about')} id="about-title" display />
+    <SectionHeading n={1} label={t('section.about')} id="about-title" />
     <div class="about-grid">
       <div class="about-text">
         {about.map((p) => <p>{p[lang]}</p>)}
@@ -64,7 +64,7 @@ const personLd = {
   </section>
 
   <section class="container section-tight" id="experience" aria-labelledby="exp-title">
-    <SectionHeading n={2} label={t('section.experience')} id="exp-title" display />
+    <SectionHeading n={2} label={t('section.experience')} id="exp-title" />
     <ol class="timeline" role="list">
       {roles.map((r) => (
         <TimelineEntry
@@ -83,7 +83,7 @@ const personLd = {
   </section>
 
   <section class="container section-tight" id="education" aria-labelledby="edu-title">
-    <SectionHeading n={3} label={t('section.education')} id="edu-title" display />
+    <SectionHeading n={3} label={t('section.education')} id="edu-title" />
     <ol class="timeline" role="list">
       {education.map((e) => (
         <TimelineEntry
@@ -110,7 +110,7 @@ const personLd = {
   </section>
 
   <section class="container section-tight" id="work" aria-labelledby="work-title">
-    <SectionHeading n={4} label={t('section.selectedWork')} id="work-title" display />
+    <SectionHeading n={4} label={t('section.selectedWork')} id="work-title" />
     <div class="work-grid">
       {apex && <ProjectCard featured maxStack={4} {...cardProps(apex, lang)} />}
       <div class="work-row">
@@ -123,7 +123,7 @@ const personLd = {
   {latest.length > 0 && (
     <>
       <section class="container section-tight" id="notebook" aria-labelledby="notebook-title">
-        <SectionHeading n={5} label={t('section.fromNotebook')} id="notebook-title" display />
+        <SectionHeading n={5} label={t('section.fromNotebook')} id="notebook-title" />
         <div class="notes">
           {latest.map((p) => <PostCard {...postCardProps(p, t)} />)}
         </div>

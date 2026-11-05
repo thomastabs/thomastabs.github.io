@@ -1,30 +1,20 @@
 ---
 /* Section heading.
-   level="h2" (home and Apex sections): one small label line, "About". The label IS the heading.
+   level="h2" (home and Apex sections): the label as a serif title under a rule.
    `n` is accepted for compatibility and not rendered (section numbers were removed).
    level="h1" (page heads): the page name as a serif title, with an optional lead in the slot.
-   `display` (home sections): the h2 label as a serif title under the rule instead of a small label.
    `title` and `meta` are accepted for compatibility and ignored on h2; on h1, `title` wins. */
-interface Props { n?: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2'; meta?: string; display?: boolean }
-const { label, title, id, level = 'h2', display = false } = Astro.props;
+interface Props { n?: number | string; label: string; title?: string; id?: string; level?: 'h1' | 'h2'; meta?: string }
+const { label, title, id, level = 'h2' } = Astro.props;
 ---
 <div class="section-heading">
   {level === 'h1'
     ? <h1 id={id} class="page-title">{title ?? label}</h1>
-    : <h2 id={id} class={display ? 'section-title' : 'section-label'}>{label}</h2>}
+    : <h2 id={id} class="section-title">{label}</h2>}
   <slot />
 </div>
 <style>
   .section-heading { margin-bottom: var(--s-6); }
-  h2.section-label {
-    padding-top: var(--s-3);
-    border-top: 1px solid var(--rule-strong);
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: var(--t-14);
-    line-height: 1.5;
-    color: var(--ink);
-  }
   h2.section-title {
     padding-top: var(--s-4);
     border-top: 1px solid var(--rule-strong);
