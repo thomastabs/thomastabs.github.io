@@ -13,8 +13,8 @@ import { profile } from '@/data/links';
 interface Props { lang: Locale; level?: 'h1' | 'h2' }
 const { lang, level = 'h2' } = Astro.props;
 const t = useTranslations(lang);
-const wide = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: sceneWide, width: w, format: 'webp', quality: 78 })));
-const tall = await Promise.all([480, 800, 1080].map((w) => getImage({ src: sceneTall, width: w, format: 'webp', quality: 78 })));
+const wide = await Promise.all([960, 1440, 1920].map((w) => getImage({ src: sceneWide, width: w, format: 'webp', quality: 84 })));
+const tall = await Promise.all([480, 800, 1080].map((w) => getImage({ src: sceneTall, width: w, format: 'webp', quality: 84 })));
 const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.map((i) => `${i.src} ${i.options.width}w`).join(', ');
 ---
   <section class="contact" id="contact" aria-labelledby="contact-title">
