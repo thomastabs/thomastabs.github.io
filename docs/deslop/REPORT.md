@@ -62,3 +62,14 @@ Branch `deslop`. Every check below was run against the production build (`npm ru
 - **Section numbers.** Removed. Labels read `About`, `The problem` and so on. They were the last numbered-marker finding from the 3.9 detector.
 - **frontend-design check.** The skill was read and the site compared against its list of generated-page defaults. Two overlap, both set by the brief: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines, mono dates and arrows on links. Absent: single-word headline accents, numbered markers, per-section entrance motion, card shadows, gradient washes. No changes were made from this check.
 - **Not changed.** The formal dissertation abstract and the thesis statement on the Apex page are quoted from the dissertation, so their wording (including one "rather than") stays as published.
+
+## Later changes (5 Nov 2026)
+
+The scorecard above describes the site when the pass ended. A later critique with the same skills changed some of what it records, so these rows no longer match the current site:
+
+- The cream background was replaced with a neutral off-white (`--bg: #f4f5f7`), so the detector's last finding, `cream-palette`, is gone.
+- Uppercase section labels became sans sentence-case headings. Middle-dot separators were removed from visible text.
+- `→` link arrows were removed, and `↗` and `↓` became a CSS-masked icon (`.ext`).
+- Repo tiles became a plain line, which removed a card inside a card.
+- The screenshots in `before/`, `after/` and `compare/` were not retaken.
+
