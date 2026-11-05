@@ -2,6 +2,7 @@
 title: "AI-assisted development on my own portfolio"
 description: "How I worked with an AI agent on this site's design: a brief of checkable outcomes, skills for design and writing, and scripts that measured the result."
 pubDate: 2026-11-04
+updatedDate: 2026-11-05
 tags: [ai, design]
 draft: false
 lang: en
@@ -75,6 +76,26 @@ Some decisions stayed with me.
 - The detector flagged the cream background. I kept it for a while because I liked it, knowing it is one of the most common generated defaults, then replaced it with a neutral off-white and re-checked the colour pairs.
 - Two steps ran degraded and the report says so: the humanizer install was blocked the first time, so the first copy pass applied its rules by hand, and the before-critique ran in one context where Impeccable asks for two independent assessments.
 
+## A second round
+
+On 5 November I ran the same three skills over the site again. The critique scored 20/32, which can't be compared with the earlier 27/40: the method differed and two heuristics did not apply. The screenshots above show the end of the first pass, so they no longer match the site in every detail.
+
+Most of what came out of it was structural or small:
+
+- Work moved up the home page, with the Apex diagram, and the Apex page got a section bar and a shorter head.
+- Uppercase section labels became sans headings, and the cream background became a neutral off-white.
+- The contact form got a request timeout, announced errors and a visible focus state.
+- The phase strip, commit graph and heatmap became reachable by keyboard, and standalone links reached a 24 px target.
+- The humanizer pass found copy that was correct but thin. The thesis appeared in nearly the same sentence three times on the home page, and the Outfolio card never said what Outfolio is.
+
+Two of the fixes came from me looking at the deployed site. Arrows were still on some links, so I asked for plain text everywhere. The work cards were unbalanced, with empty space on the projects without screenshots, and the Apex card differed between the home and work pages. Now there is one Apex card and the project cards are equal and text-only.
+
+The larger finding was the Apex ledger, a hand-built page that the first pass had never measured. It had its own violet accent, heading font and theme toggle, 31 uppercase elements and no Portuguese version. The detector reported 55 findings there and 0 on the main pages. My own rescore of the audit, from axe, the detector and the screenshots, came to 15/20 against the earlier 19/20, partly because it now counted that page.
+
+I had Claude rebuild the ledger inside the site's design, in both languages, and then ran everything again. Lighthouse found a layout shift of 0.177 on the Portuguese home page on phones, caused by a font arriving late. Preloading it fixed that. The same check showed three font files that every page downloaded and no page used, so those went too, which then widened every paragraph, because the browser had been measuring `ch` from one of them. The detector caught that with 22 line-length findings, and the text width went back to what it was.
+
+The final run: Lighthouse on 11 pages, mobile and desktop, scored 99 to 100 on performance and 100 on everything else. The detector reports 0 findings on the built pages at both widths, axe is clean on 12 pages at 2 widths in 2 themes, and the metrics script reads 7 type sizes and 0 uppercase elements, leaving out chart labels inside SVGs. My rescore of the audit is 19/20. The missing point is judgement: serif and crimson on off-white is still a familiar look. I did not re-run the critique after these fixes.
+
 ## What I would reuse
 
-Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent did the overhaul and most of the clean-up; the second time it had a brief and checks to answer to.
+Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts, on every page, and keep the evidence in the repository. The same agent did the overhaul and most of the clean-up; the second time it had a brief and checks to answer to.

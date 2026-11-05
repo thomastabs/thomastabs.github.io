@@ -2,6 +2,7 @@
 title: "Desenvolvimento assistido por IA no meu próprio portfólio"
 description: "Como trabalhei com um agente de IA no design deste site: um brief com resultados verificáveis, skills de design e escrita, e scripts que mediram o resultado."
 pubDate: 2026-11-04
+updatedDate: 2026-11-05
 tags: [ia, design]
 draft: false
 lang: pt
@@ -75,6 +76,26 @@ Algumas decisões ficaram comigo.
 - O detetor assinalava o fundo creme. Mantive-o durante algum tempo porque gostava dele, sabendo que é uma das escolhas geradas mais comuns, e depois troquei-o por um esbranquiçado neutro e voltei a verificar os pares de cores.
 - Dois passos correram em modo degradado, e o relatório di-lo: a instalação do humanizer foi bloqueada da primeira vez, por isso a primeira revisão do texto aplicou as regras à mão, e a crítica inicial correu num só contexto, quando o Impeccable pede duas avaliações independentes.
 
+## Uma segunda ronda
+
+A 5 de novembro voltei a correr as mesmas três skills sobre o site. A crítica deu 20/32, um valor que não se pode comparar com os 27/40 anteriores: o método foi diferente e duas heurísticas não se aplicavam. As capturas acima mostram o fim da primeira passagem, por isso já não correspondem ao site em todos os detalhes.
+
+A maior parte do que resultou daqui foi estrutural ou pequena:
+
+- O Trabalho subiu na página inicial, com o diagrama do Apex, e a página do Apex ganhou uma barra de secções e um topo mais curto.
+- Os rótulos de secção em maiúsculas passaram a títulos sem serifa, e o fundo creme passou a um esbranquiçado neutro.
+- O formulário de contacto ganhou um limite de tempo nos pedidos, erros anunciados e um estado de foco visível.
+- A faixa de fases, o grafo de commits e o mapa de calor passaram a ser acessíveis por teclado, e as ligações isoladas chegaram a uma área de toque de 24 px.
+- A passagem do humanizer encontrou texto correto mas pobre. A tese aparecia em quase a mesma frase três vezes na página inicial, e o cartão do Outfolio nunca dizia o que é o Outfolio.
+
+Duas das correções vieram de eu olhar para o site publicado. Ainda havia setas em algumas ligações, por isso pedi texto simples em todo o lado. Os cartões de trabalho estavam desequilibrados, com espaço vazio nos projetos sem capturas, e o cartão do Apex era diferente na página inicial e na de trabalho. Agora há um só cartão do Apex, e os cartões de projeto são iguais e só com texto.
+
+A descoberta maior foi o diário do Apex, uma página feita à mão que a primeira passagem nunca tinha medido. Tinha uma cor de destaque violeta, uma fonte de títulos e um botão de tema próprios, 31 elementos em maiúsculas e nenhuma versão portuguesa. O detetor encontrou ali 55 problemas, e 0 nas páginas principais. A minha própria reavaliação da auditoria, com base no axe, no detetor e nas capturas, deu 15/20 contra os 19/20 anteriores, em parte porque já contava com essa página.
+
+Pedi ao Claude que reconstruísse o diário dentro do design do site, nas duas línguas, e depois voltei a correr tudo. O Lighthouse encontrou um deslocamento de layout de 0,177 na página inicial em português no telemóvel, causado por uma fonte que chegava tarde. Pré-carregá-la resolveu o problema. A mesma verificação mostrou três ficheiros de fontes que todas as páginas descarregavam e nenhuma usava, por isso também saíram, o que alargou todos os parágrafos, porque o navegador estava a medir o `ch` a partir de um deles. O detetor apanhou isso com 22 avisos de comprimento de linha, e a largura do texto voltou ao que era.
+
+A execução final: o Lighthouse em 11 páginas, em telemóvel e computador, deu 99 a 100 em desempenho e 100 em tudo o resto. O detetor não encontra problemas nas páginas construídas em nenhuma das larguras, o axe não acusa nada em 12 páginas, em 2 larguras e nos 2 temas, e o script de métricas lê 7 tamanhos de letra e 0 elementos em maiúsculas, sem contar com as etiquetas de gráficos dentro de SVG. A minha reavaliação da auditoria dá 19/20. O ponto que falta é de critério: serifa e carmesim sobre esbranquiçado continua a ser um visual familiar. Não voltei a correr a crítica depois destas correções.
+
 ## O que voltaria a usar
 
-Escrever o brief como uma lista de resultados verificáveis. Dar ao agente skills que codificam gosto, para que não invente uma linguagem de design do zero. Depois medir o resultado com scripts e guardar a evidência no repositório. O mesmo agente fez a renovação e a maior parte da limpeza; da segunda vez tinha um brief e verificações a que responder.
+Escrever o brief como uma lista de resultados verificáveis. Dar ao agente skills que codificam gosto, para que não invente uma linguagem de design do zero. Depois medir o resultado com scripts, em todas as páginas, e guardar a evidência no repositório. O mesmo agente fez a renovação e a maior parte da limpeza; da segunda vez tinha um brief e verificações a que responder.
