@@ -1,6 +1,6 @@
 ---
 title: "De-slopping my portfolio with a brief and three skills"
-description: "This site's first design was generated and looked it. How a written brief, Impeccable, humanizer and a set of checks took it back to something plainer."
+description: "I designed this site by hand, then overhauled it with AI, and it looked generated. How a brief, Impeccable, humanizer and measured checks scaled it back."
 pubDate: 2026-11-04
 tags: [ai, design]
 draft: false
@@ -13,11 +13,11 @@ import { Image } from 'astro:assets';
 import before from '@/assets/notebook/deslop-home-before.webp';
 import after from '@/assets/notebook/deslop-home-after.webp';
 
-Most of this site was first built with an AI coding agent. It worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
+I designed the first version of this portfolio by hand. The idea behind the visual overhaul that followed was to use AI, given how much exposure LinkedIn and AI-made portfolios were getting. The overhaul worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
 
-So I did to the design what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
+The de-slop came from needing to scale that design back, because simpler is better. I did to it what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
 
-<Figure caption="Before: the home page as first generated, with the uppercase mono kicker, the red full stop, three button styles, the colour-coded graph with its legend, and the § section label below.">
+<Figure caption="Before: the home page after the AI overhaul, with the uppercase mono kicker, the red full stop, three button styles, the colour-coded graph with its legend, and the § section label below.">
   <Image src={before} alt="The old home hero in dark mode: an uppercase red mono kicker, the name with a red full stop, a long tagline, a status dot, three buttons and a colour-coded graph with a legend." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
 </Figure>
 
@@ -32,7 +32,7 @@ The starting point was a de-slop brief I wrote myself, with ideas from Reddit th
 - one serif and one sans, with mono only for code, dates and spec values;
 - one type ramp, one radius, one accent colour and two button styles;
 - no reveal-on-scroll, shadows, tilts or emoji used as icons;
-- plain copy, with a banned list of phrases the first version leaned on ("reliable systems", "with the spec as the anchor", "drawn to", "along the way");
+- plain copy, with a banned list of phrases the overhaul leaned on ("reliable systems", "with the spec as the anchor", "drawn to", "along the way");
 - keep the things that were mine: the hero glow, the dot grid, the wordmark and the dusk photo on the contact page.
 
 It also carried the rules that apply to everything on this site: no phone number or address, and nothing invented. If a fact could not be checked, it became a visible TODO or was left out.
@@ -77,4 +77,4 @@ The tools found problems. They did not decide what the site should be.
 
 ## What I would reuse
 
-Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent that generated the first design did most of the de-slopping, and the difference was the process around it.
+Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent that did the overhaul did most of the de-slopping, and the difference was the process around it.
