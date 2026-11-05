@@ -5,8 +5,8 @@
 import { phases, loopBacks } from '@/data/apex';
 import type { Locale } from '@/i18n';
 
-interface Props { lang: Locale }
-const { lang } = Astro.props;
+interface Props { lang: Locale; /** Fits its container, so it never scrolls and needs no tab stop. */ fit?: boolean }
+const { lang, fit = false } = Astro.props;
 
 const lines: Record<string, Record<Locale, string[]>> = {
   discovery: { en: ['Discovery &', 'Requirements'], pt: ['Descoberta e', 'Requisitos'] },
@@ -35,7 +35,7 @@ const t = {
 };
 ---
 
-<div class="strip-scroll">
+<div class="strip-scroll" tabindex={fit ? undefined : 0} role={fit ? undefined : 'region'} aria-label={fit ? undefined : t.title}>
   <svg class="phase-strip" viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ps-title ps-desc">
     <title id="ps-title">{t.title}</title>
     <desc id="ps-desc">{t.desc}</desc>

@@ -19,7 +19,7 @@ const { lang, title, summary, year, kicker, href, links = [] } = Astro.props;
   <h3 class="apex-feature-title"><a href={href}>{title}</a></h3>
   <p class="meta">{kicker}, {year}</p>
   <p class="apex-feature-summary">{summary}</p>
-  <div class="apex-diagram"><PhaseStrip lang={lang} /></div>
+  <div class="apex-diagram"><PhaseStrip lang={lang} fit /></div>
   <ol class="phase-list" role="list">
     {phases.map((p) => <li>{p.name[lang]}</li>)}
   </ol>

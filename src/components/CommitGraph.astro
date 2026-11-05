@@ -29,7 +29,7 @@ const months = ['2026-05-01', '2026-06-01', '2026-07-01', '2026-08-01', '2026-09
 const L = (en: string, pt: string) => (lang === 'pt' ? pt : en);
 ---
 <div class="cg">
-  <div class="cg-scroll">
+  <div class="cg-scroll" tabindex="0" role="region" aria-label={lang === 'pt' ? 'Grafo de commits' : 'Commit graph'}>
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="cg-t cg-d">
       <title id="cg-t">{L('Apex commit history as a git graph', 'Histórico de commits do Apex em forma de grafo git')}</title>
       <desc id="cg-d">{L(

@@ -24,7 +24,7 @@ const W = LEFT + weeks * P, H = TOP + 7 * P;
 const level = (n: number) => (n === 0 ? 0 : n <= 3 ? 1 : n <= 7 ? 2 : n <= 13 ? 3 : 4);
 const days = lang === 'pt' ? ['', 'seg', '', 'qua', '', 'sex', ''] : ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 ---
-<div class="hm-scroll">
+<div class="hm-scroll" tabindex="0" role="region" aria-label={lang === 'pt' ? 'Commits por dia' : 'Commits per day'}>
   <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={lang === 'pt' ? 'Commits por dia, de abril a outubro de 2026' : 'Commits per day, April to October 2026'}>
     {monthLabels.map((m) => <text class="lbl" x={m.x} y="11">{m.label}</text>)}
     {days.map((d, i) => d && <text class="lbl" x="0" y={TOP + i * P + 10}>{d}</text>)}

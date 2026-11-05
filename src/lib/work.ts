@@ -32,7 +32,7 @@ export function cardProps(e: WorkEntry, lang: Locale) {
     href: d.links.page ? localePath('work', lang, d.links.page) : undefined,
     links,
     internalLabel: d.internal ? t('work.internalNoLink') : undefined,
-    kicker: d.links.page === 'apex' ? t('work.thesisKicker') : t('work.kicker'),
+    kicker: d.links.page === 'apex' ? t('work.thesisKicker') : undefined,
     cover: d.cover,
     coverAlt: d.coverAlt,
     repo: d.links.repo,

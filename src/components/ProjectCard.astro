@@ -28,7 +28,7 @@ const chips = maxStack ? stack.slice(0, maxStack) : stack;
     {href ? <a href={href} class="card-link">{title}</a> : title}
   </h3>
   <header class="card-head">
-    <p class="meta">{kicker ?? 'Project'}{year && <span>, {year}</span>}</p>
+    <p class="meta">{[kicker, year].filter(Boolean).join(', ')}</p>
     {status && unfinished && <p class="meta">{status}</p>}
   </header>
   <p class="summary">{summary}</p>
