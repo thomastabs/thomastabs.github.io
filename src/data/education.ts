@@ -96,7 +96,7 @@ export const milestones: Milestone[] = [
     id: 'ms-opensoft',
     date: '2026-11-16',
     period: { en: '16 Nov 2026', pt: '16 nov. 2026' },
-    title: { en: 'Joining OpenSoft', pt: 'Entrada na OpenSoft' },
+    title: { en: 'Software Engineer at OpenSoft', pt: 'Engenheiro de Software na OpenSoft' },
   },
   {
     id: 'ms-defence',

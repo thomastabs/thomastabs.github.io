@@ -13,7 +13,7 @@ import { Image } from 'astro:assets';
 import before from '@/assets/notebook/deslop-home-before.webp';
 import after from '@/assets/notebook/deslop-home-after.webp';
 
-I designed the first version of this portfolio by hand. The idea behind the visual overhaul that followed was to use AI, given how much exposure LinkedIn and AI-made portfolios were getting. The overhaul worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
+I designed the first version of this portfolio by hand. LinkedIn and AI-made portfolios were then getting a lot of exposure, so I overhauled the visuals with AI. The overhaul worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
 
 The de-slop came from needing to scale that design back, because simpler is better. I did to it what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
 
@@ -53,11 +53,11 @@ After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near
 
 ### frontend-design as a second opinion
 
-The frontend-design skill lists the traits generated pages cluster around right now. Two of them still apply to this site: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines. The brief set both, so they stayed. Everything else on that list (one-word headline accents, numbered markers, entrance animations on every section, card shadows) is gone.
+The frontend-design skill lists the traits generated pages cluster around right now. Two of them applied to this site: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines. The brief set both, so they stayed at first; a later critique pushed me to drop the uppercase labels. Everything else on that list (one-word headline accents, numbered markers, entrance animations on every section, card shadows) is gone.
 
-### Checks that are not the agent's opinion
+### Measured checks
 
-The part I would keep for any project is the verification. Claude wrote small Playwright scripts that measured the built site instead of describing it:
+The part I would keep for any project is the verification. Claude wrote small Playwright scripts that measured the built site:
 
 - a metrics script that reads the computed style of every visible text element on 7 pages, at 2 widths and in 2 themes, and reports font families, type sizes, radii, uppercase count, accent uses per screen and contrast failures;
 - 27 function checks: theme toggle, language switch, filters, copy buttons, the mobile menu's focus trap, no horizontal scroll;
@@ -68,7 +68,7 @@ The result, measured: 7 type sizes (14, 16, 17, 20, 28, 40 and 56 px), radii of 
 
 ## Where my judgement still mattered
 
-The tools found problems. They did not decide what the site should be.
+Some decisions stayed with me.
 
 - The brief asked for a short list in the home Experience section. Once I saw it live, it was a boring list next to an Education timeline with logos, so Experience now uses the same timeline.
 - The brief kept the hero glow as brand. Later I toned its violet down to a faint corner, because on a dark screen it was the loudest thing on the page.
@@ -77,4 +77,4 @@ The tools found problems. They did not decide what the site should be.
 
 ## What I would reuse
 
-Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent that did the overhaul did most of the de-slopping, and the difference was the process around it.
+Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent did the overhaul and most of the de-slopping; the second time it had a brief and checks to answer to.

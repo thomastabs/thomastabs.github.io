@@ -27,12 +27,12 @@ const milestoneNotes: Record<string, string> = lang === 'pt'
 const items: Item[] = [
   ...experience.map((e) => ({
     id: e.id, key: e.start, kind: e.kind, period: e.period[lang], title: e.role[lang], org: e.org[lang],
-    summary: e.summary[lang], stack: e.stack, notesHref: e.notesSlug ? localePath('notebook', lang, e.notesSlug) : undefined,
+    summary: e.summary?.[lang], stack: e.stack, notesHref: e.notesSlug ? localePath('notebook', lang, e.notesSlug) : undefined,
     logo: e.logo, monogram: e.monogram,
   })),
   ...education.map((e) => ({
     id: e.id, key: e.start, kind: 'study' as Kind, period: e.period[lang], title: e.degree[lang], org: e.location ? `${e.institution} · ${e.location[lang]}` : e.institution,
-    summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined, e.coursework ? `${t('education.coursework')}: ${e.coursework.map((c) => c[lang]).join(', ')}.` : undefined].filter(Boolean).join(' ') || undefined,
+    summary: [e.details?.[lang], e.thesis ? `${t('education.thesis')}: ${e.thesis.title}.` : undefined].filter(Boolean).join(' ') || undefined,
     extraHref: e.thesis ? { href: localePath('work', lang, 'apex'), label: t('education.caseStudy') } : undefined,
     logo: e.logo, monogram: e.monogram,
   })),
@@ -83,7 +83,7 @@ const counts = Object.fromEntries(kinds.map((k) => [k, items.filter((i) => i.kin
         </TimelineEntry>
       ))}
     </ol>
-    <p class="sr-only" aria-live="polite" data-filter-status></p>
+    <p class="sr-only" aria-live="polite" data-filter-status data-template={t('journey.shown')}></p>
   </div>
 </BaseLayout>
 
@@ -113,7 +113,7 @@ const counts = Object.fromEntries(kinds.map((k) => [k, items.filter((i) => i.kin
         e.hidden = !on;
         if (on) shown++;
       });
-      if (status) status.textContent = `${shown}`;
+      if (status) status.textContent = (status.dataset.template ?? '').replace('{n}', String(shown));
     };
     buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.filter ?? 'all')));
   }

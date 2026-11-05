@@ -13,7 +13,6 @@ export const oneLiner: L10n = {
 
 export const header: { k: L10n; v: L10n | string; href?: string; mono?: boolean }[] = [
   { k: { en: 'Title', pt: 'Título' }, v: apexTitle },
-  { k: { en: 'Short name', pt: 'Nome curto' }, v: 'Apex' },
   {
     k: { en: 'Degree', pt: 'Grau' },
     v: {
@@ -261,7 +260,6 @@ export const stats = [
   { v: '1,640', l: { en: 'backend tests', pt: 'testes de backend' } },
   { v: '318', l: { en: 'frontend unit tests', pt: 'testes unitários de frontend' } },
   { v: '24', l: { en: 'E2E cases', pt: 'casos E2E' } },
-  { v: 'CI/CD', l: { en: 'to Azure Container Apps', pt: 'para Azure Container Apps' } },
 ];
 
 export const stack: { k: L10n; v: string }[] = [
@@ -312,8 +310,8 @@ export const findings: { title: L10n; text: L10n }[] = [
   {
     title: { en: 'Low workload, below-norm usability', pt: 'Carga baixa, usabilidade abaixo da norma' },
     text: {
-      en: 'Across thirteen sessions, perceived workload was low (Raw NASA-TLX 21.5/100) while usability sat below the published corpus mean (SUS 56.73, grade D). Most of the difficulty came at first contact with a dense interface: the tool asks little of a practitioner who already knows where they are, and does too little to get them there.',
-      pt: 'Nas treze sessões, a carga percebida foi baixa (Raw NASA-TLX 21,5/100) e a usabilidade ficou abaixo da média publicada (SUS 56,73, nota D). A maior parte da dificuldade surgiu no primeiro contacto com uma interface densa: a ferramenta pede pouco a quem já sabe onde está, e faz pouco para lá levar quem não sabe.',
+      en: 'Across thirteen sessions, perceived workload was low (Raw NASA-TLX 21.5/100) while usability sat below the published corpus mean (SUS 56.73, grade D). Most of the difficulty came at first contact with a dense interface: a practitioner who already knows where they are finds it undemanding, and the tool does too little to get newcomers to that point.',
+      pt: 'Nas treze sessões, a carga percebida foi baixa (Raw NASA-TLX 21,5/100) e a usabilidade ficou abaixo da média publicada (SUS 56,73, nota D). A maior parte da dificuldade surgiu no primeiro contacto com uma interface densa: quem já sabe onde está acha-a pouco exigente, e a ferramenta faz pouco para lá levar quem chega de novo.',
     },
   },
   {

@@ -34,7 +34,7 @@ export const nodes: GraphNode[] = [
     years: { en: '2021 – 2024', pt: '2021 – 2024' },
   },
   {
-    id: 'community', kind: 'community', x: 92, y: 158, side: 'right', anchor: 'exp-neeti',
+    id: 'community', kind: 'community', x: 92, y: 132, side: 'right', anchor: 'exp-neeti',
     label: { en: 'NEETI · Mentoring', pt: 'NEETI · Mentoria' },
     role: { en: 'Events coordinator · First-year mentor', pt: 'Coord. de eventos · Mentor do 1.º ano' },
     years: { en: '2022 – 2025', pt: '2022 – 2025' },
@@ -72,8 +72,8 @@ export const nodes: GraphNode[] = [
   {
     id: 'next', kind: 'milestone', x: 596, y: 72, side: 'left', anchor: 'ms-opensoft', future: true,
     label: { en: 'OpenSoft', pt: 'OpenSoft' },
-    role: { en: 'Starting 16 Nov 2026', pt: 'A partir de 16 nov. 2026' },
-    years: { en: 'Nov 2026 →', pt: 'nov. 2026 →' },
+    role: { en: 'Software Engineer', pt: 'Engenheiro de Software' },
+    years: { en: 'From Nov 2026', pt: 'A partir de nov. 2026' },
   },
 ];
 

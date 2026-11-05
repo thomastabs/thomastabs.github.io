@@ -6,7 +6,7 @@ export const about: L10n[] = [
     pt: 'Sou engenheiro de software em Lisboa. Fiz o Mestrado em Engenharia Informática e de Computadores no Técnico, com especialização em Engenharia de Software e Cibersegurança. A minha tese, o Apex, é uma framework e uma ferramenta para usar agentes de IA ao longo do ciclo de vida do software. Teve 17/20.',
   },
   {
-    en: 'At Caixa Mágica I built Gescol, an internal absence-management tool. I have been a teaching assistant at the Técnico+ AI Agents bootcamp twice. On 16 November 2026 I join OpenSoft.',
-    pt: 'Na Caixa Mágica desenvolvi o Gescol, uma ferramenta interna de gestão de ausências. Fui duas vezes assistente de ensino no bootcamp de Agentes de IA do Técnico+. A 16 de novembro de 2026 entro na OpenSoft.',
+    en: 'At Caixa Mágica I built Gescol, an internal absence-management tool. I have been a teaching assistant at the Técnico+ AI Agents bootcamp twice. From November 2026 I work at OpenSoft.',
+    pt: 'Na Caixa Mágica desenvolvi o Gescol, uma ferramenta interna de gestão de ausências. Fui duas vezes assistente de ensino no bootcamp de Agentes de IA do Técnico+. A partir de novembro de 2026 trabalho na OpenSoft.',
   },
 ];

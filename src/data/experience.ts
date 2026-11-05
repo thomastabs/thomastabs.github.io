@@ -10,7 +10,7 @@ export interface Experience {
   period: L10n;
   role: L10n;
   org: L10n;
-  summary: L10n;
+  summary?: L10n;
   stack?: string[];
   /** Slug of a Notebook post → adds "Read the notes →". */
   notesSlug?: string;
@@ -27,10 +27,6 @@ export const experience: Experience[] = [
     period: { en: 'Oct 2026 – Nov 2026', pt: 'out. 2026 – nov. 2026' },
     role: { en: 'Teaching Assistant, AI Agents Bootcamp (second edition)', pt: 'Assistente de Ensino, Bootcamp de Agentes de IA (segunda edição)' },
     org: { en: 'Técnico+ Formação Avançada (IST) · Lisbon', pt: 'Técnico+ Formação Avançada (IST) · Lisboa' },
-    summary: {
-      en: 'Supported participants in the second edition of the AI Agents bootcamp.',
-      pt: 'Apoiei os participantes na segunda edição do bootcamp de Agentes de IA.',
-    },
   },
   {
     id: 'exp-caixa-magica',
