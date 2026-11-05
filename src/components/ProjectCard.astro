@@ -60,7 +60,7 @@ const showTile = !cover && !!repoPath;
   )}
   {(links.length > 0 || internalLabel) && (
     <footer class="card-links">
-      {links.map((l) => <a class="pen-link" href={l.href}>{l.label}{l.href.startsWith("http") ? <span class="ext" aria-hidden="true"></span> : ''}</a>)}
+      {links.map((l) => <a class="pen-link" href={l.href}>{l.label}</a>)}
       {internalLabel && <span class="meta">{internalLabel}</span>}
     </footer>
   )}
