@@ -20,7 +20,7 @@ const srcset = (imgs: { src: string; options: { width?: number } }[]) => imgs.ma
   <section class="contact" id="contact" aria-labelledby="contact-title">
     <div class="scene">
       <div class="container scene-head" data-theme="dark">
-        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} />
+        <SectionHeading n={6} label={t('section.contact')} title={t('contact.title')} id="contact-title" level={level} display={level === 'h2'} />
         <p class="lead contact-lead">{t('contact.lead')}</p>
       </div>
       <picture class="scene-img">
