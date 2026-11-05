@@ -17,18 +17,13 @@ interface Props {
   kicker?: string;
   cover?: ImageMetadata;
   coverAlt?: string;
-  /** No screenshot: show the repository name instead (public repos only). */
-  repo?: string;
   maxStack?: number;
   unfinished?: boolean;
 }
-const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker, cover, coverAlt = '', repo, maxStack, unfinished = false } = Astro.props;
+const { title, summary, year, status, stack = [], href, links = [], internalLabel, featured = false, kicker, cover, coverAlt = '', maxStack, unfinished = false } = Astro.props;
 const chips = maxStack ? stack.slice(0, maxStack) : stack;
-const repoPath = repo?.replace(/^https?:\/\/github\.com\//, '').replace(/\/$/, '');
-const [owner, name] = repoPath ? repoPath.split('/') : [];
-const showTile = !cover && !!repoPath;
 ---
-<article class:list={['card', { featured, 'has-cover': !!cover }]}>
+<article class:list={['card', { featured, 'has-cover': featured && !!cover }]}>
   <h3 class="card-title">
     {href ? <a href={href} class="card-link">{title}</a> : title}
   </h3>
@@ -37,19 +32,9 @@ const showTile = !cover && !!repoPath;
     {status && unfinished && <p class="meta">{status}</p>}
   </header>
   <p class="summary">{summary}</p>
-  {cover && (
+  {featured && cover && (
     <div class="shot">
       <Image src={cover} alt={coverAlt} widths={featured ? [640, 1040, 1400] : [400, 640]} sizes={featured ? '(min-width: 1100px) 1000px, 100vw' : '(min-width: 900px) 320px, 100vw'} loading="lazy" quality={75} />
-    </div>
-  )}
-  {showTile && (
-    <div class="shot tile" aria-hidden="true">
-      <div class="tile-top">
-        <svg class="gh" viewBox="0 0 16 16" width="22" height="22"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
-      </div>
-      <p class="repo mono">
-        <span class="owner">{owner}/</span><span class="rname">{name}</span>
-      </p>
     </div>
   )}
   <slot />
@@ -89,6 +74,7 @@ const showTile = !cover && !!repoPath;
   .chip-list { display: flex; flex-wrap: wrap; gap: var(--s-2); padding: 0; margin-top: auto; padding-top: var(--s-2); list-style: none; }
   .card-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); font-size: var(--t-16); }
   .card-links a { position: relative; z-index: 1; }
+  .card-links .meta { font-size: inherit; }
   .shot { border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; background: var(--surface-2); }
   .shot :global(img) { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; }
   @media (min-width: 900px) {
@@ -97,13 +83,6 @@ const showTile = !cover && !!repoPath;
     .featured.has-cover > .shot { grid-column: 2; grid-row: 1 / span 6; align-self: start; }
     .featured.has-cover .shot :global(img) { aspect-ratio: 16 / 10; }
   }
-  /* A plain repo line: a tile here was a card inside a card. */
-  .shot.tile { display: flex; align-items: center; gap: var(--s-2); padding: 0; aspect-ratio: auto; background: none; border: 0; border-radius: 0; box-shadow: none; color: var(--ink); }
-  .tile-top { display: flex; align-items: center; justify-content: space-between; }
-  .gh { color: var(--ink); }
-  .repo { font-size: var(--t-14); line-height: 1.3; overflow-wrap: anywhere; }
-  .repo .owner { color: var(--muted); }
-  .repo .rname { font-weight: 500; }
   .featured { padding: var(--s-6); }
   .featured .card-title { font-size: var(--t-28); max-width: 24ch; }
   .featured .summary { font-size: var(--t-17); max-width: var(--measure); }

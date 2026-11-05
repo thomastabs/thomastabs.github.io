@@ -6,7 +6,7 @@ import SectionHeading from '@/components/SectionHeading.astro';
 import SpecBlock from '@/components/SpecBlock.astro';
 import TimelineEntry from '@/components/TimelineEntry.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
-import PhaseStrip from '@/components/PhaseStrip.astro';
+import ApexFeature from '@/components/ApexFeature.astro';
 import PostCard from '@/components/PostCard.astro';
 import ContactSection from '@/components/ContactSection.astro';
 import portrait from '@/assets/portrait/portrait.jpg';
@@ -14,7 +14,6 @@ import { useTranslations, type Locale } from '@/i18n';
 import { localePath } from '@/i18n/routes';
 import { about } from '@/data/about';
 import { skills } from '@/data/skills';
-import { phases } from '@/data/apex';
 import { experience } from '@/data/experience';
 import { education } from '@/data/education';
 import { profile } from '@/data/links';
@@ -73,20 +72,7 @@ const personLd = {
   <section class="container section-tight" id="work" aria-labelledby="work-title">
     <SectionHeading n={4} label={t('section.selectedWork')} id="work-title" />
     <div class="work-grid">
-      {apexCard && (
-        <article class="apex-feature">
-          <h3 class="apex-feature-title"><a href={apexCard.href}>{apexCard.title}</a></h3>
-          <p class="meta">{apexCard.kicker}, {apexCard.year}</p>
-          <p class="apex-feature-summary">{apexCard.summary}</p>
-          <div class="apex-diagram"><PhaseStrip lang={lang} /></div>
-          <ol class="phase-list" role="list">
-            {phases.map((p) => <li>{p.name[lang]}</li>)}
-          </ol>
-          <div class="apex-feature-links">
-            {apexCard.links?.map((l) => <a class="pen-link" href={l.href}>{l.label}</a>)}
-          </div>
-        </article>
-      )}
+      {apexCard && <ApexFeature lang={lang} {...apexCard} />}
       <div class="work-row">
         {others.map((e) => <ProjectCard maxStack={4} {...cardProps(e, lang)} />)}
       </div>
@@ -194,22 +180,5 @@ const personLd = {
   .coursework[open] summary::before { content: '−'; }
 
   .work-grid { display: grid; gap: var(--s-5); margin-bottom: var(--s-5); }
-  /* Apex is the one loud thing on the page: its phase and gate diagram, full width. */
-  .apex-feature { display: grid; gap: var(--s-3); padding: var(--s-6); border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--surface); }
-  .apex-feature-title { font-size: var(--t-40); line-height: 1.1; }
-  .apex-feature-title a { text-decoration: none; }
-  .apex-feature-title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
-  .apex-feature-summary { font-size: var(--t-17); color: var(--ink-2); max-width: var(--measure); }
-  .apex-diagram { display: none; margin-block: var(--s-5) var(--s-3); }
-  .apex-diagram :global(.strip-scroll) { overflow: visible; margin: 0; padding: 0; }
-  .apex-diagram :global(.phase-strip) { min-width: 0; }
-  .phase-list { display: grid; gap: var(--s-1); margin: var(--s-2) 0; padding: 0; list-style: none; counter-reset: phase; }
-  .phase-list li { counter-increment: phase; display: flex; gap: var(--s-2); padding-block: var(--s-1); border-top: 1px solid var(--rule); }
-  .phase-list li::before { content: 'P' counter(phase); width: 2rem; flex: none; font-family: var(--font-mono); font-size: var(--t-14); line-height: 1.7; color: var(--muted); }
-  .apex-feature-links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-5); padding-top: var(--s-3); border-top: 1px solid var(--rule); font-size: var(--t-16); }
-  @media (min-width: 761px) {
-    .apex-diagram { display: block; }
-    .phase-list { display: none; }
-  }
   .work-row { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
 </style>
