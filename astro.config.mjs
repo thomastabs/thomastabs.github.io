@@ -34,6 +34,10 @@ const footnotesPtFor = (ctx) => (/\/notebook\/pt\//.test(ctx.fileURL?.pathname ?
 export default defineConfig({
   site: 'https://tomastaborda.com',
   trailingSlash: 'ignore',
+  redirects: {
+    '/notebook/de-slopping-my-portfolio': '/notebook/ai-assisted-development-on-my-portfolio/',
+    '/pt/caderno/limpar-o-design-do-portfolio': '/pt/caderno/desenvolvimento-assistido-por-ia-no-portfolio/',
+  },
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'pt'],
@@ -42,7 +46,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: (page) => !page.includes('/styleguide'),
+      filter: (page) => !page.includes('/styleguide') && !page.includes('de-slopping') && !page.includes('limpar-o-design'),
       i18n: { defaultLocale: 'en', locales: { en: 'en', pt: 'pt-PT' } },
     }),
   ],

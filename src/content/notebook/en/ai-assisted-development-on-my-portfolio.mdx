@@ -28,7 +28,7 @@ The clean-up came from needing to scale that design back, because simpler is bet
 
 ## The brief
 
-The starting point was a de-slop brief I wrote myself, with ideas from Reddit threads on what makes a generated UI recognisable and with Claude's help on the wording. It was specific about outcomes and left the method open:
+The starting point was a brief I wrote myself, with ideas from Reddit threads on what makes a generated UI recognisable and with Claude's help on the wording. It was specific about outcomes and left the method open:
 
 - one serif and one sans, with mono only for code, dates and spec values;
 - one type ramp, one radius, one accent colour and two button styles;
@@ -65,7 +65,7 @@ The part I would keep for any project is the verification. Claude wrote small Pl
 - a link checker over every built page and every external link;
 - Lighthouse on 8 pages, mobile and desktop.
 
-The result, measured: 7 type sizes (14, 16, 17, 20, 28, 40 and 56 px), radii of 4 px and a pill, at most 2 accent uses per screen, 0 contrast failures, 0 broken internal links, and Lighthouse performance between 98 and 100 with 100 everywhere else. Before and after screenshots of 6 pages, at 2 widths and in 2 themes, are in the repository next to a report that maps each line of the brief to its evidence.
+The result, measured: 7 type sizes (14, 16, 17, 20, 28, 40 and 56 px), radii of 4 px and a pill, at most 2 accent uses per screen, not counting the wordmark, 0 contrast failures, 0 broken internal links, and Lighthouse performance between 98 and 100 with 100 everywhere else. Before and after screenshots of 6 pages, at 2 widths and in 2 themes, are in the repository next to a report that maps each line of the brief to its evidence.
 
 ## Where my judgement still mattered
 
@@ -94,7 +94,7 @@ The larger finding was the Apex ledger, a hand-built page that the first pass ha
 
 I had Claude rebuild the ledger inside the site's design, in both languages, and then ran everything again. Lighthouse found a layout shift of 0.177 on the Portuguese home page on phones, caused by a font arriving late. Preloading it fixed that. The same check showed three font files that every page downloaded and no page used, so those went too, which then widened every paragraph, because the browser had been measuring `ch` from one of them. The detector caught that with 22 line-length findings, and the text width went back to what it was.
 
-The final run: Lighthouse on 11 pages, mobile and desktop, scored 99 to 100 on performance and 100 on everything else. The detector reports 0 findings on the built pages at both widths, axe is clean on 12 pages at 2 widths in 2 themes, and the metrics script reads 7 type sizes and 0 uppercase elements, leaving out chart labels inside SVGs. My rescore of the audit is 19/20. The missing point is judgement: serif and crimson on off-white is still a familiar look. I did not re-run the critique after these fixes.
+The final run: Lighthouse on 11 pages, mobile and desktop, scored 99 to 100 on performance and 100 on everything else. The detector reports 0 findings on the built pages at both widths, axe is clean on 12 pages at 2 widths in 2 themes, and the metrics script reads 7 type sizes and 0 uppercase elements, leaving out chart labels inside SVGs. My rescore of the audit is 19/20. A new critique, run by a separate Claude agent that had not seen the earlier scores or the detector output, gave 24/32. Its main point matches the audit point I held back: serif and crimson on off-white is still a familiar look, and the path tracing, the site's one original idea, does not reach phones.
 
 ## What I would reuse
 

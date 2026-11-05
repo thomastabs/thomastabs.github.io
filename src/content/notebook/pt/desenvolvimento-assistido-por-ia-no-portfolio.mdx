@@ -65,7 +65,7 @@ A parte que manteria em qualquer projeto é a verificação. O Claude escreveu p
 - um verificador de ligações sobre todas as páginas construídas e todas as ligações externas;
 - Lighthouse em 8 páginas, em telemóvel e computador.
 
-O resultado, medido: 7 tamanhos de letra (14, 16, 17, 20, 28, 40 e 56 px), raios de 4 px e de pílula, no máximo 2 usos da cor de destaque por ecrã, 0 falhas de contraste, 0 ligações internas partidas, e desempenho no Lighthouse entre 98 e 100, com 100 em tudo o resto. As capturas de antes e depois de 6 páginas, em 2 larguras e nos 2 temas, estão no repositório, ao lado de um relatório que liga cada ponto do brief à sua evidência.
+O resultado, medido: 7 tamanhos de letra (14, 16, 17, 20, 28, 40 e 56 px), raios de 4 px e de pílula, no máximo 2 usos da cor de destaque por ecrã, sem contar com o logótipo, 0 falhas de contraste, 0 ligações internas partidas, e desempenho no Lighthouse entre 98 e 100, com 100 em tudo o resto. As capturas de antes e depois de 6 páginas, em 2 larguras e nos 2 temas, estão no repositório, ao lado de um relatório que liga cada ponto do brief à sua evidência.
 
 ## Onde o meu critério continuou a contar
 
@@ -94,7 +94,7 @@ A descoberta maior foi o diário do Apex, uma página feita à mão que a primei
 
 Pedi ao Claude que reconstruísse o diário dentro do design do site, nas duas línguas, e depois voltei a correr tudo. O Lighthouse encontrou um deslocamento de layout de 0,177 na página inicial em português no telemóvel, causado por uma fonte que chegava tarde. Pré-carregá-la resolveu o problema. A mesma verificação mostrou três ficheiros de fontes que todas as páginas descarregavam e nenhuma usava, por isso também saíram, o que alargou todos os parágrafos, porque o navegador estava a medir o `ch` a partir de um deles. O detetor apanhou isso com 22 avisos de comprimento de linha, e a largura do texto voltou ao que era.
 
-A execução final: o Lighthouse em 11 páginas, em telemóvel e computador, deu 99 a 100 em desempenho e 100 em tudo o resto. O detetor não encontra problemas nas páginas construídas em nenhuma das larguras, o axe não acusa nada em 12 páginas, em 2 larguras e nos 2 temas, e o script de métricas lê 7 tamanhos de letra e 0 elementos em maiúsculas, sem contar com as etiquetas de gráficos dentro de SVG. A minha reavaliação da auditoria dá 19/20. O ponto que falta é de critério: serifa e carmesim sobre esbranquiçado continua a ser um visual familiar. Não voltei a correr a crítica depois destas correções.
+A execução final: o Lighthouse em 11 páginas, em telemóvel e computador, deu 99 a 100 em desempenho e 100 em tudo o resto. O detetor não encontra problemas nas páginas construídas em nenhuma das larguras, o axe não acusa nada em 12 páginas, em 2 larguras e nos 2 temas, e o script de métricas lê 7 tamanhos de letra e 0 elementos em maiúsculas, sem contar com as etiquetas de gráficos dentro de SVG. A minha reavaliação da auditoria dá 19/20. Uma nova crítica, feita por um agente Claude separado que não tinha visto as pontuações anteriores nem o resultado do detetor, deu 24/32. O seu ponto principal coincide com o ponto que não dei à auditoria: serifa e carmesim sobre esbranquiçado continua a ser um visual familiar, e o traçado do percurso, a única ideia original do site, não chega aos telemóveis.
 
 ## O que voltaria a usar
 
