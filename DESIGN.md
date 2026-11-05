@@ -94,7 +94,7 @@ An engineering notebook: neutral paper in light mode, a drafting table in dark m
 ## Colors
 
 - Neutral paper and ink carry almost everything. Don't bring back the old warm cream.
-- `pen` crimson is the only accent: primary button, active states, the graph's next stop and traced path.
+- `pen` crimson is the only accent: primary button, active states, the graph's next stop and the traced path. The path is the site's signature: lit on hover in the desktop graph, always lit on the phone path and the timeline rails. The newest stop is filled.
 - Violet exists only as a faint corner in the hero wash.
 
 ## Typography

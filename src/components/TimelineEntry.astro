@@ -46,17 +46,17 @@ const withLogo = !!(logo || monogram);
     padding: 0 0 var(--s-7) var(--s-6);
     list-style: none;
   }
-  /* axis */
+  /* The path: the hero's crimson trace continues down the timeline to the newest stop on top. */
   .tl-entry::before {
     content: '';
     position: absolute;
     left: 5px;
     top: var(--s-3);
     bottom: calc(var(--s-2) * -1);
-    width: 1px;
-    background: var(--rule-strong);
+    width: 1.5px;
+    background: var(--pen);
   }
-  .tl-entry:last-child::before { background: linear-gradient(var(--rule-strong), transparent); }
+  .tl-entry:last-child::before { background: linear-gradient(var(--pen), transparent); }
   .node {
     position: absolute;
     left: 0;
@@ -67,6 +67,8 @@ const withLogo = !!(logo || monogram);
     background: var(--bg);
     border: 2px solid var(--ink-2);
   }
+  /* First visible entry, so a filtered list still ends on a filled stop. */
+  .tl-entry:not([hidden]):not(.tl-entry:not([hidden]) ~ .tl-entry) .node { background: var(--pen); border-color: var(--pen); }
   .period { padding-top: var(--s-1); }
   .tl-title { font-size: var(--t-20); }
   .org { margin-top: var(--s-1); font-size: var(--t-16); color: var(--ink-2); }

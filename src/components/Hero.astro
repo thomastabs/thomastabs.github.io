@@ -31,9 +31,10 @@ const Name = headingLevel;
 
 <style>
   /* Dusk wash: the same violet-to-red sky as the contact photo, so the page opens and
-     closes in one light. Strength is lower in light mode. The violet is a faint corner accent; red carries the wash. */
+     closes in one light. Light mode keeps only a trace of it, because the same wash turns pink on pale paper. The violet is a faint corner accent; red carries the wash. */
   .hero {
-    --dusk: 16%;
+    --dusk: 3.5%;
+    --dusk-band: 0;
     --dusk-violet: #6b2fa0;
     position: relative;
     isolation: isolate;
@@ -51,10 +52,10 @@ const Name = headingLevel;
     background:
       radial-gradient(ellipse 60% 75% at 78% 105%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 1.7), transparent), transparent 70%),
       radial-gradient(ellipse 35% 40% at 100% 0%, color-mix(in srgb, var(--dusk-violet) calc(var(--dusk) * 0.5), transparent), transparent 70%),
-      linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--pen) calc(var(--dusk) * 0.6), transparent));
+      linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--pen) calc(var(--dusk) * var(--dusk-band)), transparent));
   }
-  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; } }
-  :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-violet: #8a3fd0; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme='light'])) .hero { --dusk: 24%; --dusk-band: 0.6; --dusk-violet: #8a3fd0; } }
+  :global(:root[data-theme='dark']) .hero { --dusk: 24%; --dusk-band: 0.6; --dusk-violet: #8a3fd0; }
 
   .hero-grid {
     display: grid;

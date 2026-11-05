@@ -77,6 +77,9 @@ export const nodes: GraphNode[] = [
   },
 ];
 
+/** Stops on the phone path, newest first. */
+export const phonePath = ['next', 'apex', 'caixa-magica', 'ist-msc', 'ist-bsc'];
+
 /** Edges: [from, to, bend]. bend offsets the control point (hand-drawn curvature). */
 export const edges: [string, string, number][] = [
   ['mem-martins', 'ist-bsc', -14],
