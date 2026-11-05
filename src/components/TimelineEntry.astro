@@ -33,7 +33,7 @@ const withLogo = !!(logo || monogram);
       </div>
     </div>
     <div class="desc"><slot /></div>
-    {notesHref && <a class="pen-link notes" href={notesHref}>{notesLabel} →</a>}
+    {notesHref && <a class="pen-link notes" href={notesHref}>{notesLabel}</a>}
   </div>
 </li>
 <style>
@@ -70,6 +70,7 @@ const withLogo = !!(logo || monogram);
   .period { padding-top: var(--s-1); }
   .tl-title { font-size: var(--t-20); }
   .org { margin-top: var(--s-1); font-size: var(--t-16); color: var(--ink-2); }
+  .desc:empty { display: none; }
   .desc { margin-top: var(--s-3); color: var(--ink-2); max-width: var(--measure); }
   .notes { display: inline-block; margin-top: var(--s-3); font-size: var(--t-16); }
   @media (max-width: 720px) {

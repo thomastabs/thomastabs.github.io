@@ -110,6 +110,11 @@ const scholarlyLd = {
       </nav>
       <h1 class="apex-title">Apex</h1>
       <p class="lead oneliner">{apex.oneLiner[lang]}</p>
+      <div class="links-top">
+        {topLinks.map((l) => (
+          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : ''}</a>
+        ))}
+      </div>
       <div class="head-spec">
         <SpecBlock rows={apex.header.filter((r) => !r.href).map((r) => ({ k: r.k[lang], v: loc(r.v, lang), href: r.href, mono: r.mono }))} />
       </div>
@@ -119,11 +124,6 @@ const scholarlyLd = {
   <!-- ===== Links bar ===== -->
   <nav class="links-bar" aria-label={L('Thesis artefacts', 'Artefactos da tese')}>
     <div class="container">
-      <div class="links-top">
-        {topLinks.map((l) => (
-          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? ' ↗' : ''}</a>
-        ))}
-      </div>
       <details class="links-more">
         <summary>{L('All thesis files and links', 'Todos os ficheiros e ligações da tese')}</summary>
         <div class="links-inner">
@@ -197,6 +197,13 @@ const scholarlyLd = {
         {L(
           'The framework is a method: phases, hats, artefacts and decision rules that prescribe how a team organises AI participation across the lifecycle. It describes process and does not depend on any tool. A Strategic Alignment stage decides whether a Unit of Work should exist at all. Six phases follow, each consuming the output of the one before and closed by a gate with a named owning hat. Failure never discards work: it returns it to a named earlier phase with the evidence attached.',
           'A framework é um método: fases, chapéus, artefactos e regras de decisão que prescrevem como uma equipa organiza a participação da IA ao longo do ciclo de vida. Descreve o processo e não depende de nenhuma ferramenta. Uma etapa de Alinhamento Estratégico decide se uma Unidade de Trabalho deve sequer existir. Seguem-se seis fases, cada uma a consumir o resultado da anterior e fechada por um portão com um chapéu responsável. Uma falha nunca deita trabalho fora: devolve-o a uma fase anterior identificada, com a evidência anexada.',
+        )}
+      </p>
+
+      <p class="prose-p">
+        {L(
+          'Two terms recur below. A Bolt is the smallest unit of execution: the implementation of one task within a User Story. The Trio is the Product Owner, Tech Lead and Design Lead hats together, and it owns Discovery and Design.',
+          'Dois termos repetem-se abaixo. Um Bolt é a unidade mais pequena de execução: a implementação de uma tarefa dentro de uma User Story. O Trio é o conjunto dos chapéus de Product Owner, Tech Lead e Design Lead, e é dono da Descoberta e do Design.',
         )}
       </p>
 
@@ -335,7 +342,7 @@ const scholarlyLd = {
           <tbody>{apex.results.map((r) => <tr><th scope="row">{r.k[lang]}</th><td class="mono-sm">{r.v[lang]}</td></tr>)}</tbody>
         </table>
       </div>
-      <p class="prose-p muted-note">{L('The limitations below are part of the result.', 'As limitações abaixo fazem parte do resultado.')}</p>
+      <p class="prose-p muted-note">{L('Limitations found in the evaluation:', 'Limitações encontradas na avaliação:')}</p>
       <div class="findings">
         {apex.findings.map((f) => (
           <article><h3>{f.title[lang]}</h3><p>{f.text[lang]}</p></article>
@@ -347,8 +354,8 @@ const scholarlyLd = {
     <section class="block" aria-labelledby="history">
       <SectionHeading n={8} label={L('History', 'Histórico')} id="history" />
       <p class="prose-p">{L(
-        'Six months, one repository. The app and the dissertation share a git history, so the way the work was built can be read back out of it: when the stack changed, when the thesis started pulling commits away from the app, and which bugs were only found by writing about the tool.',
-        'Seis meses, um repositório. A aplicação e a dissertação partilham o mesmo histórico git, por isso a forma como o trabalho foi feito pode ser lida a partir dele: quando a stack mudou, quando a tese começou a tirar commits à aplicação e que bugs só apareceram ao escrever sobre a ferramenta.')}</p>
+        'The app and the dissertation share one git history across six months, so the way the work was built can be read back out of it: when the stack changed, when the thesis started pulling commits away from the app, and which bugs were only found by writing about the tool.',
+        'A aplicação e a dissertação partilham um só histórico git ao longo de seis meses, por isso a forma como o trabalho foi feito pode ser lida a partir dele: quando a stack mudou, quando a tese começou a tirar commits à aplicação e que bugs só apareceram ao escrever sobre a ferramenta.')}</p>
       <ul class="stats" role="list">
         {hist.historyStats.map((s) => <li><span class="stat-v">{s.v}</span><span class="stat-l">{s.l[lang]}</span></li>)}
       </ul>
@@ -417,10 +424,9 @@ const scholarlyLd = {
       </Figure>
 
       <a class="ledger-card" href="/work/apex/ledger/">
-        <p class="kicker">{L('Full record', 'Registo completo')}</p>
         <h3>Apex &amp; Thesis Ledger</h3>
         <p>{L('The original dashboard this section draws on: every timeline entry, chapter write dates, page budgets and the backlog close-out.', 'O painel original em que esta secção se baseia: todas as entradas da linha do tempo, datas de escrita dos capítulos, limites de páginas e o fecho do backlog.')}</p>
-        <span class="ledger-go">{L('Open the ledger', 'Abrir o diário')} →</span>
+        <span class="ledger-go">{L('Open the ledger', 'Abrir o diário')}</span>
       </a>
     </section>
 
@@ -447,9 +453,13 @@ const scholarlyLd = {
       <section class="block" aria-labelledby="related">
         <h2 id="related" class="related-h">{t('notebook.related')}</h2>
         <div>{related.map((p) => <PostCard {...postCardProps(p, t)} />)}</div>
-        <a class="pen-link" href={tagHref(thesisTag, lang)}>#{thesisTag} →</a>
+        <a class="pen-link" href={tagHref(thesisTag, lang)}>#{thesisTag}</a>
       </section>
     )}
+
+    <section class="block apex-end">
+      <a class="btn btn--primary" href={localePath('contact', lang)}>{L('Write to me about the thesis', 'Escreva-me sobre a tese')}</a>
+    </section>
   </div>
 </BaseLayout>
 
@@ -462,7 +472,7 @@ const scholarlyLd = {
   .head-spec { margin-top: var(--s-6) !important; }
 
   .links-bar { border-bottom: 1px solid var(--rule); background: var(--surface); }
-  .links-top { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); padding-top: var(--s-5); }
+  .apex-head .links-top { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-3); margin-top: var(--s-5); }
   .links-more summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: var(--s-2); margin-block: var(--s-2); font-size: var(--t-16); list-style: none; }
   .links-more summary::-webkit-details-marker { display: none; }
   .links-more summary::before { content: '+'; color: var(--muted); width: 1ch; }
@@ -511,6 +521,13 @@ const scholarlyLd = {
   .phase-table thead th, .results thead th { font-size: var(--t-14); font-weight: 400; color: var(--muted); border-bottom-color: var(--rule-strong); }
   .phase-table tbody th, .results tbody th { font-weight: 500; }
   .phase-table td { color: var(--ink-2); }
+  /* Phones: the phase table stacks, so nothing sits offscreen behind a silent scroll. */
+  @media (max-width: 560px) {
+    .phase-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    .phase-table, .phase-table tbody, .phase-table tr, .phase-table th, .phase-table td { display: block; }
+    .phase-table tr { padding-block: var(--s-3); border-bottom: 1px solid var(--rule); }
+    .phase-table tbody th, .phase-table td { padding: 0 0 var(--s-1); border: 0; }
+  }
   .phase-n { color: var(--muted); font-size: var(--t-14); }
   .mono-sm { font-family: var(--font-mono); font-size: var(--t-14); color: var(--ink-2); }
 
@@ -590,7 +607,7 @@ const scholarlyLd = {
   .tl-x { color: var(--ink-2); font-size: var(--t-16); }
   @media (max-width: 720px) { .hist-tl li { grid-template-columns: 1fr; gap: var(--s-1); } }
 
-  .related-h { font-size: var(--t-20); }
+  .related-h { font-family: var(--font-body); letter-spacing: -0.01em; }
   .bib { max-width: none; }
   .bib :global(pre) { white-space: pre-wrap; word-break: break-word; }
 </style>

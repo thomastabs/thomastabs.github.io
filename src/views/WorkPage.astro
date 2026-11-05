@@ -65,14 +65,14 @@ const [lead, ...rest] = featured;
         </tbody>
       </table>
     </div>
-    <a class="pen-link more" href={profile.github}>{t('cta.moreOnGithub')} →</a>
+    <a class="pen-link more" href={profile.github}>{t('cta.moreOnGithub')} ↗</a>
   </section>
 </BaseLayout>
 
 <style>
   .page-head { padding-top: var(--s-8); }
   .intro { margin-top: var(--s-3); }
-  .sub { margin-bottom: var(--s-3); font-size: var(--t-20); }
+  .sub { margin-bottom: var(--s-4); font-family: var(--font-body); letter-spacing: -0.01em; }
   .featured { display: grid; gap: var(--s-5); }
   .grid { display: grid; gap: var(--s-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
 

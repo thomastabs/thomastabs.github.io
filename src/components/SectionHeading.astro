@@ -1,6 +1,6 @@
 ---
 /* Section heading.
-   level="h2" (home and Apex sections): one small label line, "About". The label IS the heading.
+   level="h2" (home and Apex sections): a sans heading under a rule, larger than the serif item titles below it.
    `n` is accepted for compatibility and not rendered (section numbers were removed).
    level="h1" (page heads): the page name as a serif title, with an optional lead in the slot.
    `title` and `meta` are accepted for compatibility and ignored on h2; on h1, `title` wins. */
@@ -10,19 +10,16 @@ const { label, title, id, level = 'h2' } = Astro.props;
 <div class="section-heading">
   {level === 'h1'
     ? <h1 id={id} class="page-title">{title ?? label}</h1>
-    : <h2 id={id} class="section-label">{label}</h2>}
+    : <h2 id={id} class="section-title">{label}</h2>}
   <slot />
 </div>
 <style>
   .section-heading { margin-bottom: var(--s-6); }
-  h2.section-label {
-    padding-top: var(--s-3);
+  h2.section-title {
+    padding-top: var(--s-4);
     border-top: 1px solid var(--rule-strong);
     font-family: var(--font-body);
-    font-weight: 500;
-    font-size: var(--t-14);
-    line-height: 1.5;
-    color: var(--ink);
+    letter-spacing: -0.01em;
   }
   .page-title { font-size: var(--t-40); }
 </style>
