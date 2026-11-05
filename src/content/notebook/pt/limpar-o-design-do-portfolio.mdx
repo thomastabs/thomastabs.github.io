@@ -1,6 +1,6 @@
 ---
-title: "Limpar o design do meu portfólio com um brief e três skills"
-description: "Desenhei este site à mão e renovei-o com IA, e notava-se. Como um brief, o Impeccable, o humanizer e verificações medidas o tornaram mais simples."
+title: "Desenvolvimento assistido por IA no meu próprio portfólio"
+description: "Como trabalhei com um agente de IA no design deste site: um brief com resultados verificáveis, skills de design e escrita, e scripts que mediram o resultado."
 pubDate: 2026-11-04
 tags: [ia, design]
 draft: false
@@ -13,7 +13,7 @@ import { Image } from 'astro:assets';
 import before from '@/assets/notebook/deslop-home-before.webp';
 import after from '@/assets/notebook/deslop-home-after.webp';
 
-Desenhei a primeira versão deste portfólio à mão. O LinkedIn e os portfólios feitos com IA estavam então a ter muita exposição, por isso renovei o visual com IA. A renovação funcionava, o conteúdo era real, e parecia gerada. Todas as secções abriam com o mesmo andaime: um pequeno rótulo em maiúsculas com o número da secção e um sufixo, um slogan com serifa por baixo, e depois cartões com etiquetas coloridas. A ideia de "caderno de engenharia" aparecia cinco vezes: marcas de secção, linhas de cota, uma fotografia colada com fita e inclinada, notas na margem e sublinhados a caneta vermelha. Nenhuma parecia uma escolha, porque estavam todas ligadas ao mesmo tempo.
+Desenhei a primeira versão deste portfólio à mão. O LinkedIn e os portfólios feitos com IA estavam então a ter muita exposição, por isso renovei o visual com IA. A renovação funcionava e o conteúdo era real, mas o design estava mais pesado do que precisava. Todas as secções abriam com o mesmo andaime: um pequeno rótulo em maiúsculas com o número da secção e um sufixo, um slogan com serifa por baixo, e depois cartões com etiquetas coloridas. A ideia de "caderno de engenharia" aparecia cinco vezes: marcas de secção, linhas de cota, uma fotografia colada com fita e inclinada, notas na margem e sublinhados a caneta vermelha. Nenhuma parecia uma escolha, porque estavam todas ligadas ao mesmo tempo.
 
 A limpeza nasceu da necessidade de simplificar esse design, porque mais simples é melhor. Apliquei-lhe o que a minha tese defende para a IA em qualquer fase do trabalho: escrever o que significa estar feito, deixar o agente trabalhar com base nisso, e verificar o resultado com algo que não seja a opinião do próprio agente.
 
@@ -45,7 +45,7 @@ Corri-o no Claude Code com três skills instaladas, e o Claude escreveu alguns s
 
 O [Impeccable](https://github.com/pbakaus/impeccable) é uma skill de design com um comando de crítica, um comando de auditoria e um detetor baseado em regras para padrões comuns de interfaces geradas. A crítica, antes de qualquer alteração, deu ao site 27/40 nas heurísticas de Nielsen, com 1/4 em design estético e minimalista. O detetor encontrou 9 problemas nas páginas construídas, incluindo 37 travessões só na página do Apex, números de secção em todas as secções, uma hierarquia tipográfica em que os tamanhos pequenos eram 12, 14,4 e 15,2 px, e uma caixa de destaque com uma risca colorida de lado.
 
-Depois da passagem, a auditoria deu 19/20. Atualizar o Impeccable da versão 3.9 para a 4.8 perto do fim valeu a pena: a nova versão desenha cada página em largura de computador e de telemóvel e encontrou problemas que a primeira não via, como etiquetas de gráficos com cerca de 9 px, anos de um gráfico com contraste de 3,2:1 sobre o brilho do topo no telemóvel, e logótipos sem margem interior. Ficou tudo corrigido. O único alerta que resta é o fundo creme da página, que mantive.
+Depois da passagem, a auditoria deu 19/20. Atualizar o Impeccable da versão 3.9 para a 4.8 perto do fim valeu a pena: a nova versão desenha cada página em largura de computador e de telemóvel e encontrou problemas que a primeira não via, como etiquetas de gráficos com cerca de 9 px, anos de um gráfico com contraste de 3,2:1 sobre o brilho do topo no telemóvel, e logótipos sem margem interior. Ficou tudo corrigido. O único alerta que restava era o fundo creme da página, que mantive nessa altura.
 
 ### Humanizer para o texto
 
@@ -53,7 +53,7 @@ O [humanizer](https://github.com/blader/humanizer) reescreve texto que soa a ger
 
 ### frontend-design como segunda opinião
 
-A skill frontend-design enumera os traços à volta dos quais as páginas geradas se juntam hoje. Dois aplicavam-se a este site: o fundo esbranquiçado quente com títulos com serifa, e os rótulos de secção em maiúsculas com linhas de metadados separadas por `·`. O brief definia ambos, por isso ficaram numa primeira fase; uma crítica posterior levou-me a abandonar os rótulos em maiúsculas. Tudo o resto dessa lista (uma palavra destacada no título, números de secção, animações de entrada em cada secção, sombras nos cartões) desapareceu.
+A skill frontend-design enumera os traços à volta dos quais as páginas geradas se juntam hoje. Dois aplicavam-se a este site: o fundo esbranquiçado quente com títulos com serifa, e os rótulos de secção em maiúsculas com linhas de metadados separadas por `·`. O brief definia ambos, por isso ficaram numa primeira fase; uma crítica posterior levou-me a abandonar os rótulos em maiúsculas e, por fim, também o fundo quente. Tudo o resto dessa lista (uma palavra destacada no título, números de secção, animações de entrada em cada secção, sombras nos cartões) desapareceu.
 
 ### Verificações medidas
 
@@ -72,7 +72,7 @@ Algumas decisões ficaram comigo.
 
 - O brief pedia uma lista curta na secção de Experiência da página inicial. Quando a vi publicada, era uma lista aborrecida ao lado de uma cronologia de Formação com logótipos, por isso a Experiência usa agora a mesma cronologia.
 - O brief mantinha o brilho do topo como marca. Mais tarde reduzi o violeta a um canto discreto, porque num ecrã escuro era a coisa mais forte da página.
-- O detetor assinala o fundo creme. Mantive-o, sabendo que é uma das escolhas geradas mais comuns, porque mudá-lo obriga a medir outra vez todos os pares de cores, e gosto dele.
+- O detetor assinalava o fundo creme. Mantive-o durante algum tempo porque gostava dele, sabendo que é uma das escolhas geradas mais comuns, e depois troquei-o por um esbranquiçado neutro e voltei a verificar os pares de cores.
 - Dois passos correram em modo degradado, e o relatório di-lo: a instalação do humanizer foi bloqueada da primeira vez, por isso a primeira revisão do texto aplicou as regras à mão, e a crítica inicial correu num só contexto, quando o Impeccable pede duas avaliações independentes.
 
 ## O que voltaria a usar

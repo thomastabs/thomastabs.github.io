@@ -1,6 +1,6 @@
 ---
-title: "De-slopping my portfolio with a brief and three skills"
-description: "I designed this site by hand, then overhauled it with AI, and it looked generated. How a brief, Impeccable, humanizer and measured checks scaled it back."
+title: "AI-assisted development on my own portfolio"
+description: "How I worked with an AI agent on this site's design: a brief of checkable outcomes, skills for design and writing, and scripts that measured the result."
 pubDate: 2026-11-04
 tags: [ai, design]
 draft: false
@@ -13,9 +13,9 @@ import { Image } from 'astro:assets';
 import before from '@/assets/notebook/deslop-home-before.webp';
 import after from '@/assets/notebook/deslop-home-after.webp';
 
-I designed the first version of this portfolio by hand. LinkedIn and AI-made portfolios were then getting a lot of exposure, so I overhauled the visuals with AI. The overhaul worked, the content was real, and it looked generated. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
+I designed the first version of this portfolio by hand. LinkedIn and AI-made portfolios were then getting a lot of exposure, so I overhauled the visuals with AI. The overhaul worked and the content was real, but the design was heavier than it needed to be. Every section opened with the same scaffold: a small uppercase kicker with a section number and a meta suffix, a serif slogan under it, then cards with coloured chips. The "engineering notebook" idea was there five times over: section marks, dimension lines, a taped photo with a tilt, margin notes and red-pen underlines. None of them read as a choice, because all of them were on at once.
 
-The de-slop came from needing to scale that design back, because simpler is better. I did to it what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
+The clean-up came from needing to scale that design back, because simpler is better. I did to it what my thesis argues you should do with AI in any phase of the work: write down what done means, let the agent do the work against it, and check the result with something other than the agent's own opinion.
 
 <Figure caption="Before: the home page after the AI overhaul, with the uppercase mono kicker, the red full stop, three button styles, the colour-coded graph with its legend, and the § section label below.">
   <Image src={before} alt="The old home hero in dark mode: an uppercase red mono kicker, the name with a red full stop, a long tagline, a status dot, three buttons and a colour-coded graph with a legend." widths={[720, 1440]} sizes="(min-width: 760px) 720px, 100vw" />
@@ -45,7 +45,7 @@ I ran it in Claude Code with three skills installed, and Claude wrote a handful 
 
 [Impeccable](https://github.com/pbakaus/impeccable) is a design skill with a critique command, an audit command and a rule-based detector for common generated-UI patterns. The critique before any change scored the site 27/40 on Nielsen's heuristics, with a 1/4 on aesthetic and minimalist design. Its detector found 9 problems on the built pages, including 37 em dashes on the Apex page alone, numbered section markers on every section, a type hierarchy where the small sizes were 12, 14.4 and 15.2 px, and a callout with a coloured side stripe.
 
-After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near the end was worth it: the new version renders each page at desktop and mobile widths and found problems the first one could not see, such as chart labels around 9 px, chart years at 3.2:1 contrast over the hero glow on mobile, and logo tiles with no padding. All of those are fixed. The one finding left is the cream page background, which I kept.
+After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near the end was worth it: the new version renders each page at desktop and mobile widths and found problems the first one could not see, such as chart labels around 9 px, chart years at 3.2:1 contrast over the hero glow on mobile, and logo tiles with no padding. All of those are fixed. The one finding left was the cream page background, which I kept at that point.
 
 ### Humanizer for the copy
 
@@ -53,7 +53,7 @@ After the pass, the audit scored 19/20. Updating Impeccable from 3.9 to 4.8 near
 
 ### frontend-design as a second opinion
 
-The frontend-design skill lists the traits generated pages cluster around right now. Two of them applied to this site: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines. The brief set both, so they stayed at first; a later critique pushed me to drop the uppercase labels. Everything else on that list (one-word headline accents, numbered markers, entrance animations on every section, card shadows) is gone.
+The frontend-design skill lists the traits generated pages cluster around right now. Two of them applied to this site: the warm off-white background with a serif display, and uppercase section labels with `·` meta lines. The brief set both, so they stayed at first; a later critique pushed me to drop the uppercase labels and, in the end, the warm background too. Everything else on that list (one-word headline accents, numbered markers, entrance animations on every section, card shadows) is gone.
 
 ### Measured checks
 
@@ -72,9 +72,9 @@ Some decisions stayed with me.
 
 - The brief asked for a short list in the home Experience section. Once I saw it live, it was a boring list next to an Education timeline with logos, so Experience now uses the same timeline.
 - The brief kept the hero glow as brand. Later I toned its violet down to a faint corner, because on a dark screen it was the loudest thing on the page.
-- The detector flags the cream background. I kept it, knowing it is one of the most common generated defaults, because changing it means re-measuring every colour pair and I like it.
+- The detector flagged the cream background. I kept it for a while because I liked it, knowing it is one of the most common generated defaults, then replaced it with a neutral off-white and re-checked the colour pairs.
 - Two steps ran degraded and the report says so: the humanizer install was blocked the first time, so the first copy pass applied its rules by hand, and the before-critique ran in one context where Impeccable asks for two independent assessments.
 
 ## What I would reuse
 
-Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent did the overhaul and most of the de-slopping; the second time it had a brief and checks to answer to.
+Write the brief as a list of checkable outcomes. Give the agent skills that encode taste, so it is not inventing a design language from scratch. Then measure the result with scripts and keep the evidence in the repository. The same agent did the overhaul and most of the clean-up; the second time it had a brief and checks to answer to.
