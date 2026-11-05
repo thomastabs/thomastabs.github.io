@@ -69,7 +69,7 @@ The scorecard above describes the site when the pass ended. A later critique wit
 
 - The cream background was replaced with a neutral off-white (`--bg: #f4f5f7`), so the detector's last finding, `cream-palette`, is gone.
 - Uppercase section labels became sans sentence-case headings. Middle-dot separators were removed from visible text.
-- `→` link arrows were removed, and `↗` and `↓` became a CSS-masked icon (`.ext`).
+- `→`, `↗` and `↓` link arrows were removed, so links are plain text.
 - Repo tiles became a plain line, which removed a card inside a card.
 - The screenshots in `before/`, `after/` and `compare/` were not retaken.
 

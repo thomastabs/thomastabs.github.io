@@ -31,7 +31,7 @@ const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
   <div class="container page-head">
     <SectionHeading n="05" label={tag ? `${t('notebook.title')}, ${t('notebook.tagged')}` : t('notebook.title')} title={title} level="h1">
       <p class="lead intro">{t('notebook.intro')}</p>
-      <p class="rss"><a class="pen-link" href={rss}>{t('notebook.rss')}<span class="ext" aria-hidden="true"></span></a></p>
+      <p class="rss"><a class="pen-link" href={rss}>{t('notebook.rss')}</a></p>
     </SectionHeading>
   </div>
 
@@ -52,7 +52,7 @@ const rss = lang === 'en' ? '/rss.xml' : '/pt/rss.xml';
     {filtered.length === 0 ? (
       <div class="empty">
                 <p class="empty-text">{t('notebook.empty')}</p>
-        <p class="empty-rss"><a class="pen-link" href={rss}>{t('notebook.rss')}<span class="ext" aria-hidden="true"></span></a></p>
+        <p class="empty-rss"><a class="pen-link" href={rss}>{t('notebook.rss')}</a></p>
       </div>
     ) : (
       <>

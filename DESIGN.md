@@ -115,7 +115,7 @@ No shadows. Depth comes from 1px rules and `surface`. One 4px radius, plus pills
 ## Components
 
 - One `SectionHeading`, one `.btn` pair, one `.filter-pill`, one `ProjectCard`, one `SpecBlock`.
-- External links carry the `.ext` icon, not a text glyph.
+- Links are plain underlined text, internal or external, with no arrow or icon. The owner asked for this.
 
 ## Do and don't
 

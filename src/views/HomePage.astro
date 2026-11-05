@@ -83,7 +83,7 @@ const personLd = {
             {phases.map((p) => <li>{p.name[lang]}</li>)}
           </ol>
           <div class="apex-feature-links">
-            {apexCard.links?.map((l) => <a class="pen-link" href={l.href}>{l.label}{l.href.startsWith('http') ? <span class="ext" aria-hidden="true"></span> : ''}</a>)}
+            {apexCard.links?.map((l) => <a class="pen-link" href={l.href}>{l.label}</a>)}
           </div>
         </article>
       )}

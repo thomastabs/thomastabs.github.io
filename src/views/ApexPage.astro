@@ -113,7 +113,7 @@ const scholarlyLd = {
       <p class="lead oneliner">{apex.oneLiner[lang]}</p>
       <div class="links-top">
         {topLinks.map((l) => (
-          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}{l.href!.startsWith('http') ? <span class="ext" aria-hidden="true"></span> : ''}</a>
+          <a class:list={['btn', { 'btn--primary': l.primary }]} href={l.href!}>{l.label[lang]}</a>
         ))}
       </div>
       <div class="head-spec">
@@ -139,7 +139,7 @@ const scholarlyLd = {
                   .map((l) => (
                     <li>
                       <a class="pen-link" href={l.href!}>
-                        {l.label[lang]}{l.href!.startsWith('http') ? <span class="ext" aria-hidden="true"></span> : l.href!.endsWith('.pptx') ? <span class="ext ext--down" aria-hidden="true"></span> : ''}
+                        {l.label[lang]}
                       </a>
                     </li>
                   ))}
@@ -330,8 +330,8 @@ const scholarlyLd = {
         {apex.outfolio.exports.map((e) => <div><dt>{loc(e.k, lang)}</dt><dd>{e.v}</dd></div>)}
       </dl>
       <div class="btn-set">
-        <a class="btn" href="https://outfolio-v1.vercel.app/">{L('Live product', 'Produto online')}<span class="ext" aria-hidden="true"></span></a>
-        <a class="btn" href="https://github.com/thomastabs/OutfolioV1">{L('Source', 'Código')}<span class="ext" aria-hidden="true"></span></a>
+        <a class="btn" href="https://outfolio-v1.vercel.app/">{L('Live product', 'Produto online')}</a>
+        <a class="btn" href="https://github.com/thomastabs/OutfolioV1">{L('Source', 'Código')}</a>
       </div>
       <Figure n={3} caption={L('Outfolio dashboard: the product built for the lifecycle demonstration', 'Painel do Outfolio: o produto construído para a demonstração do ciclo de vida')}>
         <Image src={outfolioDash} alt={L('Outfolio home page with the product title, account actions and a row of published project highlights.', 'Página inicial do Outfolio com o título do produto, ações da conta e uma fila de projetos publicados em destaque.')} widths={[720, 1200, 1800]} sizes="(min-width: 1200px) 1100px, 100vw" />
